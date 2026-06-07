@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        @apply border-surface-200 dark:border-surface-700;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100;
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    ::selection {
+        @apply bg-primary-500/30 text-primary-900 dark:text-primary-100;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-surface-100 dark:bg-surface-800;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-surface-300 dark:bg-surface-600 rounded-full hover:bg-surface-400 dark:hover:bg-surface-500 transition-colors;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-xl shadow-md hover:shadow-lg hover:from-primary-600 hover:to-primary-700 active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:ring-offset-2 dark:focus:ring-offset-surface-900;
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white dark:bg-surface-800 text-surface-700 dark:text-surface-200 font-medium rounded-xl border border-surface-200 dark:border-surface-700 shadow-sm hover:bg-surface-50 dark:hover:bg-surface-700 hover:shadow-md active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-surface-300 dark:focus:ring-surface-600 focus:ring-offset-2 dark:focus:ring-offset-surface-900;
+    }
+
+    .btn-success {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-success-500 to-success-600 text-white font-medium rounded-xl shadow-md hover:from-success-600 hover:to-success-700 active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-success-500/50 focus:ring-offset-2 dark:focus:ring-offset-surface-900;
+    }
+
+    .btn-warning {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-warning-500 to-warning-600 text-white font-medium rounded-xl shadow-md hover:from-warning-600 hover:to-warning-700 active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-warning-500/50 focus:ring-offset-2 dark:focus:ring-offset-surface-900;
+    }
+
+    .btn-danger {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-danger-500 to-danger-600 text-white font-medium rounded-xl shadow-md hover:from-danger-600 hover:to-danger-700 active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-danger-500/50 focus:ring-offset-2 dark:focus:ring-offset-surface-900;
+    }
+
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-surface-600 dark:text-surface-300 font-medium rounded-xl hover:bg-surface-100 dark:hover:bg-surface-800 active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-surface-300 dark:focus:ring-surface-600;
+    }
+
+    .btn-icon {
+        @apply inline-flex items-center justify-center p-2.5 rounded-xl transition-all duration-200;
+    }
+
+    .input-field {
+        @apply w-full px-4 py-2.5 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl text-surface-800 dark:text-surface-100 placeholder-surface-400 dark:placeholder-surface-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-200;
+    }
+
+    .card {
+        @apply bg-white dark:bg-surface-800 rounded-2xl border border-surface-200 dark:border-surface-700 shadow-sm overflow-hidden;
+    }
+
+    .card-hover {
+        @apply card hover:shadow-lg hover:-translate-y-1 transition-all duration-300;
+    }
+
+    .badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+
+    .badge-primary {
+        @apply badge bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300;
+    }
+
+    .badge-success {
+        @apply badge bg-success-100 dark:bg-success-900/40 text-success-700 dark:text-success-300;
+    }
+
+    .badge-warning {
+        @apply badge bg-warning-100 dark:bg-warning-900/40 text-warning-700 dark:text-warning-300;
+    }
+
+    .badge-danger {
+        @apply badge bg-danger-100 dark:bg-danger-900/40 text-danger-700 dark:text-danger-300;
+    }
+
+    .nav-link {
+        @apply inline-flex items-center gap-2 px-3 py-2 rounded-lg text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition-all duration-200;
+    }
+
+    .nav-link-active {
+        @apply nav-link bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300;
+    }
+
+    .gradient-text {
+        @apply bg-gradient-to-r from-primary-500 via-accent-500 to-primary-600 bg-clip-text text-transparent;
+    }
+
+    .gradient-bg {
+        @apply bg-gradient-to-br from-primary-500 via-primary-600 to-accent-600;
+    }
+
+    .glass {
+        @apply bg-white/80 dark:bg-surface-900/80 backdrop-blur-xl border border-white/20 dark:border-surface-700/50;
+    }
+
+    .divider {
+        @apply h-px bg-surface-200 dark:bg-surface-700;
+    }
+
+    .skeleton {
+        @apply animate-shimmer bg-gradient-to-r from-surface-200 via-surface-100 to-surface-200 dark:from-surface-700 dark:via-surface-600 dark:to-surface-700 bg-[length:200%_100%];
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    .content-auto {
+        content-visibility: auto;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
