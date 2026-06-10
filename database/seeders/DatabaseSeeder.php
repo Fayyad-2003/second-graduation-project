@@ -2,385 +2,451 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Faculty;
-use App\Models\StudyProgram;
-use App\Models\Course;
 use App\Models\AcademicClass;
-use App\Models\Lecturer;
-use App\Models\Student;
 use App\Models\AcademicYear;
+use App\Models\Attendance;
+use App\Models\Course;
+use App\Models\CourseSchedule;
+use App\Models\Faculty;
+use App\Models\Grade;
+use App\Models\Lecturer;
+use App\Models\LecturerAttendance;
+use App\Models\Meeting;
+use App\Models\Notification;
+use App\Models\Report;
+use App\Models\Room;
+use App\Models\SemesterCalendar;
+use App\Models\Student;
 use App\Models\StudyPlan;
 use App\Models\StudyPlanDetail;
-use App\Models\Grade;
-use App\Models\CourseSchedule;
-use App\Models\Room;
+use App\Models\StudyProgram;
+use App\Models\SubjectClassification;
+use App\Models\User;
+use App\Models\Assignment;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Disable foreign key constraints to allow safe truncation
+        // Disable foreign key constraints for safe truncation
         Schema::disableForeignKeyConstraints();
-        
-        // Truncate tables managed by this seeder to avoid unique constraint violations
-        User::truncate();
-        AcademicYear::truncate();
-        Faculty::truncate();
-        StudyProgram::truncate();
-        Room::truncate();
-        Course::truncate();
-        Lecturer::truncate();
-        AcademicClass::truncate();
-        CourseSchedule::truncate();
-        Student::truncate();
-        StudyPlan::truncate();
-        StudyPlanDetail::truncate();
-        Grade::truncate();
-        
+
+        $tables = [
+            'users',
+            'faculties',
+            'study_programs',
+            'academic_years',
+            'courses',
+            'lecturers',
+            'students',
+            'classes',
+            'course_schedules',
+            'study_plans',
+            'study_plan_details',
+            'grades',
+            'rooms',
+            'subject_classifications',
+            'meetings',
+            'attendances',
+            'course_prerequisites',
+            'assignments',
+            'notifications',
+            'reports',
+            'lecturer_attendances',
+            'semester_calendars',
+        ];
+
+        foreach ($tables as $table) {
+            if (Schema::hasTable($table)) {
+                \DB::table($table)->truncate();
+            }
+        }
+
         Schema::enableForeignKeyConstraints();
 
-        $this->call(RolePermissionSeeder::class);
+        $this->command->info('تم مسح البيانات القديمة بنجاح.');
 
-        // ==========================================
-        // 1. SUPERADMIN
-        // ==========================================
+        // 1. Roles and Classifications
+        $this->call(RolePermissionSeeder::class);
+        $this->call(SubjectClassificationSeeder::class);
+
+        $classifications = SubjectClassification::all()->keyBy('slug');
+
+        // 2. Superadmin
         User::create([
-            'name' => 'Super Administrator',
-            'email' => 'superadmin@siakad.test',
+            'name' => 'مدير النظام',
+            'email' => 'admin@siakad.test',
             'password' => Hash::make('password'),
             'role' => 'superadmin',
         ]);
 
-        // ==========================================
-        // 2. ACADEMIC YEARS
-        // ==========================================
-        AcademicYear::create([
-            'year' => '2023/2024',
-            'semester' => 'Odd',
-            'is_active' => false,
-            'start_date' => '2023-09-01',
-            'completion_date' => '2024-01-31',
-        ]);
-        
-        $previousYear = AcademicYear::create([
-            'year' => '2023/2024',
-            'semester' => 'Even',
-            'is_active' => false,
-            'start_date' => '2024-02-01',
-            'completion_date' => '2024-06-30',
-        ]);
-        
-        $activeYear = AcademicYear::create([
-            'year' => '2024/2025',
-            'semester' => 'Odd',
-            'is_active' => true,
-            'start_date' => '2024-09-01',
-            'completion_date' => '2025-01-31',
+        // 3. Faculties and Study Programs
+        $facultyEng = Faculty::create(['name' => 'كلية الهندسة']);
+        $spComputerEng = StudyProgram::create([
+            'name' => 'هندسة الحاسوب',
+            'faculty_id' => $facultyEng->id,
         ]);
 
-        // ==========================================
-        // 3. FACULTIES
-        // ==========================================
-        $faculty = Faculty::create(['name' => 'Faculty of Engineering and Computer Science']);
-
-        // Faculty Admin
-        $adminFaculty = User::create([
-            'name' => 'Admin FTIK',
-            'email' => 'admin.ftik@siakad.test',
-            'password' => Hash::make('password'),
-            'role' => 'admin_faculty',
-            'faculty_id' => $faculty->id,
-        ]);
-
-        // ==========================================
-        // 4. STUDY PROGRAMS
-        // ==========================================
-        $studyProgram = StudyProgram::create([
-            'name' => 'Information Technology',
-            'faculty_id' => $faculty->id,
-        ]);
-
-        // ==========================================
-        // 5. ROOMS
-        // ==========================================
-        $room = Room::create([
-            'room_code' => 'LC-01',
-            'room_name' => 'Computer Lab 1',
-            'capacity' => 40,
-            'building' => 'Building A',
-            'floor' => 1,
-        ]);
-
-        // ==========================================
-        // 6. COURSES - 8 SEMESTER CURRICULUM (144 CREDITS)
-        // ==========================================
-        $curriculum = $this->getCurriculum($studyProgram->id);
-        
-        foreach ($curriculum as $course) {
-            Course::create($course);
+        // 4. Rooms
+        for ($i = 1; $i <= 20; $i++) {
+            Room::create([
+                'room_code' => 'قاعة-' . $i,
+                'room_name' => 'قاعة المحاضرات ' . $i,
+                'capacity' => 45,
+                'building' => 'مبنى ' . ($i <= 10 ? 'أ' : 'ب'),
+                'floor' => ($i % 4) + 1,
+            ]);
         }
 
-        // ==========================================
-        // 7. LECTURERS
-        // ==========================================
-        $lecturerUser = User::create([
-            'name' => 'Dr. Ahmad Fauzi, M.Kom.',
-            'email' => 'lecturer@siakad.test',
-            'password' => Hash::make('password'),
-            'role' => 'lecturer',
-        ]);
-
-        $lecturer = Lecturer::create([
-            'user_id' => $lecturerUser->id,
-            'lecturer_number' => '0012056701',
-            'study_program_id' => $studyProgram->id,
-        ]);
-
-        // ==========================================
-        // 8. CLASSES (for semester 1-2)
-        // ==========================================
-        $coursesSem1 = Course::where('semester', 1)->get();
-        $coursesSem2 = Course::where('semester', 2)->get();
-        
-        $classList = [];
-        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-        $startTimes = ['08:00', '10:00', '13:00', '15:00'];
-        
-        $dayIndex = 0;
-        $timeIndex = 0;
-        
-        foreach ($coursesSem1->merge($coursesSem2) as $course) {
-            $class = AcademicClass::create([
-                'course_id' => $course->id,
-                'lecturer_id' => $lecturer->id,
-                'class_name' => 'A',
-                'capacity' => 40,
-                'academic_year_id' => $activeYear->id,
+        // 5. Academic Years (Past 6 years to cover 5 levels + current)
+        $academicYears = [];
+        $years = [2019, 2020, 2021, 2022, 2023, 2024];
+        foreach ($years as $year) {
+            $academicYears["$year-Odd"] = AcademicYear::create([
+                'year' => "$year/" . ($year + 1),
+                'semester' => 'الفصل الأول',
+                'is_active' => false,
+                'start_date' => "$year-09-01",
+                'completion_date' => ($year + 1) . "-01-31",
             ]);
-            
-            // Create schedule
-            CourseSchedule::create([
-                'class_id' => $class->id,
-                'day' => $days[$dayIndex % 5],
-                'start_time' => $startTimes[$timeIndex % 4],
-                'end_time' => date('H:i', strtotime($startTimes[$timeIndex % 4]) + 5400), // +1.5 hours
-                'room' => $room->room_name,
+            $academicYears["$year-Even"] = AcademicYear::create([
+                'year' => "$year/" . ($year + 1),
+                'semester' => 'الفصل الثاني',
+                'is_active' => ($year == 2024),
+                'start_date' => ($year + 1) . "-02-01",
+                'completion_date' => ($year + 1) . "-06-30",
             ]);
-            
-            $classList[] = $class;
-            $dayIndex++;
-            $timeIndex++;
+        }
+        $activeYear = $academicYears["2024-Even"];
+
+        // 6. Arabic Curriculum (Computer Engineering - 5 Years / 10 Semesters)
+        $curriculum = $this->getArabicCurriculum($spComputerEng->id, $classifications);
+        foreach ($curriculum as $courseData) {
+            Course::create($courseData);
         }
 
-        // ==========================================
-        // 9. STUDENTS (Semester 5 - Batch 2022)
-        // ==========================================
-        $studentUser = User::create([
-            'name' => 'Budi Santoso',
-            'email' => 'student@siakad.test',
-            'password' => Hash::make('password'),
-            'role' => 'student',
+        // Add Prerequisites
+        $this->seedArabicPrerequisites();
+
+        // 7. Lecturers (30 Lecturers)
+        $lecturers = Lecturer::factory(30)->create([
+            'study_program_id' => $spComputerEng->id
         ]);
 
-        $student = Student::create([
-            'user_id' => $studentUser->id,
-            'student_number' => '2022101001',
-            'study_program_id' => $studyProgram->id,
-            'batch' => 2022,
-            'academic_advisor_id' => $lecturer->id,
-            'status' => 'active',
-        ]);
+        // 8. Students (75 Students across 5 levels)
+        $students = collect();
+        $batches = [2020, 2021, 2022, 2023, 2024];
+        foreach ($batches as $batch) {
+            $batchStudents = Student::factory(15)->create([
+                'study_program_id' => $spComputerEng->id,
+                'batch' => $batch,
+                'academic_advisor_id' => $lecturers->random()->id,
+            ]);
+            $students = $students->merge($batchStudents);
+        }
 
-        // ==========================================
-        // 10. ACADEMIC HISTORY (4 Completed Semesters)
-        // ==========================================
-        
-        // Create academic years for semester 1-4
-        $ay2022Odd = AcademicYear::create([
-            'year' => '2022/2023', 'semester' => 'Odd', 'is_active' => false,
-            'start_date' => '2022-09-01', 'completion_date' => '2023-01-31',
-        ]);
-        $ay2022Even = AcademicYear::create([
-            'year' => '2022/2023', 'semester' => 'Even', 'is_active' => false,
-            'start_date' => '2023-02-01', 'completion_date' => '2023-06-30',
-        ]);
-        
-        // Semester 1 (20 Credits - 7 Courses)
-        $sp1 = StudyPlan::create(['student_id' => $student->id, 'academic_year_id' => $ay2022Odd->id, 'status' => 'approved']);
-        foreach (Course::where('semester', 1)->get() as $course) {
-            $class = AcademicClass::where('course_id', $course->id)->first();
-            if ($class) {
-                StudyPlanDetail::create(['study_plan_id' => $sp1->id, 'class_id' => $class->id]);
-                $numericGrade = rand(75, 92);
-                Grade::create(['student_id' => $student->id, 'class_id' => $class->id, 'numeric_grade' => $numericGrade, 'letter_grade' => $this->convertToLetter($numericGrade)]);
+        // 9. Process Data
+        $this->command->info('جاري إنشاء السجلات الأكاديمية والمهام والتقارير...');
+
+        foreach ($students as $student) {
+            $currentSemester = $this->calculateCurrentSemester($student->batch, $activeYear);
+
+            for ($sem = 1; $sem <= $currentSemester; $sem++) {
+                $isCurrentSemester = ($sem == $currentSemester);
+                $ay = $this->getAcademicYearForSemester($student->batch, $sem, $academicYears);
+
+                if (!$ay) continue;
+
+                $studyPlan = StudyPlan::create([
+                    'student_id' => $student->id,
+                    'academic_year_id' => $ay->id,
+                    'status' => 'approved',
+                ]);
+
+                $semesterCourses = Course::where('semester', $sem)
+                    ->where('study_program_id', $spComputerEng->id)
+                    ->get();
+
+                foreach ($semesterCourses as $course) {
+                    $class = AcademicClass::firstOrCreate(
+                        [
+                            'course_id' => $course->id,
+                            'academic_year_id' => $ay->id,
+                            'class_name' => 'مجموعة 1',
+                        ],
+                        [
+                            'lecturer_id' => $lecturers->random()->id,
+                            'capacity' => 50,
+                        ]
+                    );
+
+                    StudyPlanDetail::create([
+                        'study_plan_id' => $studyPlan->id,
+                        'class_id' => $class->id,
+                    ]);
+
+                    if (!$isCurrentSemester) {
+                        $numericGrade = rand(60, 98);
+                        Grade::create([
+                            'student_id' => $student->id,
+                            'class_id' => $class->id,
+                            'numeric_grade' => $numericGrade,
+                            'letter_grade' => $this->convertToLetter($numericGrade),
+                        ]);
+                        $this->seedAcademicDetails($class, $student, 16, true);
+                    } else {
+                        $this->seedAcademicDetails($class, $student, 8, false);
+                    }
+                }
             }
+
+            // Seed Notifications for each student
+            Notification::factory(5)->create(['user_id' => $student->user_id]);
+
+            // Seed Reports for each student
+            Report::factory(2)->create(['user_id' => $student->user_id]);
         }
 
-        // Semester 2 (20 Credits - 7 Courses)
-        $sp2 = StudyPlan::create(['student_id' => $student->id, 'academic_year_id' => $ay2022Even->id, 'status' => 'approved']);
-        foreach (Course::where('semester', 2)->get() as $course) {
-            $class = AcademicClass::where('course_id', $course->id)->first();
-            if ($class) {
-                StudyPlanDetail::create(['study_plan_id' => $sp2->id, 'class_id' => $class->id]);
-                $numericGrade = rand(73, 90);
-                Grade::create(['student_id' => $student->id, 'class_id' => $class->id, 'numeric_grade' => $numericGrade, 'letter_grade' => $this->convertToLetter($numericGrade)]);
+        // Seed Lecturer Attendances and Assignments
+        foreach ($lecturers as $lecturer) {
+            $classes = AcademicClass::where('lecturer_id', $lecturer->id)->get();
+            foreach ($classes as $class) {
+                $schedule = CourseSchedule::where('class_id', $class->id)->first();
+                if ($schedule) {
+                    $meetings = Meeting::where('course_schedule_id', $schedule->id)->get();
+                    foreach ($meetings as $meeting) {
+                        LecturerAttendance::create([
+                            'lecturer_id' => $lecturer->id,
+                            'course_schedule_id' => $schedule->id,
+                            'meeting_id' => $meeting->id,
+                            'date' => $meeting->date,
+                            'entry_time' => '08:30:00',
+                            'exit_time' => '10:30:00',
+                            'status' => 'present',
+                            'description' => 'حضور اعتيادي',
+                        ]);
+                    }
+                }
             }
+            // Seed Notifications and Reports for lecturers
+            Notification::factory(3)->create(['user_id' => $lecturer->user_id]);
+            Report::factory(1)->create(['user_id' => $lecturer->user_id]);
         }
 
-        // Semester 3 (21 Credits - 7 Courses) - 2023/2024 Odd (already exists above)
-        $ay2023Odd = AcademicYear::where('year', '2023/2024')->where('semester', 'Odd')->first();
-        $sp3 = StudyPlan::create(['student_id' => $student->id, 'academic_year_id' => $ay2023Odd->id, 'status' => 'approved']);
-        foreach (Course::where('semester', 3)->get() as $course) {
-            // Create class for semester 3
-            $class3 = AcademicClass::create([
-                'course_id' => $course->id, 'lecturer_id' => $lecturer->id, 'class_name' => 'A', 
-                'capacity' => 40, 'academic_year_id' => $ay2023Odd->id,
-            ]);
-            StudyPlanDetail::create(['study_plan_id' => $sp3->id, 'class_id' => $class3->id]);
-            $numericGrade = rand(72, 88);
-            Grade::create(['student_id' => $student->id, 'class_id' => $class3->id, 'numeric_grade' => $numericGrade, 'letter_grade' => $this->convertToLetter($numericGrade)]);
-        }
+        // 10. Seed Semester Calendars
+        $this->command->info('جاري إنشاء تقويم الفصول الدراسية...');
+        $this->seedSemesterCalendars($academicYears);
 
-        // Semester 4 (21 Credits - 7 Courses) - 2023/2024 Even
-        $sp4 = StudyPlan::create(['student_id' => $student->id, 'academic_year_id' => $previousYear->id, 'status' => 'approved']);
-        foreach (Course::where('semester', 4)->get() as $course) {
-            $class4 = AcademicClass::create([
-                'course_id' => $course->id, 'lecturer_id' => $lecturer->id, 'class_name' => 'A',
-                'capacity' => 40, 'academic_year_id' => $previousYear->id,
-            ]);
-            StudyPlanDetail::create(['study_plan_id' => $sp4->id, 'class_id' => $class4->id]);
-            $numericGrade = rand(74, 90);
-            Grade::create(['student_id' => $student->id, 'class_id' => $class4->id, 'numeric_grade' => $numericGrade, 'letter_grade' => $this->convertToLetter($numericGrade)]);
-        }
-
-        // ==========================================
-        // 11. CURRENT SEMESTER 5 STUDY PLAN (Draft)
-        // ==========================================
-        $currentStudyPlan = StudyPlan::create([
-            'student_id' => $student->id,
-            'academic_year_id' => $activeYear->id,
-            'status' => 'draft',
-        ]);
-
-        // Create classes for semester 5 and enroll in study plan
-        foreach (Course::where('semester', 5)->get() as $course) {
-            $class5 = AcademicClass::create([
-                'course_id' => $course->id, 'lecturer_id' => $lecturer->id, 'class_name' => 'A',
-                'capacity' => 40, 'academic_year_id' => $activeYear->id,
-            ]);
-            StudyPlanDetail::create(['study_plan_id' => $currentStudyPlan->id, 'class_id' => $class5->id]);
-        }
-
-        // ==========================================
-        // OUTPUT
-        // ==========================================
-        $this->command->newLine();
-        $this->command->info('✅ Database seeded successfully!');
-        $this->command->newLine();
-        $this->command->info('📋 Login Credentials:');
-        $this->command->table(
-            ['Role', 'Email', 'Password'],
-            [
-                ['Superadmin', 'superadmin@siakad.test', 'password'],
-                ['Faculty Admin', 'admin.ftik@siakad.test', 'password'],
-                ['Lecturer', 'lecturer@siakad.test', 'password'],
-                ['Student', 'student@siakad.test', 'password'],
-            ]
-        );
-        $this->command->newLine();
-        $this->command->info("📚 Curriculum: {$studyProgram->name}");
-        $this->command->info("   Total: 144 Credits | 8 Semesters | " . Course::count() . " Courses");;
+        $this->command->info('✅ تم إنشاء قاعدة البيانات الشاملة باللغة العربية بنجاح!');
     }
 
-    /**
-     * Computer Science Curriculum - 8 Semesters - 144 Credits
-     */
-    private function getCurriculum(int $studyProgramId): array
+    private function getArabicCurriculum($spId, $classifications): array
     {
-        return [
-            // ====== SEMESTER 1 (20 Credits) ======
-            ['course_code' => 'TI101', 'course_name' => 'Algorithms and Programming I', 'credits' => 4, 'semester' => 1, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI102', 'course_name' => 'Discrete Mathematics', 'credits' => 3, 'semester' => 1, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI103', 'course_name' => 'Introduction to Information Technology', 'credits' => 3, 'semester' => 1, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI104', 'course_name' => 'Calculus I', 'credits' => 3, 'semester' => 1, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI105', 'course_name' => 'Basic Physics', 'credits' => 3, 'semester' => 1, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI106', 'course_name' => 'English I', 'credits' => 2, 'semester' => 1, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI107', 'course_name' => 'Pancasila Education', 'credits' => 2, 'semester' => 1, 'study_program_id' => $studyProgramId],
-
-            // ====== SEMESTER 2 (20 Credits) ======
-            ['course_code' => 'TI201', 'course_name' => 'Algorithms and Programming II', 'credits' => 4, 'semester' => 2, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI202', 'course_name' => 'Data Structures', 'credits' => 4, 'semester' => 2, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI203', 'course_name' => 'Calculus II', 'credits' => 3, 'semester' => 2, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI204', 'course_name' => 'Linear Algebra', 'credits' => 3, 'semester' => 2, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI205', 'course_name' => 'English II', 'credits' => 2, 'semester' => 2, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI206', 'course_name' => 'Civic Education', 'credits' => 2, 'semester' => 2, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI207', 'course_name' => 'Algorithm Practicum', 'credits' => 2, 'semester' => 2, 'study_program_id' => $studyProgramId],
-
-            // ====== SEMESTER 3 (20 Credits) ======
-            ['course_code' => 'TI301', 'course_name' => 'Object-Oriented Programming', 'credits' => 4, 'semester' => 3, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI302', 'course_name' => 'Database', 'credits' => 4, 'semester' => 3, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI303', 'course_name' => 'Operating Systems', 'credits' => 3, 'semester' => 3, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI304', 'course_name' => 'Statistics and Probability', 'credits' => 3, 'semester' => 3, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI305', 'course_name' => 'Computer Organization and Architecture', 'credits' => 3, 'semester' => 3, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI306', 'course_name' => 'Database Practicum', 'credits' => 2, 'semester' => 3, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI307', 'course_name' => 'Religion', 'credits' => 2, 'semester' => 3, 'study_program_id' => $studyProgramId],
-
-            // ====== SEMESTER 4 (20 Credits) ======
-            ['course_code' => 'TI401', 'course_name' => 'Web Programming', 'credits' => 4, 'semester' => 4, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI402', 'course_name' => 'Computer Networks', 'credits' => 4, 'semester' => 4, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI403', 'course_name' => 'Software Engineering', 'credits' => 3, 'semester' => 4, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI404', 'course_name' => 'Human-Computer Interaction', 'credits' => 3, 'semester' => 4, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI405', 'course_name' => 'System Analysis and Design', 'credits' => 3, 'semester' => 4, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI406', 'course_name' => 'Network Practicum', 'credits' => 2, 'semester' => 4, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI407', 'course_name' => 'Professional Ethics', 'credits' => 2, 'semester' => 4, 'study_program_id' => $studyProgramId],
-
-            // ====== SEMESTER 5 (20 Credits) ======
-            ['course_code' => 'TI501', 'course_name' => 'Mobile Programming', 'credits' => 4, 'semester' => 5, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI502', 'course_name' => 'Artificial Intelligence', 'credits' => 3, 'semester' => 5, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI503', 'course_name' => 'Information System Security', 'credits' => 3, 'semester' => 5, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI504', 'course_name' => 'Distributed Systems', 'credits' => 3, 'semester' => 5, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI505', 'course_name' => 'IT Project Management', 'credits' => 3, 'semester' => 5, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI506', 'course_name' => 'Mobile Practicum', 'credits' => 2, 'semester' => 5, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI507', 'course_name' => 'Entrepreneurship', 'credits' => 2, 'semester' => 5, 'study_program_id' => $studyProgramId],
-
-            // ====== SEMESTER 6 (18 Credits) ======
-            ['course_code' => 'TI601', 'course_name' => 'Machine Learning', 'credits' => 3, 'semester' => 6, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI602', 'course_name' => 'Data Mining', 'credits' => 3, 'semester' => 6, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI603', 'course_name' => 'Cloud Computing', 'credits' => 3, 'semester' => 6, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI604', 'course_name' => 'Digital Image Processing', 'credits' => 3, 'semester' => 6, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI605', 'course_name' => 'Research Methodology', 'credits' => 2, 'semester' => 6, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI606', 'course_name' => 'Internship', 'credits' => 4, 'semester' => 6, 'study_program_id' => $studyProgramId],
-
-            // ====== SEMESTER 7 (14 Credits) ======
-            ['course_code' => 'TI701', 'course_name' => 'Internet of Things', 'credits' => 3, 'semester' => 7, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI702', 'course_name' => 'Big Data Analytics', 'credits' => 3, 'semester' => 7, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI703', 'course_name' => 'Natural Language Processing', 'credits' => 3, 'semester' => 7, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI704', 'course_name' => 'Project 1 (Thesis Proposal)', 'credits' => 2, 'semester' => 7, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI705', 'course_name' => 'Elective 1', 'credits' => 3, 'semester' => 7, 'study_program_id' => $studyProgramId],
-
-            // ====== SEMESTER 8 (12 Credits) ======
-            ['course_code' => 'TI801', 'course_name' => 'Deep Learning', 'credits' => 3, 'semester' => 8, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI802', 'course_name' => 'Elective 2', 'credits' => 3, 'semester' => 8, 'study_program_id' => $studyProgramId],
-            ['course_code' => 'TI803', 'course_name' => 'Thesis', 'credits' => 6, 'semester' => 8, 'study_program_id' => $studyProgramId],
+        $data = [
+            ['code' => 'CE101', 'name' => 'مقدمة في هندسة الحاسوب', 'credits' => 2, 'sem' => 1, 'class' => 'university-requirements'],
+            ['code' => 'CE102', 'name' => 'حساب التفاضل والتكامل 1', 'credits' => 3, 'sem' => 1, 'class' => 'college-requirements'],
+            ['code' => 'CE103', 'name' => 'الفيزياء العامة 1', 'credits' => 3, 'sem' => 1, 'class' => 'college-requirements'],
+            ['code' => 'CE104', 'name' => 'الرياضيات المتقطعة', 'credits' => 3, 'sem' => 1, 'class' => 'specialization-requirements'],
+            ['code' => 'CE105', 'name' => 'منطق البرمجة', 'credits' => 3, 'sem' => 1, 'class' => 'specialization-requirements'],
+            ['code' => 'CE106', 'name' => 'اللغة الإنجليزية 1', 'credits' => 2, 'sem' => 1, 'class' => 'university-requirements'],
+            ['code' => 'CE201', 'name' => 'حساب التفاضل والتكامل 2', 'credits' => 3, 'sem' => 2, 'class' => 'college-requirements'],
+            ['code' => 'CE202', 'name' => 'الفيزياء العامة 2', 'credits' => 3, 'sem' => 2, 'class' => 'college-requirements'],
+            ['code' => 'CE203', 'name' => 'الخوارزميات وهياكل البيانات', 'credits' => 4, 'sem' => 2, 'class' => 'specialization-requirements'],
+            ['code' => 'CE204', 'name' => 'تصميم المنطق الرقمي', 'credits' => 3, 'sem' => 2, 'class' => 'specialization-requirements'],
+            ['code' => 'CE205', 'name' => 'الجبر الخطي', 'credits' => 3, 'sem' => 2, 'class' => 'specialization-requirements'],
+            ['code' => 'CE301', 'name' => 'البرمجة كائنية التوجه', 'credits' => 3, 'sem' => 3, 'class' => 'specialization-requirements'],
+            ['code' => 'CE302', 'name' => 'تنظيم الحاسوب', 'credits' => 3, 'sem' => 3, 'class' => 'specialization-requirements'],
+            ['code' => 'CE303', 'name' => 'الدوائر الكهربائية', 'credits' => 3, 'sem' => 3, 'class' => 'specialization-requirements'],
+            ['code' => 'CE304', 'name' => 'نظم قواعد البيانات', 'credits' => 3, 'sem' => 3, 'class' => 'specialization-requirements'],
+            ['code' => 'CE305', 'name' => 'إحصاء هندسي', 'credits' => 3, 'sem' => 3, 'class' => 'specialization-requirements'],
+            ['code' => 'CE401', 'name' => 'أنظمة التشغيل', 'credits' => 3, 'sem' => 4, 'class' => 'specialization-requirements'],
+            ['code' => 'CE402', 'name' => 'المعالجات الدقيقة', 'credits' => 4, 'sem' => 4, 'class' => 'specialization-requirements'],
+            ['code' => 'CE403', 'name' => 'شبكات الحاسوب', 'credits' => 3, 'sem' => 4, 'class' => 'specialization-requirements'],
+            ['code' => 'CE404', 'name' => 'الإشارات والأنظمة', 'credits' => 3, 'sem' => 4, 'class' => 'specialization-requirements'],
+            ['code' => 'CE405', 'name' => 'مبادئ هندسة البرمجيات', 'credits' => 3, 'sem' => 4, 'class' => 'specialization-requirements'],
+            ['code' => 'CE501', 'name' => 'تصميم الأنظمة المدمجة', 'credits' => 4, 'sem' => 5, 'class' => 'specialization-requirements'],
+            ['code' => 'CE502', 'name' => 'الذكاء الاصطناعي', 'credits' => 3, 'sem' => 5, 'class' => 'specialization-requirements'],
+            ['code' => 'CE503', 'name' => 'معمارية الحاسوب', 'credits' => 3, 'sem' => 5, 'class' => 'specialization-requirements'],
+            ['code' => 'CE504', 'name' => 'تقنيات الويب', 'credits' => 3, 'sem' => 5, 'class' => 'specialization-requirements'],
+            ['code' => 'CE505', 'name' => 'أساسيات الأمن السيبراني', 'credits' => 3, 'sem' => 5, 'class' => 'specialization-requirements'],
+            ['code' => 'CE601', 'name' => 'معالجة الإشارات الرقمية', 'credits' => 3, 'sem' => 6, 'class' => 'specialization-requirements'],
+            ['code' => 'CE602', 'name' => 'أنظمة الزمن الحقيقي', 'credits' => 3, 'sem' => 6, 'class' => 'specialization-requirements'],
+            ['code' => 'CE603', 'name' => 'تطوير تطبيقات الموبايل', 'credits' => 3, 'sem' => 6, 'class' => 'specialization-requirements'],
+            ['code' => 'CE604', 'name' => 'الحوسبة السحابية', 'credits' => 3, 'sem' => 6, 'class' => 'specialization-optional', 'is_elective' => true],
+            ['code' => 'CE605', 'name' => 'تعلم الآلة', 'credits' => 3, 'sem' => 6, 'class' => 'specialization-optional', 'is_elective' => true],
+            ['code' => 'CE701', 'name' => 'إنترنت الأشياء', 'credits' => 3, 'sem' => 7, 'class' => 'specialization-requirements'],
+            ['code' => 'CE702', 'name' => 'أنظمة التحكم', 'credits' => 3, 'sem' => 7, 'class' => 'specialization-requirements'],
+            ['code' => 'CE703', 'name' => 'إدارة مشاريع تكنولوجيا المعلومات', 'credits' => 2, 'sem' => 7, 'class' => 'specialization-requirements'],
+            ['code' => 'CE704', 'name' => 'تصميم VLSI', 'credits' => 3, 'sem' => 7, 'class' => 'specialization-optional', 'is_elective' => true],
+            ['code' => 'CE705', 'name' => 'تحليل البيانات الضخمة', 'credits' => 3, 'sem' => 7, 'class' => 'specialization-optional', 'is_elective' => true],
+            ['code' => 'CE801', 'name' => 'هندسة البروتوكولات', 'credits' => 3, 'sem' => 8, 'class' => 'specialization-requirements'],
+            ['code' => 'CE802', 'name' => 'الرؤية الحاسوبية', 'credits' => 3, 'sem' => 8, 'class' => 'specialization-requirements'],
+            ['code' => 'CE803', 'name' => 'أمن الشبكات المتقدم', 'credits' => 3, 'sem' => 8, 'class' => 'specialization-requirements'],
+            ['code' => 'CE804', 'name' => 'الريادة والابتكار', 'credits' => 2, 'sem' => 8, 'class' => 'university-requirements'],
+            ['code' => 'CE805', 'name' => 'اختياري تخصص 2', 'credits' => 3, 'sem' => 8, 'class' => 'specialization-optional', 'is_elective' => true],
+            ['code' => 'CE901', 'name' => 'مشروع التخرج 1', 'credits' => 2, 'sem' => 9, 'class' => 'specialization-requirements'],
+            ['code' => 'CE902', 'name' => 'التدريب الميداني', 'credits' => 3, 'sem' => 9, 'class' => 'specialization-requirements'],
+            ['code' => 'CE903', 'name' => 'النظم الموزعة', 'credits' => 3, 'sem' => 9, 'class' => 'specialization-requirements'],
+            ['code' => 'CE904', 'name' => 'معالجة اللغات الطبيعية', 'credits' => 3, 'sem' => 9, 'class' => 'specialization-optional', 'is_elective' => true],
+            ['code' => 'CE1001', 'name' => 'مشروع التخرج 2', 'credits' => 4, 'sem' => 10, 'class' => 'specialization-requirements'],
+            ['code' => 'CE1002', 'name' => 'أخلاقيات المهنة', 'credits' => 2, 'sem' => 10, 'class' => 'university-requirements'],
+            ['code' => 'CE1003', 'name' => 'موضوعات مختارة في هندسة الحاسوب', 'credits' => 3, 'sem' => 10, 'class' => 'specialization-optional', 'is_elective' => true],
         ];
+
+        $curriculum = [];
+        foreach ($data as $d) {
+            $curriculum[] = [
+                'course_code' => $d['code'],
+                'course_name' => $d['name'],
+                'credits' => $d['credits'],
+                'semester' => $d['sem'],
+                'study_program_id' => $spId,
+                'subject_classification_id' => $classifications[$d['class']]->id ?? null,
+                'is_elective' => $d['is_elective'] ?? false,
+            ];
+        }
+        return $curriculum;
+    }
+
+    private function seedArabicPrerequisites(): void
+    {
+        $pairs = [
+            ['CE102', 'CE201'],
+            ['CE103', 'CE202'],
+            ['CE105', 'CE203'],
+            ['CE203', 'CE301'],
+            ['CE204', 'CE302'],
+            ['CE302', 'CE402'],
+            ['CE402', 'CE501'],
+            ['CE301', 'CE504'],
+            ['CE401', 'CE602'],
+            ['CE901', 'CE1001'],
+        ];
+
+        foreach ($pairs as $pair) {
+            $course = Course::where('course_code', $pair[1])->first();
+            $prereq = Course::where('course_code', $pair[0])->first();
+            if ($course && $prereq) {
+                $course->prerequisites()->attach($prereq->id);
+            }
+        }
+    }
+
+    private function calculateCurrentSemester(int $batch, AcademicYear $activeYear): int
+    {
+        $activeStartYear = (int) explode('/', $activeYear->year)[0];
+        $semestersPassed = ($activeStartYear - $batch) * 2;
+        if (Str::contains($activeYear->semester, 'الثاني')) {
+            $semestersPassed += 2;
+        } else {
+            $semestersPassed += 1;
+        }
+        return max(1, min(10, $semestersPassed));
+    }
+
+    private function getAcademicYearForSemester(int $batch, int $semester, array $academicYears): ?AcademicYear
+    {
+        $yearOffset = (int) floor(($semester - 1) / 2);
+        $targetYear = $batch + $yearOffset;
+        $isOdd = ($semester % 2 != 0);
+        $semKey = $isOdd ? "$targetYear-Odd" : "$targetYear-Even";
+        return $academicYears[$semKey] ?? null;
+    }
+
+    private function seedAcademicDetails(AcademicClass $class, Student $student, int $limit, bool $isPast): void
+    {
+        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+        $schedule = CourseSchedule::firstOrCreate(
+            ['class_id' => $class->id],
+            [
+                'day' => $days[rand(0, 4)],
+                'start_time' => '08:30',
+                'end_time' => '10:30',
+                'room' => Room::all()->random()->room_name,
+            ]
+        );
+
+        if ($limit > 0) {
+            Assignment::firstOrCreate(
+                ['class_id' => $class->id, 'title' => 'الواجب الأول لـ ' . $class->course->course_name],
+                [
+                    'description' => 'يرجى تقديم الحل بصيغة PDF',
+                    'deadline' => $isPast ? now()->subMonths(1) : now()->addWeeks(2),
+                    'max_file_size' => 2048,
+                    'allowed_extensions' => 'pdf,doc',
+                    'is_active' => true,
+                ]
+            );
+        }
+
+        for ($i = 1; $i <= $limit; $i++) {
+            $meeting = Meeting::firstOrCreate(
+                [
+                    'course_schedule_id' => $schedule->id,
+                    'meeting_number' => $i,
+                ],
+                [
+                    'date' => now()->subDays((16 - $i) * 7),
+                    'topic' => "موضوع المحاضرة رقم $i لمساق " . $class->course->course_name,
+                    'status' => 'completed',
+                ]
+            );
+
+            Attendance::firstOrCreate(
+                ['meeting_id' => $meeting->id, 'student_id' => $student->id],
+                [
+                    'status' => rand(0, 10) > 1 ? 'present' : (rand(0, 1) ? 'sick' : 'absent'),
+                    'attendance_time' => '08:35',
+                ]
+            );
+        }
+    }
+
+    private function seedSemesterCalendars(array $academicYears): void
+    {
+        $calendarEvents = [
+            ['week' => 1, 'title' => 'بداية الفصل الدراسي', 'type' => 'academic', 'days_from_start' => 0],
+            ['week' => 2, 'title' => 'آخر يوم لتسجيل الخطة', 'type' => 'academic', 'days_from_start' => 7],
+            ['week' => 4, 'title' => 'إجازة عيد الفطر', 'type' => 'holiday', 'days_from_start' => 21],
+            ['week' => 8, 'title' => 'امتحانات منتصف الفصل', 'type' => 'exam', 'days_from_start' => 50],
+            ['week' => 12, 'title' => 'إجازة عيد الأضحى', 'type' => 'holiday', 'days_from_start' => 80],
+            ['week' => 15, 'title' => 'بداية الامتحانات النهائية', 'type' => 'exam', 'days_from_start' => 100],
+            ['week' => 16, 'title' => 'نهاية الفصل الدراسي', 'type' => 'academic', 'days_from_start' => 110],
+            ['week' => 3, 'title' => 'يوم التأسيس', 'type' => 'national', 'days_from_start' => 14],
+            ['week' => 10, 'title' => 'يوم استقلال', 'type' => 'national', 'days_from_start' => 63],
+            ['week' => 6, 'title' => 'نشاط طلابي', 'type' => 'event', 'days_from_start' => 35],
+        ];
+
+        foreach ($academicYears as $key => $ay) {
+            foreach ($calendarEvents as $event) {
+                SemesterCalendar::create([
+                    'academic_year_id' => $ay->id,
+                    'week_number' => $event['week'],
+                    'date' => \Carbon\Carbon::parse($ay->start_date)->addDays($event['days_from_start'])->format('Y-m-d'),
+                    'title' => $event['title'],
+                    'description' => 'تفاصيل عن الحدث في تقويم الفصل الدراسي',
+                    'type' => $event['type'],
+                    'is_active' => true,
+                ]);
+            }
+        }
     }
 
     private function convertToLetter(int $grade): string
     {
         return match (true) {
-            $grade >= 85 => 'A',
-            $grade >= 80 => 'A-',
-            $grade >= 75 => 'B+',
-            $grade >= 70 => 'B',
-            $grade >= 65 => 'C+',
-            $grade >= 60 => 'C',
-            $grade >= 55 => 'D',
-            default => 'E',
+            $grade >= 90 => 'A',
+            $grade >= 85 => 'B+',
+            $grade >= 80 => 'B',
+            $grade >= 75 => 'C+',
+            $grade >= 70 => 'C',
+            $grade >= 65 => 'D+',
+            $grade >= 60 => 'D',
+            default => 'F',
         };
     }
 }
