@@ -9,6 +9,7 @@ use App\Models\Grade;
 use App\Models\Meeting;
 use App\Models\Attendance;
 use App\Models\AcademicYear;
+use App\Models\SemesterCalendar;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -81,6 +82,13 @@ class DashboardController extends Controller
             return $class->courseSchedules->contains('day', $today);
         });
 
+        // Upcoming Calendar Events
+        $upcomingEvents = SemesterCalendar::where('date', '>=', now()->toDateString())
+            ->where('is_active', true)
+            ->orderBy('date', 'asc')
+            ->take(10)
+            ->get();
+
         return view('lecturer.dashboard.index', [
             'lecturer' => $lecturer,
             'activeYear' => $activeAcademicYear,
@@ -96,7 +104,8 @@ class DashboardController extends Controller
             'pendingStudyPlans' => $pendingStudyPlans,
             'recentGrades' => $recentGrades,
             'todayClasses' => $todayClasses,
-            'today' => $today
+            'today' => $today,
+            'upcomingEvents' => $upcomingEvents
         ]);
     }
 }

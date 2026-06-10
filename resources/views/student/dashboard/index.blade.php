@@ -1,6 +1,53 @@
 <x-app-layout>
     <x-slot name="header">{{ __('Dashboard') }}</x-slot>
 
+    <!-- Upcoming Events Section -->
+    <div class="mb-8 card-saas p-6 relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-siakad-500/10 to-purple-500/10 rounded-full -mr-24 -mt-24 blur-3xl transition-all duration-500 group-hover:scale-125"></div>
+        <div class="relative flex items-center justify-between mb-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-siakad-100 to-purple-100 dark:from-siakad-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-siakad-600 dark:text-siakad-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-black text-gray-900 dark:text-white text-xl">{{ __('Upcoming Events') }}</h3>
+                    <p class="text-gray-500 dark:text-gray-400 font-medium mt-1 text-sm">{{ __('Important dates and campus activities') }}</p>
+                </div>
+            </div>
+            <a href="{{ route('student.semester-calendar.index') }}" class="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-siakad-500 to-purple-600 text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
+                {{ __('View Calendar') }}
+            </a>
+        </div>
+        @if($upcomingEvents->isEmpty())
+            <div class="text-center py-10">
+                <p class="text-gray-500 dark:text-gray-400 font-medium">{{ __('No upcoming events') }}</p>
+            </div>
+        @else
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($upcomingEvents as $event)
+                    <div class="p-5 bg-white dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 group/event">
+                        <div class="flex items-start justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-widest text-siakad-500">
+                                {{ $event->type }}
+                            </span>
+                            <span class="px-2 py-1 rounded-full text-[10px] font-bold 
+                                {{ $event->type === 'holiday' ? 'bg-amber-100 text-amber-700' : 
+                                   ($event->type === 'exam' ? 'bg-red-100 text-red-700' : 'bg-siakad-100 text-siakad-700') }}">
+                                {{ \Carbon\Carbon::parse($event->date)->translatedFormat('d M Y') }}
+                            </span>
+                        </div>
+                        <h4 class="font-black text-gray-900 dark:text-white">{{ $event->title }}</h4>
+                        @if($event->description)
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">{{ $event->description }}</p>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+
     <!-- GPA Warning Banner -->
     @if($student && isset($gpaWarningLevel) && $gpaWarningLevel)
     <div class="mb-8 rounded-2xl p-6 flex items-start gap-4 shadow-soft-lg {{ $gpaWarningLevel === 'danger' ? 'bg-gradient-to-r from-red-50 to-rose-50 border border-red-100 dark:from-red-950/30 dark:to-rose-950/30 dark:border-red-900/50' : 'bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 dark:from-amber-950/30 dark:to-orange-950/30 dark:border-amber-900/50' }}">

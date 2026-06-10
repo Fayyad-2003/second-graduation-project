@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\AcademicCalculationService;
 use App\Models\StudyPlan;
 use App\Models\AcademicYear;
+use App\Models\SemesterCalendar;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -35,6 +36,7 @@ class DashboardController extends Controller
                 'gradeDistribution' => [],
                 'greeting' => __('Welcome'),
                 'activeAcademicYear' => null,
+                'upcomingEvents' => collect()
             ]);
         }
 
@@ -79,6 +81,13 @@ class DashboardController extends Controller
         // GPA Warning Level
         $gpaWarningLevel = $this->calculationService->getGpaWarningLevel($gpaData['gpa']);
 
+        // Upcoming Calendar Events
+        $upcomingEvents = SemesterCalendar::where('date', '>=', now()->toDateString())
+            ->where('is_active', true)
+            ->orderBy('date', 'asc')
+            ->take(10)
+            ->get();
+
         return view('student.dashboard.index', [
             'user' => $user,
             'student' => $student,
@@ -91,6 +100,7 @@ class DashboardController extends Controller
             'greeting' => $greeting,
             'activeAcademicYear' => $activeAcademicYear,
             'gpaWarningLevel' => $gpaWarningLevel,
+            'upcomingEvents' => $upcomingEvents
         ]);
     }
 }
