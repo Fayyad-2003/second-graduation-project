@@ -21,3 +21,4 @@ require __DIR__ . '/assignments.php';
 require __DIR__ . '/report.php';
 require __DIR__ . '/semester-calendar.php';
 require __DIR__ . '/recommendations.php';
+require __DIR__ . '/academic-situation.php';

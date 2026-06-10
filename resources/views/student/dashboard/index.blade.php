@@ -16,35 +16,35 @@
                     <p class="text-gray-500 dark:text-gray-400 font-medium mt-1 text-sm">{{ __('Important dates and campus activities') }}</p>
                 </div>
             </div>
-            <a href="{{ route('student.semester-calendar.index') }}" class="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-siakad-500 to-purple-600 text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <a href="{{ route('students.semester-calendar.index') }}" class="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-siakad-500 to-purple-600 text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
                 {{ __('View Calendar') }}
             </a>
         </div>
         @if($upcomingEvents->isEmpty())
-            <div class="text-center py-10">
-                <p class="text-gray-500 dark:text-gray-400 font-medium">{{ __('No upcoming events') }}</p>
-            </div>
+        <div class="text-center py-10">
+            <p class="text-gray-500 dark:text-gray-400 font-medium">{{ __('No upcoming events') }}</p>
+        </div>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                @foreach($upcomingEvents as $event)
-                    <div class="p-5 bg-white dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 group/event">
-                        <div class="flex items-start justify-between mb-3">
-                            <span class="text-xs font-bold uppercase tracking-widest text-siakad-500">
-                                {{ $event->type }}
-                            </span>
-                            <span class="px-2 py-1 rounded-full text-[10px] font-bold 
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @foreach($upcomingEvents as $event)
+            <div class="p-5 bg-white dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 group/event">
+                <div class="flex items-start justify-between mb-3">
+                    <span class="text-xs font-bold uppercase tracking-widest text-siakad-500">
+                        {{ $event->type }}
+                    </span>
+                    <span class="px-2 py-1 rounded-full text-[10px] font-bold 
                                 {{ $event->type === 'holiday' ? 'bg-amber-100 text-amber-700' : 
                                    ($event->type === 'exam' ? 'bg-red-100 text-red-700' : 'bg-siakad-100 text-siakad-700') }}">
-                                {{ \Carbon\Carbon::parse($event->date)->translatedFormat('d M Y') }}
-                            </span>
-                        </div>
-                        <h4 class="font-black text-gray-900 dark:text-white">{{ $event->title }}</h4>
-                        @if($event->description)
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">{{ $event->description }}</p>
-                        @endif
-                    </div>
-                @endforeach
+                        {{ \Carbon\Carbon::parse($event->date)->translatedFormat('d M Y') }}
+                    </span>
+                </div>
+                <h4 class="font-black text-gray-900 dark:text-white">{{ $event->title }}</h4>
+                @if($event->description)
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">{{ $event->description }}</p>
+                @endif
             </div>
+            @endforeach
+        </div>
         @endif
     </div>
 
@@ -98,8 +98,8 @@
                         elseif ($hour < 15) $emoji='☀️' ;
                         elseif ($hour < 18) $emoji='🌤️' ;
                         else $emoji='🌙' ;
-                    @endphp
-                    <span class="inline-block animate-bounce-subtle">{{ $emoji }}</span>
+                        @endphp
+                        <span class="inline-block animate-bounce-subtle">{{ $emoji }}</span>
                 </h1>
                 <p class="text-gray-600 dark:text-gray-400 font-medium mt-3 flex items-center gap-3">
                     <span class="w-12 h-0.5 bg-gradient-to-r from-siakad-500 to-purple-500 rounded-full"></span>
@@ -236,6 +236,19 @@
                 </div>
                 <h3 class="relative font-black text-gray-900 dark:text-white text-xl mb-2">{{ __('Student Profile') }}</h3>
                 <p class="relative text-sm text-gray-600 dark:text-gray-400 font-semibold">{{ __('Update personal information') }}</p>
+            </a>
+
+            <!-- Academic Situation -->
+            <a href="{{ route('students.academic-situation.index') }}"
+                class="card-saas p-8 group relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]">
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="relative w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500">
+                    <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="relative font-black text-gray-900 dark:text-white text-xl mb-2">{{ __('Academic Situation') }}</h3>
+                <p class="relative text-sm text-gray-600 dark:text-gray-400 font-semibold">{{ __('View academic report and performance') }}</p>
             </a>
         </div>
     </div>
@@ -378,7 +391,7 @@
         // IPS Chart with Gradient
         const gpaDataHistory = @json($gpaHistory);
         const ipsCtx = document.getElementById('semesterGpaChart').getContext('2d');
-        
+
         const gradient = ipsCtx.createLinearGradient(0, 0, 0, 400);
         gradient.addColorStop(0, isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(99, 102, 241, 0.2)');
         gradient.addColorStop(1, isDark ? 'rgba(139, 92, 246, 0)' : 'rgba(99, 102, 241, 0)');
