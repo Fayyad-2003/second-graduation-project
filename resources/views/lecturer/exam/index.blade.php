@@ -40,6 +40,7 @@
                             @else
                             <span class="px-2.5 py-1 text-[10px] font-black bg-siakad-50 dark:bg-siakad-900 text-siakad-400 rounded-lg border border-siakad-100 dark:border-siakad-800 uppercase tracking-widest">{{ __('Past') }}</span>
                             @endif
+                            <span class="px-2.5 py-1 text-[10px] font-black bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-lg border border-blue-100 dark:border-blue-900/50 uppercase tracking-widest">{{ $exam->questions->count() }} {{ __('Questions') }}</span>
                         </div>
                         @if($exam->description)
                         <p class="text-sm text-siakad-500 font-medium mb-6 line-clamp-2">{{ $exam->description }}</p>
@@ -95,6 +96,9 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-3 lg:self-end">
+                        <a href="{{ route('lecturers.exam.questions', [$class->id, $exam->id]) }}" class="px-4 py-2.5 text-sm font-black bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-xl hover:from-blue-600 hover:to-cyan-700 shadow-lg shadow-blue-500/20 transition-all">
+                            {{ __('Questions') }}
+                        </a>
                         <form action="{{ route('lecturers.exam.destroy', [$class->id, $exam->id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
@@ -127,7 +131,7 @@
     <div id="createModal" class="hidden fixed inset-0 z-50 overflow-y-auto" x-cloak>
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="fixed inset-0 bg-siakad-900/60 backdrop-blur-sm transition-opacity" onclick="document.getElementById('createModal').classList.add('hidden')"></div>
-            
+
             <div class="relative bg-white dark:bg-siakad-900 rounded-[2rem] shadow-2xl w-full max-w-lg p-8 overflow-hidden transform transition-all animate-fade-in">
                 <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-siakad-primary/5 rounded-full"></div>
                 <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-32 h-32 bg-emerald-500/5 rounded-full"></div>
@@ -143,7 +147,9 @@
                             {{ __('New Exam') }}
                         </h3>
                         <button onclick="document.getElementById('createModal').classList.add('hidden')" class="text-siakad-400 hover:text-siakad-600 transition-colors">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
                         </button>
                     </div>
 

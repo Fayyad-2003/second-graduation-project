@@ -49,4 +49,9 @@ class Course extends Model
     {
         return $this->belongsToMany(Course::class, 'course_prerequisites', 'prerequisite_id', 'course_id');
     }
+
+    public function examQuestions()
+    {
+        return $this->hasMany(ExamQuestion::class);
+    }
 }

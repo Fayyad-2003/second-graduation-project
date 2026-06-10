@@ -33,6 +33,11 @@ class Exam extends Model
         return $this->belongsTo(AcademicClass::class, 'class_id');
     }
 
+    public function questions()
+    {
+        return $this->belongsToMany(ExamQuestion::class, 'exam_exam_question')->withPivot('order')->orderBy('pivot_order');
+    }
+
     public function isUpcoming(): bool
     {
         return Carbon::now()->isBefore($this->exam_date);

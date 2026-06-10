@@ -56,4 +56,9 @@ class Lecturer extends Model
     {
         return $this->hasMany(LecturerAttendance::class);
     }
+
+    public function examQuestions()
+    {
+        return $this->hasMany(ExamQuestion::class);
+    }
 }

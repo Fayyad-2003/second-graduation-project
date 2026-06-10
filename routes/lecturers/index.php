@@ -12,4 +12,5 @@ require __DIR__ . '/attendances.php';
 require __DIR__ . '/theses.php';
 require __DIR__ . '/assignments.php';
 require __DIR__ . '/exams.php';
+require __DIR__ . '/exam-questions.php';
 require __DIR__ . '/chat-requests.php';

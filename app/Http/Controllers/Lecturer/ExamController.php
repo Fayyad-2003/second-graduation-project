@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Lecturer;
 use App\Http\Controllers\Controller;
 use App\Models\AcademicClass;
 use App\Models\Exam;
+use App\Models\ExamQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,7 @@ class ExamController extends Controller
     {
         $lecturer = Auth::user()->lecturer;
         $class = $lecturer->classes()
-            ->with(['course', 'exams' => fn($q) => $q->latest()])
+            ->with(['course', 'exams' => fn($q) => $q->latest()->withCount('questions')])
             ->findOrFail($classId);
 
         return view('lecturer.exam.index', compact('class'));
@@ -59,5 +60,49 @@ class ExamController extends Controller
         $exam->delete();
 
         return back()->with('success', __('Exam successfully deleted.'));
+    }
+
+    public function manageQuestions($classId, Exam $exam)
+    {
+        $lecturer = Auth::user()->lecturer;
+        $class = $lecturer->classes()->with('course')->findOrFail($classId);
+
+        if ($exam->class_id != $classId) {
+            abort(403);
+        }
+
+        $subjectQuestions = ExamQuestion::where('lecturer_id', $lecturer->id)
+            ->where('course_id', $class->course->id)
+            ->get();
+
+        $examQuestionIds = $exam->questions->pluck('id')->toArray();
+
+        return view('lecturer.exam.manage-questions', compact('class', 'exam', 'subjectQuestions', 'examQuestionIds'));
+    }
+
+    public function syncQuestions(Request $request, $classId, Exam $exam)
+    {
+        $lecturer = Auth::user()->lecturer;
+        $class = $lecturer->classes()->findOrFail($classId);
+
+        if ($exam->class_id != $classId) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'question_ids' => 'array',
+            'question_ids.*' => 'exists:exam_questions,id'
+        ]);
+
+        $questionIds = $validated['question_ids'] ?? [];
+
+        $syncData = [];
+        foreach ($questionIds as $index => $id) {
+            $syncData[$id] = ['order' => $index + 1];
+        }
+
+        $exam->questions()->sync($syncData);
+
+        return back()->with('success', __('Exam questions updated successfully.'));
     }
 }
