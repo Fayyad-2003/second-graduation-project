@@ -705,6 +705,7 @@
     "Prefix: TI=IT, SI=IS, MK=General, etc": "البادئة: TI=IT, SI=IS, MK=عام، إلخ",
     "Enter course name": "أدخل اسم المادة",
     "Prerequisites (Optional)": "المتطلبات السابقة (اختياري)",
+    "Prerequisites": "المتطلبات السابقة",
     "Press Ctrl to select multiple courses": "اضغط Ctrl لتحديد مواد متعددة",
     "Edit Course": "تعديل المادة",
     "Study Program Data": "بيانات برنامج الدراسة",

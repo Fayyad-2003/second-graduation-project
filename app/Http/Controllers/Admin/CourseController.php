@@ -21,7 +21,7 @@ class CourseController extends Controller
 
     public function index(Request $request)
     {
-        $query = Course::with(['studyProgram.faculty', 'classification']);
+        $query = Course::with(['studyProgram.faculty', 'classification', 'prerequisites']);
 
         if ($request->filled('category')) {
             $query->where('course_code', 'like', $request->category . '%');
@@ -60,7 +60,7 @@ class CourseController extends Controller
         $courses = $query->paginate(config('siakad.pagination', 15))->withQueryString();
         $isSuperAdmin = auth()->user()->isSuperAdmin();
         $faculties = $isSuperAdmin ? Faculty::all() : collect();
-        
+
         $studyProgramsQuery = StudyProgram::with('faculty');
         if ($request->get('faculty_scoped') && $request->get('faculty_scope')) {
             $studyProgramsQuery->where('faculty_id', $request->get('faculty_scope'));

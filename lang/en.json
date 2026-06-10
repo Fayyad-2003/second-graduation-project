@@ -595,6 +595,7 @@
     "Prefix: TI=IT, SI=IS, MK=General, etc": "Prefix: TI=IT, SI=IS, MK=General, etc",
     "Enter course name": "Enter course name",
     "Prerequisites (Optional)": "Prerequisites (Optional)",
+    "Prerequisites": "Prerequisites",
     "Press Ctrl to select multiple courses": "Press Ctrl to select multiple courses",
     "Edit Course": "Edit Course",
     "Faculty Dashboard": "Faculty Dashboard",

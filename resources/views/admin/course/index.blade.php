@@ -104,6 +104,7 @@
                         <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-center w-20">{{ __('Credits') }}</th>
                         <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-center w-28">{{ __('Sem') }}</th>
                         <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-center w-32">{{ __('Classification') }}</th>
+                        <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Prerequisites') }}</th>
                         <th class="py-5 px-8 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-end">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
@@ -136,6 +137,19 @@
                             <span class="text-[10px] text-siakad-300 font-black uppercase tracking-widest">{{ __('Unclassified') }}</span>
                             @endif
                         </td>
+                        <td class="py-5 px-6 text-start">
+                            @if($mk->prerequisites->count() > 0)
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($mk->prerequisites as $prereq)
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-black bg-sky-50 dark:bg-sky-950/30 text-sky-600 dark:text-sky-400 rounded-lg border border-sky-100 dark:border-sky-900/50">
+                                    {{ $prereq->course_name }}
+                                </span>
+                                @endforeach
+                            </div>
+                            @else
+                            <span class="text-[10px] text-siakad-300 font-black uppercase tracking-widest">{{ __('None') }}</span>
+                            @endif
+                        </td>
                         <td class="py-5 px-8 text-end">
                             <div class="flex items-center justify-end gap-2">
                                 <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }})"
@@ -157,7 +171,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="py-12 text-center">
+                        <td colspan="8" class="py-12 text-center">
                             <div class="flex flex-col items-center">
                                 <div class="w-12 h-12 bg-siakad-50 dark:bg-siakad-900/50 rounded-2xl flex items-center justify-center mb-3">
                                     <svg class="w-6 h-6 text-siakad-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,6 +221,18 @@
                     <span class="block text-[10px] text-siakad-400 font-black uppercase tracking-widest mb-1">{{ __('Classification') }}</span>
                     <span class="font-black text-siakad-900 dark:text-white">{{ __($mk->classification?->name ?? 'Unclassified') }}</span>
                 </div>
+                @if($mk->prerequisites->count() > 0)
+                <div class="bg-siakad-50/50 dark:bg-siakad-900/50 p-3 rounded-2xl border border-siakad-100/50 dark:border-siakad-800/50 col-span-2">
+                    <span class="block text-[10px] text-siakad-400 font-black uppercase tracking-widest mb-1">{{ __('Prerequisites') }}</span>
+                    <div class="flex flex-wrap gap-1.5">
+                        @foreach($mk->prerequisites as $prereq)
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-black bg-sky-50 dark:bg-sky-950/30 text-sky-600 dark:text-sky-400 rounded-lg border border-sky-100 dark:border-sky-900/50">
+                            {{ $prereq->course_name }}
+                        </span>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
 
             <div class="flex items-center gap-3 pt-4 border-t border-siakad-50 dark:border-siakad-800">
