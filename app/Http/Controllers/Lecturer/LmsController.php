@@ -34,6 +34,7 @@ class LmsController extends Controller
             ->map(function($class) {
                 $class->material_count = $class->materials()->count();
                 $class->assignment_count = $class->assignments->count();
+                $class->exam_count = $class->exams()->count();
                 return $class;
             });
 

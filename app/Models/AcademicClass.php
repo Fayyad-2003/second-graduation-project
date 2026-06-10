@@ -98,4 +98,9 @@ class AcademicClass extends Model
     {
         return $this->hasMany(ClassWaitlist::class, 'class_id');
     }
+
+    public function exams()
+    {
+        return $this->hasMany(Exam::class, 'class_id');
+    }
 }

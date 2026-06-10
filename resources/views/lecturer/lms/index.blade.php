@@ -40,8 +40,12 @@
                         <span>{{ $class->material_count }} {{ __('Materials') }}</span>
                     </div>
                     <div class="flex items-center gap-1 text-siakad-secondary dark:text-gray-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 012-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                         <span>{{ $class->assignment_count }} {{ __('Assignments') }}</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-siakad-secondary dark:text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span>{{ $class->exam_count }} {{ __('Exams') }}</span>
                     </div>
                 </div>
 
@@ -51,6 +55,9 @@
                     </a>
                     <a href="{{ route('lecturers.assignment.index', $class->id) }}" class="flex-1 text-center px-3 py-2 text-sm font-medium bg-siakad-primary text-white rounded-lg hover:bg-siakad-primary/90 transition">
                         {{ __('Assignment') }}
+                    </a>
+                    <a href="{{ route('lecturers.exam.index', $class->id) }}" class="flex-1 text-center px-3 py-2 text-sm font-medium bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg hover:from-purple-600 hover:to-indigo-700 transition">
+                        {{ __('Exams') }}
                     </a>
                 </div>
             </div>
