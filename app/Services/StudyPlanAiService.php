@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AcademicClass;
 use App\Models\Student;
+use App\Models\Grade;
 use Illuminate\Support\Facades\Http;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\File;
@@ -17,7 +18,7 @@ class StudyPlanAiService
     public function __construct()
     {
         $this->provider = config('services.ai_provider', 'gemini');
-        
+
         if ($this->provider === 'qwen') {
             $this->apiKey = config('services.qwen.api_key', '');
             $this->model = config('services.qwen.model', 'Qwen/Qwen3-4B-Instruct-2507');
@@ -25,6 +26,105 @@ class StudyPlanAiService
             $this->apiKey = config('services.gemini.api_key', '');
             $this->model = 'gemini-2.5-flash-lite';
         }
+    }
+
+    /**
+     * Generate an overall study plan for the semester based on student's academic data
+     */
+    public function generateOverallPlan(Student $student, array $cgpaData, \Illuminate\Support\Collection $classificationProgress, $passedSubjects, $failedSubjects, $currentClasses): array
+    {
+        if (empty($this->apiKey)) {
+            return [
+                'success' => false,
+                'message' => __('API key has not been configured.'),
+            ];
+        }
+
+        try {
+            $prompt = $this->buildOverallPrompt($student, $cgpaData, $classificationProgress, $passedSubjects, $failedSubjects, $currentClasses);
+            $response = $this->callLlm($prompt);
+            $response['success'] = true;
+            return $response;
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => __('An error occurred: :message', ['message' => $e->getMessage()]),
+            ];
+        }
+    }
+
+    protected function buildOverallPrompt(Student $student, array $cgpaData, \Illuminate\Support\Collection $classificationProgress, $passedSubjects, $failedSubjects, $currentClasses): string
+    {
+        $studentName = $student->user->name;
+        $studyProgram = $student->studyProgram->name ?? '';
+        $currentGpa = $cgpaData['gpa'] ?? 0;
+        $totalCredits = $cgpaData['total_credits'] ?? 0;
+        $creditsPassed = $cgpaData['total_credits_passed'] ?? 0;
+
+        $passedSubjectsText = $passedSubjects->map(function ($grade) {
+            return "- " . $grade->academicClass->course->course_name . " (" . $grade->letter_grade . ", " . $grade->academicClass->course->credits . " credits)";
+        })->implode("\n");
+
+        $failedSubjectsText = $failedSubjects->map(function ($grade) {
+            return "- " . $grade->academicClass->course->course_name . " (" . $grade->letter_grade . ", " . $grade->academicClass->course->credits . " credits)";
+        })->implode("\n");
+
+        $currentClassesText = $currentClasses->map(function ($class) {
+            return "- " . $class->course->course_name . " (" . $class->course->credits . " credits, Lecturer: " . ($class->lecturer->user->name ?? 'N/A') . ")";
+        })->implode("\n");
+
+        $classificationProgressText = $classificationProgress->map(function ($progress) {
+            return "- " . $progress['name'] . ": " . $progress['total'] . "/" . $progress['required'] . " credits (" . $progress['percentage'] . "%)";
+        })->implode("\n");
+
+        return <<<PROMPT
+You are an expert academic advisor. Help student "$studentName" create a smart, personalized study plan for their current semester. Student is enrolled in $studyProgram.
+
+Here is their academic profile:
+- Current CGPA: $currentGpa
+- Total Credits: $totalCredits
+- Total Credits Passed: $creditsPassed
+
+Passed Subjects:
+$passedSubjectsText
+
+Failed Subjects (if any):
+$failedSubjectsText
+
+Current Semester Classes:
+$currentClassesText
+
+Graduation Progress by Classification:
+$classificationProgressText
+
+Instructions:
+1. Provide a study schedule breakdown for each week of the semester
+2. Give specific study tips for each subject they are currently taking
+3. If they have failed subjects, suggest strategies for retaking or improving in future semesters
+4. Give advice on balancing study time across different subjects
+5. Provide tips on how to maintain or improve their GPA
+6. Be encouraging and practical
+
+Return a JSON object with this structure:
+{
+  "summary": "Brief encouraging summary of the student's situation and plan",
+  "subject_specific_tips": [
+    {
+      "subject_name": "Subject name",
+      "tips": ["Tip 1", "Tip 2"]
+    }
+  ],
+  "weekly_schedule": [
+    {
+      "week_number": 1,
+      "focus": "What to focus on this week",
+      "key_tasks": ["Task 1", "Task 2"]
+    }
+  ],
+  "general_tips": ["General tip 1", "General tip 2"],
+  "retake_advice": "Advice for retaking failed subjects, if any"
+}
+PROMPT;
     }
 
     /**
@@ -64,7 +164,7 @@ class StudyPlanAiService
     protected function collectMaterialsContent(AcademicClass $class): string
     {
         $class->load(['courseSchedules.meetings.materials', 'course']);
-        
+
         $content = "Subject: " . $class->course->course_name . "\n";
         $content .= "Class: " . $class->class_name . "\n\n";
         $content .= "Course Content / Materials:\n";
@@ -77,7 +177,7 @@ class StudyPlanAiService
                     if ($material->description) {
                         $content .= "    Description: " . $material->description . "\n";
                     }
-                    
+
                     // Extract content from PDF if available
                     if ($material->file_path && str_contains($material->file_type, 'pdf')) {
                         $pdfText = $this->extractPdfText($material->file_path);
@@ -102,13 +202,13 @@ class StudyPlanAiService
             if (!file_exists($fullPath)) {
                 $fullPath = storage_path('app/' . $filePath);
             }
-            
+
             if (!file_exists($fullPath)) return "";
-            
+
             $parser = new Parser();
             $pdf = $parser->parseFile($fullPath);
             $text = $pdf->getText();
-            
+
             // Return only first 1500 characters to save tokens
             return mb_substr($text, 0, 1500) . "...";
         } catch (\Exception $e) {
@@ -184,7 +284,7 @@ PROMPT;
 
         $data = $response->json();
         $jsonText = $data['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
-        
+
         return json_decode($jsonText, true) ?? [];
     }
 
@@ -207,7 +307,7 @@ PROMPT;
 
         $data = $response->json();
         $jsonText = $data['choices'][0]['message']['content'] ?? '{}';
-        
+
         return json_decode($jsonText, true) ?? [];
     }
 }

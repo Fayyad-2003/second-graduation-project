@@ -9,6 +9,7 @@ Route::middleware(['auth', 'role:student'])->prefix('students')->name('students.
     // AI Study Plan
     Route::get('/study-plan-ai', [\App\Http\Controllers\Student\StudyPlanAiController::class, 'index'])->name('study-plan-ai.index');
     Route::post('/study-plan-ai/generate', [\App\Http\Controllers\Student\StudyPlanAiController::class, 'generate'])->name('study-plan-ai.generate');
+    Route::post('/study-plan-ai/generate-overall', [\App\Http\Controllers\Student\StudyPlanAiController::class, 'generateOverall'])->name('study-plan-ai.generate-overall');
 
     // AI Quiz Generator
     Route::get('/quiz-ai', [\App\Http\Controllers\Student\QuizAiController::class, 'index'])->name('quiz-ai.index');

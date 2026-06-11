@@ -46,6 +46,13 @@ class StudyPlanController extends Controller
         // Get classification progress
         $classificationProgress = $this->calculationService->getClassificationProgress($student);
 
+        // Get all finished subjects (with passing grades)
+        $finishedSubjects = \App\Models\Grade::where('student_id', $student->id)
+            ->whereIn('letter_grade', ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C'])
+            ->with('academicClass.course')
+            ->get()
+            ->groupBy(fn($grade) => 'Semester ' . $grade->academicClass->course->semester);
+
         // Collect class IDs this student is currently on the waitlist for
         $waitlistedClassIds = ClassWaitlist::where('student_id', $student->id)
             ->pluck('class_id')
@@ -55,7 +62,8 @@ class StudyPlanController extends Controller
             'studyPlan',
             'availableClasses',
             'classificationProgress',
-            'waitlistedClassIds'
+            'waitlistedClassIds',
+            'finishedSubjects'
         ));
     }
 
