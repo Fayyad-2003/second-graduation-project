@@ -18,6 +18,12 @@
                 </div>
             </div>
             <div class="flex items-center gap-4">
+                <a href="{{ route('lecturers.exam-questions.index', $class->id) }}" class="btn-ghost-saas px-4 py-2 rounded-xl text-sm font-black flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linecap="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    {{ __('Questions Bank') }}
+                </a>
                 <div class="text-right">
                     <p class="text-xs font-black text-siakad-400 uppercase tracking-widest">{{ __('Exam Max Points') }}</p>
                     <p class="text-2xl font-black text-siakad-700 dark:text-siakad-300">{{ $exam->max_score }}</p>
@@ -63,11 +69,36 @@
                             </svg>
                         </label>
                         <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
+                            <div class="flex items-center gap-3 mb-2 flex-wrap">
                                 <span class="px-3 py-1 text-[10px] font-black bg-siakad-100 dark:bg-siakad-800 text-siakad-700 dark:text-siakad-300 rounded-full">{{ __($question->question_type) }}</span>
+                                @php
+                                $difficultyColors = [
+                                'easy' => ['bg-green-100', 'text-green-700', 'dark:bg-green-900/30', 'dark:text-green-400'],
+                                'medium' => ['bg-yellow-100', 'text-yellow-700', 'dark:bg-yellow-900/30', 'dark:text-yellow-400'],
+                                'hard' => ['bg-orange-100', 'text-orange-700', 'dark:bg-orange-900/30', 'dark:text-orange-400'],
+                                'very_hard' => ['bg-red-100', 'text-red-700', 'dark:bg-red-900/30', 'dark:text-red-400'],
+                                ];
+                                $colors = $difficultyColors[$question->difficulty] ?? $difficultyColors['medium'];
+                                $difficultyLabels = [
+                                'easy' => __('Easy'),
+                                'medium' => __('Medium'),
+                                'hard' => __('Hard'),
+                                'very_hard' => __('Very Hard'),
+                                ];
+                                @endphp
+                                <span class="px-3 py-1 text-[10px] font-bold {{ $colors[0] }} {{ $colors[1] }} {{ $colors[2] }} {{ $colors[3] }} rounded-full">
+                                    {{ $difficultyLabels[$question->difficulty] }}
+                                </span>
                                 <span class="px-3 py-1 text-[10px] font-black bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full">{{ $question->points }} {{ __('points') }}</span>
                             </div>
-                            <p class="text-sm font-bold text-siakad-800 dark:text-white">{{ $question->question_text }}</p>
+                            <div class="flex items-start justify-between gap-4">
+                                <p class="text-sm font-bold text-siakad-800 dark:text-white">{{ $question->question_text }}</p>
+                                <a href="{{ route('lecturers.exam-questions.edit', [$class->id, $question->id]) }}" class="p-2 text-siakad-500 hover:text-siakad-700 hover:bg-siakad-50 dark:hover:bg-siakad-800 rounded-xl transition-all flex-shrink-0" title="{{ __('Edit Question') }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </a>
+                            </div>
                             @if($question->question_type === 'multiple_choice' && $question->options)
                             <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 @foreach($question->options as $key => $option)
@@ -107,7 +138,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const examMaxPoints = {{ $exam->max_score }};
+            const examMaxPoints = {
+                {
+                    $exam - > max_score
+                }
+            };
             const checkboxes = document.querySelectorAll('.question-checkbox');
             const totalPointsElement = document.getElementById('total-points');
             const pointsWarning = document.getElementById('points-warning');

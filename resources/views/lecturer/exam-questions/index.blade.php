@@ -37,9 +37,27 @@
         <div class="card-saas hover:shadow-xl transition-all duration-300 group overflow-hidden">
             <div class="p-6">
                 <div class="flex items-start justify-between gap-4 mb-4">
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 flex-wrap">
                         <span class="px-3 py-1 text-xs font-bold bg-siakad-100 dark:bg-siakad-800 text-siakad-700 dark:text-siakad-300 rounded-full">
                             {{ __($question->question_type) }}
+                        </span>
+                        @php
+                        $difficultyColors = [
+                        'easy' => ['bg-green-100', 'text-green-700', 'dark:bg-green-900/30', 'dark:text-green-400'],
+                        'medium' => ['bg-yellow-100', 'text-yellow-700', 'dark:bg-yellow-900/30', 'dark:text-yellow-400'],
+                        'hard' => ['bg-orange-100', 'text-orange-700', 'dark:bg-orange-900/30', 'dark:text-orange-400'],
+                        'very_hard' => ['bg-red-100', 'text-red-700', 'dark:bg-red-900/30', 'dark:text-red-400'],
+                        ];
+                        $colors = $difficultyColors[$question->difficulty] ?? $difficultyColors['medium'];
+                        $difficultyLabels = [
+                        'easy' => __('Easy'),
+                        'medium' => __('Medium'),
+                        'hard' => __('Hard'),
+                        'very_hard' => __('Very Hard'),
+                        ];
+                        @endphp
+                        <span class="px-3 py-1 text-xs font-bold {{ $colors[0] }} {{ $colors[1] }} {{ $colors[2] }} {{ $colors[3] }} rounded-full">
+                            {{ $difficultyLabels[$question->difficulty] }}
                         </span>
                         <span class="px-3 py-1 text-xs font-bold bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full">
                             {{ $question->points }} {{ __('points') }}

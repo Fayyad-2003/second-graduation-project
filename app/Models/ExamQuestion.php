@@ -9,6 +9,11 @@ class ExamQuestion extends Model
 {
     use HasFactory;
 
+    const DIFFICULTY_EASY = 'easy';
+    const DIFFICULTY_MEDIUM = 'medium';
+    const DIFFICULTY_HARD = 'hard';
+    const DIFFICULTY_VERY_HARD = 'very_hard';
+
     protected $fillable = [
         'course_id',
         'lecturer_id',
@@ -18,6 +23,7 @@ class ExamQuestion extends Model
         'correct_answer',
         'points',
         'order',
+        'difficulty',
     ];
 
     protected $casts = [

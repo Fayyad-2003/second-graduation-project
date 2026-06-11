@@ -78,6 +78,16 @@
                             <textarea name="correct_answer" id="correct-answer" rows="3" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="{{ __('Enter the correct answer...') }}">{{ $question->correct_answer }}</textarea>
                         </div>
 
+                        <div>
+                            <label class="block text-xs font-black text-siakad-400 uppercase tracking-widest mb-2 ml-1">{{ __('Difficulty') }}</label>
+                            <select name="difficulty" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required>
+                                <option value="easy" {{ $question->difficulty === 'easy' ? 'selected' : '' }}>{{ __('Easy') }}</option>
+                                <option value="medium" {{ $question->difficulty === 'medium' ? 'selected' : '' }}>{{ __('Medium') }}</option>
+                                <option value="hard" {{ $question->difficulty === 'hard' ? 'selected' : '' }}>{{ __('Hard') }}</option>
+                                <option value="very_hard" {{ $question->difficulty === 'very_hard' ? 'selected' : '' }}>{{ __('Very Hard') }}</option>
+                            </select>
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-black text-siakad-400 uppercase tracking-widest mb-2 ml-1">{{ __('Points') }}</label>

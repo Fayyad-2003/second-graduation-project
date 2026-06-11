@@ -46,6 +46,7 @@ class ExamQuestionController extends Controller
             'correct_answer' => 'nullable|string',
             'points' => 'required|numeric|min:0|max:999.99',
             'order' => 'required|integer|min:0',
+            'difficulty' => 'required|in:easy,medium,hard,very_hard',
         ]);
 
         $lecturer->examQuestions()->create([
@@ -56,6 +57,7 @@ class ExamQuestionController extends Controller
             'correct_answer' => $validated['correct_answer'] ?? null,
             'points' => $validated['points'],
             'order' => $validated['order'],
+            'difficulty' => $validated['difficulty'],
         ]);
 
         return redirect()->route('lecturers.exam-questions.index', $classId)
@@ -90,6 +92,7 @@ class ExamQuestionController extends Controller
             'correct_answer' => 'nullable|string',
             'points' => 'required|numeric|min:0|max:999.99',
             'order' => 'required|integer|min:0',
+            'difficulty' => 'required|in:easy,medium,hard,very_hard',
         ]);
 
         $question->update($validated);
