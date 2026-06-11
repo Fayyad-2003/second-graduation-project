@@ -10,7 +10,7 @@ use App\Models\Lecturer;
 use App\Models\AcademicYear;
 
 /**
- * Centralized Cache Service for SIAKAD
+ * Centralized Cache Service for System
  * 
  * Provides unified caching for frequently accessed data with automatic
  * invalidation and cache warming capabilities.
@@ -121,7 +121,7 @@ class CacheService
         Cache::forget(self::PREFIX_MASTER . '.study_program');
         Cache::forget(self::PREFIX_MASTER . '.course');
         Cache::forget(self::PREFIX_MASTER . '.lecturer');
-        
+
         // Clear faculty-specific study program lists
         $faculties = Faculty::all();
         foreach ($faculties as $faculty) {

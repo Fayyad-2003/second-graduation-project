@@ -314,7 +314,7 @@
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Modern SIAKAD Colors
+        // Modern System Colors
         const systemPrimary = '#6366f1';
         const systemSecondary = '#8b5cf6';
         const purpleGradient = ['#6366f1', '#8b5cf6', '#a855f7', '#c084fc'];

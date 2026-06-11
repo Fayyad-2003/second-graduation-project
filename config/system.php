@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | SIAKAD System Roles
+    | System System Roles
     |--------------------------------------------------------------------------
     |
     | Roles used for system access. Do not change arbitrarily as it affects
@@ -158,7 +158,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'app_name' => 'SIAKAD Universitas',
+    'app_name' => 'System Universitas',
     'version'  => '1.0.0',
 
 ];

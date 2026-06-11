@@ -1,4 +1,4 @@
-<h1 align="center"> SIAKAD AI - Academic Information System</h1>
+<h1 align="center"> System AI - Academic Information System</h1>
 
 <p align="center">
   <strong>Modern Academic Information System built with Laravel 12</strong>
@@ -26,7 +26,7 @@
 
 ## Overview
 
-**SIAKAD** is a modern academic management application designed for universities and higher education institutions. Built with Laravel 12 using a clean, scalable, and production-ready architecture.
+**System** is a modern academic management application designed for universities and higher education institutions. Built with Laravel 12 using a clean, scalable, and production-ready architecture.
 
 ### Highlights
 

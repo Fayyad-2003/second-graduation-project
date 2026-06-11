@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
- * Base exception class for SIAKAD application
+ * Base exception class for System application
  */
 abstract class SystemException extends Exception
 {

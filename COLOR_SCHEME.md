@@ -1,4 +1,4 @@
-# 🎨 SIAKAD Modern Color Scheme
+# 🎨 System Modern Color Scheme
 
 ## Primary Colors
 

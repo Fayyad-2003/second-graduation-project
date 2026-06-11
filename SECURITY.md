@@ -8,7 +8,7 @@
 
 ## Reporting a Vulnerability
 
-We take the security of SIAKAD seriously. If you believe you have found a security vulnerability, please report it to us as described below.
+We take the security of System seriously. If you believe you have found a security vulnerability, please report it to us as described below.
 
 ### How to Report
 
@@ -37,49 +37,49 @@ Please include the following information in your report:
 
 ### Security Measures in Place
 
-SIAKAD implements several security measures:
+System implements several security measures:
 
 1. **Authentication & Authorization**
-   - Laravel Breeze for authentication
-   - Role-based access control (superadmin, admin, lecturer, student)
-   - Faculty-scoped admin access
+    - Laravel Breeze for authentication
+    - Role-based access control (superadmin, admin, lecturer, student)
+    - Faculty-scoped admin access
 
 2. **Input Validation**
-   - Laravel Form Requests for validation
-   - Custom exception handling
+    - Laravel Form Requests for validation
+    - Custom exception handling
 
 3. **Rate Limiting**
-   - AI Chat: 10 requests/minute
-   - KRS Operations: 10 requests/minute
-   - Penilaian: 20 requests/minute
+    - AI Chat: 10 requests/minute
+    - KRS Operations: 10 requests/minute
+    - Penilaian: 20 requests/minute
 
 4. **Security Headers**
-   - Custom SecurityHeadersMiddleware
-   - CSRF protection on all forms
+    - Custom SecurityHeadersMiddleware
+    - CSRF protection on all forms
 
 5. **Database Security**
-   - Parameterized queries (Eloquent ORM)
-   - No raw SQL without proper escaping
+    - Parameterized queries (Eloquent ORM)
+    - No raw SQL without proper escaping
 
 ## Best Practices for Deployment
 
 1. **Environment Variables**
-   - Never commit `.env` file
-   - Use strong, unique passwords
-   - Rotate API keys regularly
+    - Never commit `.env` file
+    - Use strong, unique passwords
+    - Rotate API keys regularly
 
 2. **HTTPS**
-   - Always use HTTPS in production
-   - Configure proper SSL certificates
+    - Always use HTTPS in production
+    - Configure proper SSL certificates
 
 3. **Database**
-   - Use strong database passwords
-   - Limit database user permissions
-   - Regular backups
+    - Use strong database passwords
+    - Limit database user permissions
+    - Regular backups
 
 4. **Updates**
-   - Keep Laravel and dependencies updated
-   - Monitor security advisories
+    - Keep Laravel and dependencies updated
+    - Monitor security advisories
 
 ## Acknowledgments
 
