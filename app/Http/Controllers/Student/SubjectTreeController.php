@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
+use App\Services\AcademicCalculationService;
 
 class SubjectTreeController extends Controller
 {
-    public function index()
+    public function index(AcademicCalculationService $calculationService)
     {
         $student = Auth::user()->student;
         if (!$student) abort(403, __('Unauthorized'));
@@ -43,10 +44,22 @@ class SubjectTreeController extends Controller
             }
         }
 
+        // Calculate progress summary
+        $cgpaData = $calculationService->calculateCGPA($student);
+        $totalCurriculumCredits = $courses->sum('credits');
+        $creditsCompleted = $cgpaData['total_credits_passed'];
+        $creditsRemaining = max(0, $totalCurriculumCredits - $creditsCompleted);
+        $percentageCompleted = $totalCurriculumCredits > 0 ? min(round(($creditsCompleted / $totalCurriculumCredits) * 100), 100) : 0;
+
         return view('student.subject-tree.index', compact(
             'coursesBySemester',
             'finishedCourseIds',
-            'courseConnections'
+            'courseConnections',
+            'cgpaData',
+            'totalCurriculumCredits',
+            'creditsCompleted',
+            'creditsRemaining',
+            'percentageCompleted'
         ));
     }
 }

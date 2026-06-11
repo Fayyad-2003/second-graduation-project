@@ -1,4 +1,12 @@
 {
+    "Subject Tree": "شجرة المواد الدراسية",
+    "View all college subjects, finished subjects are highlighted, and prerequisites are connected.": "عرض جميع المواد الدراسية بالكلية، المواد المنجزة مميزة، والمتطلبات متصلة.",
+    "Credits Completed": "الساعات المنجزة",
+    "Credits Remaining": "الساعات المتبقية",
+    "to graduate": "للتخرج",
+    "Current GPA": "المعدل الحالي",
+    "Cumulative": "تراكمي",
+    "Progress": "التقدم",
     "Pagination Navigation": "التنقل بين الصفحات",
     "Showing": "عرض",
     "to": "إلى",

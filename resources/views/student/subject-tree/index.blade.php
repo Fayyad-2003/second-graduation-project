@@ -9,6 +9,35 @@
                 <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                     <h1 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('Subject Tree') }}</h1>
                     <p class="text-gray-600 dark:text-gray-300 mt-1 text-sm">{{ __('View all college subjects, finished subjects are highlighted, and prerequisites are connected.') }}</p>
+
+                    <!-- Progress Summary -->
+                    <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="p-4 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl border border-green-200 dark:border-green-700">
+                            <div class="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase tracking-wider mb-1">{{ __('Credits Completed') }}</div>
+                            <div class="text-3xl font-black text-green-800 dark:text-green-100">{{ $creditsCompleted }}</div>
+                            <div class="text-xs text-green-600/80 dark:text-green-400/80 mt-1">{{ __('of') }} {{ $totalCurriculumCredits }}</div>
+                        </div>
+
+                        <div class="p-4 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl border border-blue-200 dark:border-blue-700">
+                            <div class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">{{ __('Credits Remaining') }}</div>
+                            <div class="text-3xl font-black text-blue-800 dark:text-blue-100">{{ $creditsRemaining }}</div>
+                            <div class="text-xs text-blue-600/80 dark:text-blue-400/80 mt-1">{{ __('to graduate') }}</div>
+                        </div>
+
+                        <div class="p-4 bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 rounded-2xl border border-amber-200 dark:border-amber-700">
+                            <div class="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1">{{ __('Current GPA') }}</div>
+                            <div class="text-3xl font-black text-amber-800 dark:text-amber-100">{{ $cgpaData['gpa'] }}</div>
+                            <div class="text-xs text-amber-600/80 dark:text-amber-400/80 mt-1">{{ __('Cumulative') }}</div>
+                        </div>
+
+                        <div class="p-4 bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl border border-purple-200 dark:border-purple-700">
+                            <div class="text-[10px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-1">{{ __('Progress') }}</div>
+                            <div class="text-3xl font-black text-purple-800 dark:text-purple-100">{{ $percentageCompleted }}%</div>
+                            <div class="mt-2 w-full bg-purple-200 dark:bg-purple-800 rounded-full h-2">
+                                <div class="bg-purple-600 dark:bg-purple-400 h-2 rounded-full transition-all duration-500" style="width: {{ $percentageCompleted }}%"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="p-6 space-y-8 overflow-x-auto relative">
@@ -84,12 +113,16 @@
         .connector-line {
             stroke: #6b7280;
             stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
             fill: none;
         }
 
         .connector-line-finished {
             stroke: #22c55e;
             stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
             fill: none;
         }
     </style>
@@ -125,14 +158,15 @@
                     const x2 = courseRect.left + courseRect.width / 2 - containerRect.left + container.scrollLeft;
                     const y2 = courseRect.top - containerRect.top + container.scrollTop;
 
-                    // Create straight line
-                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    line.setAttribute('x1', x1);
-                    line.setAttribute('y1', y1);
-                    line.setAttribute('x2', x2);
-                    line.setAttribute('y2', y2);
-                    line.setAttribute('class', conn.prereqFinished ? 'connector-line-finished' : 'connector-line');
-                    svg.appendChild(line);
+                    // Calculate midpoint for the corner
+                    const midY = (y1 + y2) / 2;
+
+                    // Create path with rounded corner
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    const d = `M ${x1} ${y1} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2}`;
+                    path.setAttribute('d', d);
+                    path.setAttribute('class', conn.prereqFinished ? 'connector-line-finished' : 'connector-line');
+                    svg.appendChild(path);
                 });
             }
 
