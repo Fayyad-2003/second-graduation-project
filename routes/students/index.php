@@ -22,3 +22,4 @@ require __DIR__ . '/report.php';
 require __DIR__ . '/semester-calendar.php';
 require __DIR__ . '/recommendations.php';
 require __DIR__ . '/academic-situation.php';
+require __DIR__ . '/subject-tree.php';
