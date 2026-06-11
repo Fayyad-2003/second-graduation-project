@@ -105,7 +105,7 @@ class AcademicCalculationService
      */
     public function getMaxCredits(float $gpa): int
     {
-        $rules = config('siakad.max_credits.gpa_rules', [
+        $rules = config('system.max_credits.gpa_rules', [
             ['min' => 3.00, 'max' => 4.00, 'credits' => 24],
             ['min' => 2.50, 'max' => 2.99, 'credits' => 21],
             ['min' => 2.00, 'max' => 2.49, 'credits' => 18],
@@ -237,8 +237,8 @@ class AcademicCalculationService
      */
     public function getGpaWarningLevel(float $gpa): ?string
     {
-        $danger  = config('siakad.gpa_warning.danger', 2.00);
-        $caution = config('siakad.gpa_warning.caution', 2.50);
+        $danger  = config('system.gpa_warning.danger', 2.00);
+        $caution = config('system.gpa_warning.caution', 2.50);
 
         if ($gpa > 0 && $gpa < $danger) {
             return 'danger';

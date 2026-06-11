@@ -42,42 +42,46 @@
 ## Features
 
 ### Student
-| Feature | Description |
-|---------|-------------|
-| **Study Plan** | Course registration with automatic credit validation |
-| **Transcript** | View complete academic transcript with GPA/CGPA |
-| **Grade Report** | Semester grade report |
-| **Attendance** | Attendance history per course |
-| **Schedule** | Weekly class schedule |
-| **E-Learning (LMS)** | Access course materials and assignments |
-| **AI Academic Advisor** | Academic consultation with Gemini AI |
-| **Thesis** | Track thesis progress and supervision |
-| **Internship** | Internship management and logbook |
-| **Export PDF** | Download transcript and grade reports in PDF format |
+
+| Feature                 | Description                                          |
+| ----------------------- | ---------------------------------------------------- |
+| **Study Plan**          | Course registration with automatic credit validation |
+| **Transcript**          | View complete academic transcript with GPA/CGPA      |
+| **Grade Report**        | Semester grade report                                |
+| **Attendance**          | Attendance history per course                        |
+| **Schedule**            | Weekly class schedule                                |
+| **E-Learning (LMS)**    | Access course materials and assignments              |
+| **AI Academic Advisor** | Academic consultation with Gemini AI                 |
+| **Thesis**              | Track thesis progress and supervision                |
+| **Internship**          | Internship management and logbook                    |
+| **Export PDF**          | Download transcript and grade reports in PDF format  |
 
 ### Lecturer
-| Feature | Description |
-|---------|-------------|
-| **Grade Input** | Input student grades per class |
-| **Attendance** | Manage class meetings and student attendance |
-| **Academic Advisory** | Approve advisee study plans |
-| **Thesis Supervision** | Review thesis progress and update status |
-| **Internship Supervision** | Review internship logbooks |
-| **LMS Management** | Upload materials and manage assignments |
-| **Presence** | Lecturer attendance recording |
+
+| Feature                    | Description                                  |
+| -------------------------- | -------------------------------------------- |
+| **Grade Input**            | Input student grades per class               |
+| **Attendance**             | Manage class meetings and student attendance |
+| **Academic Advisory**      | Approve advisee study plans                  |
+| **Thesis Supervision**     | Review thesis progress and update status     |
+| **Internship Supervision** | Review internship logbooks                   |
+| **LMS Management**         | Upload materials and manage assignments      |
+| **Presence**               | Lecturer attendance recording                |
 
 ### Admin
-| Feature | Description |
-|---------|-------------|
-| **Dashboard** | Statistics and academic overview |
-| **Master Data** | Manage Faculties, Study Programs, Courses, Classes |
-| **User Management** | Manage Lecturer and Student accounts |
+
+| Feature                 | Description                                        |
+| ----------------------- | -------------------------------------------------- |
+| **Dashboard**           | Statistics and academic overview                   |
+| **Master Data**         | Manage Faculties, Study Programs, Courses, Classes |
+| **User Management**     | Manage Lecturer and Student accounts               |
 | **Study Plan Approval** | Monitoring and approval of study plans (view only) |
-| **Thesis & Internship** | Assign supervisor and update status |
-| **Room Management** | Classroom management |
-| **Lecturer Attendance** | Lecturer attendance monitoring |
+| **Thesis & Internship** | Assign supervisor and update status                |
+| **Room Management**     | Classroom management                               |
+| **Lecturer Attendance** | Lecturer attendance monitoring                     |
 
 ### Security Features
+
 - ✅ Role-based access control (RBAC)
 - ✅ Faculty-scoped admin access
 - ✅ Rate limiting on sensitive endpoints
@@ -90,30 +94,34 @@
 ## Tech Stack
 
 ### Backend
-| Technology | Version | Description |
-|------------|---------|-------------|
-| **PHP** | 8.2 | Server-side language |
-| **Laravel** | 12 | PHP Framework |
-| **Laravel Breeze** | 2 | Authentication scaffolding |
-| **Spatie Permission** | 6 | Role & permission management |
+
+| Technology            | Version | Description                  |
+| --------------------- | ------- | ---------------------------- |
+| **PHP**               | 8.2     | Server-side language         |
+| **Laravel**           | 12      | PHP Framework                |
+| **Laravel Breeze**    | 2       | Authentication scaffolding   |
+| **Spatie Permission** | 6       | Role & permission management |
 
 ### Frontend
-| Technology | Version | Description |
-|------------|---------|-------------|
-| **TailwindCSS** | 3 | Utility-first CSS framework |
-| **Alpine.js** | 3 | Lightweight JavaScript framework |
-| **Vite** | 7 | Frontend build tool |
+
+| Technology      | Version | Description                      |
+| --------------- | ------- | -------------------------------- |
+| **TailwindCSS** | 3       | Utility-first CSS framework      |
+| **Alpine.js**   | 3       | Lightweight JavaScript framework |
+| **Vite**        | 7       | Frontend build tool              |
 
 ### Database
-| Technology | Description |
-|------------|-------------|
-| **MySQL** | Recommended for production |
+
+| Technology     | Description                     |
+| -------------- | ------------------------------- |
+| **MySQL**      | Recommended for production      |
 | **PostgreSQL** | Alternative production database |
-| **SQLite** | Development & testing |
+| **SQLite**     | Development & testing           |
 
 ### AI Integration
-| Technology | Description |
-|------------|-------------|
+
+| Technology            | Description         |
+| --------------------- | ------------------- |
 | **Google Gemini API** | AI Academic Advisor |
 
 ---
@@ -131,7 +139,7 @@
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/ryandaaa/siakad.git
+git clone https://github.com/ryandaaa/system.git
 cd siakad
 
 # 2. Install PHP dependencies
@@ -163,6 +171,7 @@ composer setup
 ```
 
 This will automatically:
+
 - Install Composer dependencies
 - Copy `.env.example` to `.env`
 - Generate application key
@@ -177,6 +186,7 @@ composer dev
 ```
 
 This starts all development services concurrently:
+
 - Laravel development server (`php artisan serve`)
 - Queue worker (`php artisan queue:listen`)
 - Log viewer (`php artisan pail`)
@@ -189,6 +199,7 @@ This starts all development services concurrently:
 ### Environment Variables
 
 #### Database (MySQL - Production)
+
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -199,17 +210,20 @@ DB_PASSWORD=your_password
 ```
 
 #### Database (SQLite - Development)
+
 ```env
 DB_CONNECTION=sqlite
 ```
 
 #### AI Integration (Gemini)
+
 ```env
 # Get your API key at: https://aistudio.google.com/
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
 #### Cache & Session (Production)
+
 ```env
 SESSION_DRIVER=database
 CACHE_STORE=database
@@ -223,7 +237,7 @@ REDIS_PORT=6379
 
 ### Academic Configuration
 
-Edit `config/siakad.php` to customize:
+Edit `config/system.php` to customize:
 
 ```php
 return [
@@ -249,7 +263,7 @@ return [
 
     // Default class capacity
     'default_class_capacity' => 40,
-    
+
     // Pagination
     'pagination' => 15,
 ];
@@ -261,12 +275,12 @@ return [
 
 After running seeders, you can login with:
 
-| Role | Email | Password | Description |
-|------|-------|----------|-------------|
-| **Superadmin** | `superadmin@siakad.test` | `password` | Full system access |
-| **Faculty Admin** | `admin.ftik@siakad.test` | `password` | Faculty-scoped admin |
-| **Lecturer** | `dosen@siakad.test` | `password` | Dr. Ahmad Fauzi, M.Kom. |
-| **Student** | `mahasiswa@siakad.test` | `password` | Budi Santoso (Semester 5, ID: 2022101001) |
+| Role              | Email                    | Password   | Description                               |
+| ----------------- | ------------------------ | ---------- | ----------------------------------------- |
+| **Superadmin**    | `superadmin@system.test` | `password` | Full system access                        |
+| **Faculty Admin** | `admin.ftik@system.test` | `password` | Faculty-scoped admin                      |
+| **Lecturer**      | `dosen@system.test`      | `password` | Dr. Ahmad Fauzi, M.Kom.                   |
+| **Student**       | `mahasiswa@system.test`  | `password` | Budi Santoso (Semester 5, ID: 2022101001) |
 
 > **Important**: Change these passwords immediately in production!
 
@@ -290,7 +304,7 @@ siakad/
 │   ├── Models/                # Eloquent models
 │   └── Services/              # Business logic services
 ├── config/
-│   └── siakad.php             # Academic configuration
+│   └── system.php             # Academic configuration
 ├── database/
 │   ├── factories/             # Model factories
 │   ├── migrations/            # Database migrations
@@ -356,6 +370,7 @@ siakad/
 ```
 
 ### Additional Tables
+
 - `grades` - Student grades
 - `course_schedules` - Class schedules
 - `meetings` - Class meetings
@@ -411,16 +426,19 @@ php artisan test --coverage
 ## Security
 
 ### Rate Limiting
+
 - AI Chat: 10 requests/minute per user
 - Study Plan Operations: 10 requests/minute per user
 - Grading: 20 requests/minute per user
 
 ### Middleware
+
 - `role` - Role-based access control
 - `faculty.scope` - Faculty-scoped data access
 - `SecurityHeadersMiddleware` - Security headers
 
 ### Validation
+
 - All inputs are validated using Laravel Form Requests
 - Custom exceptions for business logic errors
 - CSRF protection on all forms
@@ -430,12 +448,14 @@ php artisan test --coverage
 ## Performance
 
 ### Optimizations
+
 - Database indexes on frequently queried columns
 - Query optimization (N+1 prevention)
 - Master data caching (1 hour TTL)
 - Eager loading relationships
 
 ### Caching Strategy
+
 ```php
 // Master data cached:
 - Active Academic Year
@@ -458,6 +478,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 5. Open a Pull Request
 
 ### Development Guidelines
+
 - Follow PSR-12 coding standards
 - Write tests for new features
 - Update documentation as needed

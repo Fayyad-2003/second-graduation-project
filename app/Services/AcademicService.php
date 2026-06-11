@@ -13,57 +13,57 @@ class AcademicService
 {
     // Cache TTL in seconds (1 hour)
     protected const CACHE_TTL = 3600;
-    
+
     // --- Faculty ---
-    public function getAllFaculties() 
-    { 
+    public function getAllFaculties()
+    {
         return Cache::remember('master.faculties', self::CACHE_TTL, function () {
             return Faculty::with(['studyPrograms', 'studyPrograms.students'])->get();
         });
     }
-    
-    public function createFaculty($data) 
-    { 
+
+    public function createFaculty($data)
+    {
         Cache::forget('master.faculties');
-        return Faculty::create($data); 
+        return Faculty::create($data);
     }
-    
+
     // --- StudyProgram ---
-    public function getAllStudyPrograms() 
-    { 
+    public function getAllStudyPrograms()
+    {
         return Cache::remember('master.study_programs', self::CACHE_TTL, function () {
             return StudyProgram::with('faculties')->get();
         });
     }
-    
-    public function createStudyProgram($data) 
-    { 
+
+    public function createStudyProgram($data)
+    {
         Cache::forget('master.study_programs');
-        return StudyProgram::create($data); 
+        return StudyProgram::create($data);
     }
 
     // --- Course ---
-    public function getAllCourses() 
-    { 
+    public function getAllCourses()
+    {
         return Cache::remember('master.courses', self::CACHE_TTL, function () {
             return Course::all();
         });
     }
-    
-    public function createCourse($data) 
-    { 
+
+    public function createCourse($data)
+    {
         Cache::forget('master.courses');
-        return Course::create($data); 
+        return Course::create($data);
     }
 
     // --- Academic Year ---
-    public function getActiveAcademicYear() 
-    { 
+    public function getActiveAcademicYear()
+    {
         return Cache::remember('master.active_academic_year', self::CACHE_TTL, function () {
             return AcademicYear::where('is_active', true)->first();
         });
     }
-    
+
     public function activateAcademicYear($id)
     {
         AcademicYear::query()->update(['is_active' => false]); // Deactivate all
@@ -73,18 +73,19 @@ class AcademicService
     }
 
     // --- Class ---
-    public function createClass($data) {
-        $data['capacity'] = $data['capacity'] ?? config('siakad.default_class_capacity');
-        
+    public function createClass($data)
+    {
+        $data['capacity'] = $data['capacity'] ?? config('system.default_class_capacity');
+
         // Auto-assign active academic year if not specified
         if (!isset($data['academic_year_id'])) {
             $activeAcademicYear = AcademicYear::where('is_active', true)->first();
             $data['academic_year_id'] = $activeAcademicYear?->id;
         }
-        
+
         return AcademicClass::create($data);
     }
-    
+
     /**
      * Clear all master data caches
      */

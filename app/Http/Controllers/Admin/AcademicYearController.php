@@ -31,7 +31,7 @@ class AcademicYearController extends Controller
     {
         $academicYears = AcademicYear::orderBy('year', 'desc')
             ->orderBy('semester', 'desc')
-            ->paginate(config('siakad.pagination', 15));
+            ->paginate(config('system.pagination', 15));
 
         return view('admin.academic-year.index', compact('academicYears'));
     }

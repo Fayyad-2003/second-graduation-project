@@ -233,7 +233,7 @@
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Email Address') }}</label>
-                                <input type="email" name="email" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="user@siakad.com" required>
+                                <input type="email" name="email" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="user@system.com" required>
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Password') }}</label>

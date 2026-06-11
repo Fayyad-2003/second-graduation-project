@@ -59,7 +59,7 @@ class ClassController extends Controller
             $query->orderBy('class_name', 'asc');
         }
 
-        $classes = $query->paginate(config('siakad.pagination', 15))->withQueryString();
+        $classes = $query->paginate(config('system.pagination', 15))->withQueryString();
         $courses = $this->academicService->getAllCourses();
 
         // Scope lecturers list for dropdown

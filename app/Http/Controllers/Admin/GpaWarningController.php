@@ -48,7 +48,7 @@ class GpaWarningController extends Controller
             $query->where('batch', $batch);
         }
 
-        $cautionThreshold = config('siakad.gpa_warning.caution', 2.50);
+        $cautionThreshold = config('system.gpa_warning.caution', 2.50);
 
         // Get all active students with their CGPA, filter at-risk
         $students = $query->get();

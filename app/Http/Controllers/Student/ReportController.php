@@ -13,7 +13,7 @@ class ReportController extends Controller
     {
         $reports = Report::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->paginate(config('siakad.pagination', 15));
+            ->paginate(config('system.pagination', 15));
 
         return view('student.report.index', compact('reports'));
     }

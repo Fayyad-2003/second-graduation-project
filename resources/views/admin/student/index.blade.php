@@ -357,7 +357,7 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Email') }}</label>
-                                    <input type="email" name="email" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="student@siakad.com" required>
+                                    <input type="email" name="email" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="student@system.com" required>
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Password') }}</label>

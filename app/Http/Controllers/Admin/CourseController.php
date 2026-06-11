@@ -57,7 +57,7 @@ class CourseController extends Controller
             $query->orderBy('course_code', 'asc');
         }
 
-        $courses = $query->paginate(config('siakad.pagination', 15))->withQueryString();
+        $courses = $query->paginate(config('system.pagination', 15))->withQueryString();
         $isSuperAdmin = auth()->user()->isSuperAdmin();
         $faculties = $isSuperAdmin ? Faculty::all() : collect();
 

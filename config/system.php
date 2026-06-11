@@ -58,7 +58,7 @@ return [
     |
     | Letter grade conversion based on numeric grade range.
     | You can call from service:
-    | config('siakad.grade_conversion')
+    | config('system.grade_conversion')
     |
     */
 

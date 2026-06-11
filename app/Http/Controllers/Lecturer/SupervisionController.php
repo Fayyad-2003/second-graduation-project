@@ -117,7 +117,7 @@ class SupervisionController extends Controller
             $query->orderBy('study_plans.updated_at', 'desc');
         }
 
-        $studyPlanList = $query->paginate(config('siakad.pagination', 15))->withQueryString();
+        $studyPlanList = $query->paginate(config('system.pagination', 15))->withQueryString();
 
         // Optimized: Single query for status counts using groupBy
         $statusCountsRaw = StudyPlan::whereIn('student_id', $studentIds)

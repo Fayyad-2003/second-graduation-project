@@ -45,7 +45,7 @@ class StudyPlanApprovalController extends Controller
             $studyPlanList = $studyPlanList->orderBy('updated_at', 'desc');
         }
 
-        $studyPlanList = $studyPlanList->paginate(config('siakad.pagination', 15))->withQueryString();
+        $studyPlanList = $studyPlanList->paginate(config('system.pagination', 15))->withQueryString();
 
         // Status counts - also scoped for faculty admin
         $statusCountsQuery = StudyPlan::query();

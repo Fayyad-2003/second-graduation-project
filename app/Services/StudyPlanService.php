@@ -52,7 +52,7 @@ class StudyPlanService
 
         if ($semestersWithGrades->isEmpty()) {
             // New student (semester 1) - use default max credits
-            return config('siakad.max_credits.default', 24);
+            return config('system.max_credits.default', 24);
         }
 
         // Get the last semester's GPA

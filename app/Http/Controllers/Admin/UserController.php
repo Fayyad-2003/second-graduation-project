@@ -33,7 +33,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->authorizeSuperAdmin();
-        
+
         $query = User::with(['faculty', 'student.studyProgram', 'lecturer.studyProgram']);
 
         // Search
@@ -59,7 +59,7 @@ class UserController extends Controller
             });
         }
 
-        $users = $query->orderBy('name')->paginate(config('siakad.pagination', 15))->withQueryString();
+        $users = $query->orderBy('name')->paginate(config('system.pagination', 15))->withQueryString();
         $faculties = Faculty::orderBy('name')->get();
 
         return view('admin.users.index', compact('users', 'faculties'));
@@ -68,7 +68,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->authorizeSuperAdmin();
-        
+
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
@@ -90,11 +90,11 @@ class UserController extends Controller
 
         try {
             $user = $this->userService->createUser($validated);
-            
+
             if ($request->expectsJson()) {
                 return response()->json(['message' => __('User created'), 'data' => $user], 201);
             }
-            
+
             return back()->with('success', __('User successfully added.'));
         } catch (\Exception $e) {
             if ($request->expectsJson()) {
@@ -107,7 +107,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $this->authorizeSuperAdmin();
-        
+
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users,email,' . $user->id,
@@ -136,7 +136,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->authorizeSuperAdmin();
-        
+
         // Prevent self-deletion
         if ($user->id === auth()->id()) {
             return back()->withErrors(['error' => __('Cannot delete your own account.')]);
@@ -163,4 +163,3 @@ class UserController extends Controller
         return back()->with('success', __('User successfully deleted.'));
     }
 }
-

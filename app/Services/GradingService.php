@@ -27,14 +27,14 @@ class GradingService
 
     private function getLetterGrade($numericGrade)
     {
-        $rules = config('siakad.grade_conversion');
-        
+        $rules = config('system.grade_conversion');
+
         foreach ($rules as $rule) {
             if ($numericGrade >= $rule['min'] && $numericGrade <= $rule['max']) {
                 return $rule;
             }
         }
-        
+
         // Fallback default E
         return ['letter' => 'E', 'weight' => 0];
     }
@@ -45,7 +45,7 @@ class GradingService
             $updated = 0;
             foreach ($gradeData as $studentId => $numericGrade) {
                 if (is_null($numericGrade)) continue;
-                
+
                 $this->inputGrade($studentId, $classId, $numericGrade);
                 $updated++;
             }

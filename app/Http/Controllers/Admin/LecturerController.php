@@ -54,7 +54,7 @@ class LecturerController extends Controller
             $query->orderBy('lecturer_number', $sortDirection);
         }
 
-        $lecturers = $query->paginate(config('siakad.pagination', 15))->withQueryString();
+        $lecturers = $query->paginate(config('system.pagination', 15))->withQueryString();
 
         // StudyProgram list scoped by faculty
         $studyProgramQuery = StudyProgram::with('faculty');

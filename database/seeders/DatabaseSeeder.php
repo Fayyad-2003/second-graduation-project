@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
         // 2. Superadmin
         User::create([
             'name' => 'مدير النظام',
-            'email' => 'admin@siakad.test',
+            'email' => 'admin@system.test',
             'password' => Hash::make('password'),
             'role' => 'superadmin',
         ]);

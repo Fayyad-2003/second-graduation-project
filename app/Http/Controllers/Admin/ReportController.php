@@ -25,7 +25,7 @@ class ReportController extends Controller
         }
 
         $reports = $query->orderBy('created_at', 'desc')
-            ->paginate(config('siakad.pagination', 15))
+            ->paginate(config('system.pagination', 15))
             ->withQueryString();
 
         return view('admin.report.index', compact('reports'));

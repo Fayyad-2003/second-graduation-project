@@ -76,7 +76,7 @@ class StudentController extends Controller
             $query->orderBy($sortColumn, $sortDirection);
         }
 
-        $students = $query->paginate(config('siakad.pagination', 15))->withQueryString();
+        $students = $query->paginate(config('system.pagination', 15))->withQueryString();
 
         $facultyList = Faculty::orderBy('name')->get();
         $studyProgramList = StudyProgram::with('faculty')->orderBy('name')->get();

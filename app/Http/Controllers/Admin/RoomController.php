@@ -18,24 +18,24 @@ class RoomController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('room_name', 'like', "%{$search}%")
-                  ->orWhere('room_code', 'like', "%{$search}%")
-                  ->orWhere('building', 'like', "%{$search}%");
+                    ->orWhere('room_code', 'like', "%{$search}%")
+                    ->orWhere('building', 'like', "%{$search}%");
             });
         }
 
         // Faculty scoping for admin_faculty
         if ($request->get('faculty_scoped') && $request->get('faculty_scope')) {
             $facultyId = $request->get('faculty_scope');
-            $query->where(function($q) use ($facultyId) {
+            $query->where(function ($q) use ($facultyId) {
                 $q->where('faculty_id', $facultyId)
-                  ->orWhereNull('faculty_id'); // Also show unassigned ones
+                    ->orWhereNull('faculty_id'); // Also show unassigned ones
             });
         }
 
         // Sorting
         $sortColumn = $request->get('sort', 'room_code');
         $sortDirection = $request->get('order', 'asc');
-        
+
         // Map Indonesian column names to English
         $columnMap = [
             'room_code' => 'room_code',
@@ -44,7 +44,7 @@ class RoomController extends Controller
             'building' => 'building',
             'floor' => 'floor',
         ];
-        
+
         $dbColumn = $columnMap[$sortColumn] ?? $sortColumn;
         $allowedSorts = ['room_code', 'room_name', 'capacity', 'building', 'floor', 'is_active'];
 
@@ -53,16 +53,16 @@ class RoomController extends Controller
         } else {
             $query->orderBy('room_code', 'asc');
         }
-         
-        $roomList = $query->paginate(config('siakad.pagination', 15))->withQueryString();
-         
+
+        $roomList = $query->paginate(config('system.pagination', 15))->withQueryString();
+
         // Stats - also scoped
         $statsQuery = Room::query();
         if ($request->get('faculty_scoped') && $request->get('faculty_scope')) {
             $facultyId = $request->get('faculty_scope');
-            $statsQuery->where(function($q) use ($facultyId) {
+            $statsQuery->where(function ($q) use ($facultyId) {
                 $q->where('faculty_id', $facultyId)
-                  ->orWhereNull('faculty_id');
+                    ->orWhereNull('faculty_id');
             });
         }
         $stats = [
@@ -71,10 +71,10 @@ class RoomController extends Controller
             'capacity' => (clone $statsQuery)->sum('capacity'),
             'building_count' => (clone $statsQuery)->distinct('building')->count('building'),
         ];
-         
+
         // Faculty list for dropdown (only for superadmin)
         $facultyList = auth()->user()->isSuperAdmin() ? Faculty::all() : collect();
-         
+
         return view('admin.room.index', compact('roomList', 'stats', 'facultyList'));
     }
 
@@ -92,7 +92,7 @@ class RoomController extends Controller
         ]);
 
         $validated['is_active'] = $request->has('is_active');
-        
+
         // Auto-assign faculties for admin_faculty
         if (empty($validated['faculty_id']) && $request->get('faculty_scoped')) {
             $validated['faculty_id'] = $request->get('faculty_scope');
@@ -129,9 +129,8 @@ class RoomController extends Controller
         if ($rooms->scheduleKuliah()->exists()) {
             return redirect()->back()->withErrors(['error' => __('Cannot delete rooms that are used in schedules.')]);
         }
-        
+
         $rooms->delete();
         return redirect()->back()->with('success', __('Room successfully deleted'));
     }
 }
-

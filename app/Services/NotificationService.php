@@ -150,11 +150,11 @@ class NotificationService
         $message = $level === 'danger'
             ? __('Your cumulative GPA is :gpa, which is below :threshold. You are at risk of academic probation. Please consult your academic advisor immediately.', [
                 'gpa' => number_format($gpa, 2),
-                'threshold' => number_format(config('siakad.gpa_warning.danger', 2.00), 2),
+                'threshold' => number_format(config('system.gpa_warning.danger', 2.00), 2),
             ])
             : __('Your cumulative GPA is :gpa, which is below :threshold. Please take steps to improve your academic performance.', [
                 'gpa' => number_format($gpa, 2),
-                'threshold' => number_format(config('siakad.gpa_warning.caution', 2.50), 2),
+                'threshold' => number_format(config('system.gpa_warning.caution', 2.50), 2),
             ]);
 
         $this->sendToUsers(

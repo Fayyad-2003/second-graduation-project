@@ -68,9 +68,9 @@
             </h4>
             <p class="text-sm mt-1 leading-relaxed {{ $gpaWarningLevel === 'danger' ? 'text-red-700 dark:text-red-400/90' : 'text-amber-700 dark:text-amber-400/90' }}">
                 @if($gpaWarningLevel === 'danger')
-                {{ __('Your cumulative GPA is :gpa, which is below :threshold. You are at risk of academic probation. Please consult your academic advisor immediately.', ['gpa' => number_format($gpaData['gpa'], 2), 'threshold' => number_format(config('siakad.gpa_warning.danger'), 2)]) }}
+                {{ __('Your cumulative GPA is :gpa, which is below :threshold. You are at risk of academic probation. Please consult your academic advisor immediately.', ['gpa' => number_format($gpaData['gpa'], 2), 'threshold' => number_format(config('system.gpa_warning.danger'), 2)]) }}
                 @else
-                {{ __('Your cumulative GPA is :gpa, which is below :threshold. Please take steps to improve your academic performance.', ['gpa' => number_format($gpaData['gpa'], 2), 'threshold' => number_format(config('siakad.gpa_warning.caution'), 2)]) }}
+                {{ __('Your cumulative GPA is :gpa, which is below :threshold. Please take steps to improve your academic performance.', ['gpa' => number_format($gpaData['gpa'], 2), 'threshold' => number_format(config('system.gpa_warning.caution'), 2)]) }}
                 @endif
             </p>
             <div class="flex items-center gap-4 mt-4">
