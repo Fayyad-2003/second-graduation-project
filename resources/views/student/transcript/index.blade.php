@@ -218,10 +218,10 @@
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const siakadPrimary = '#234C6A';
-        const siakadSecondary = '#456882';
-        const siakadDark = '#1B3C53';
-        const siakadLight = '#E3E3E3';
+        const systemPrimary = '#234C6A';
+        const systemSecondary = '#456882';
+        const systemDark = '#1B3C53';
+        const systemLight = '#E3E3E3';
 
         // GPA Chart
         const gpaDataHistory = @json($gpaHistory - > filter(fn($s) => $s['gpa'] > 0) - > values());
@@ -233,12 +233,12 @@
                 datasets: [{
                     label: 'GPA',
                     data: gpaDataHistory.map(d => d.gpa),
-                    borderColor: siakadPrimary,
+                    borderColor: systemPrimary,
                     backgroundColor: 'rgba(35, 76, 106, 0.1)',
                     fill: true,
                     tension: 0.4,
                     pointRadius: 5,
-                    pointBackgroundColor: siakadPrimary,
+                    pointBackgroundColor: systemPrimary,
                 }]
             },
             options: {
@@ -257,7 +257,7 @@
                             stepSize: 0.5
                         },
                         grid: {
-                            color: siakadLight
+                            color: systemLight
                         }
                     },
                     x: {
@@ -278,7 +278,7 @@
                 labels: Object.keys(gradeData),
                 datasets: [{
                     data: Object.values(gradeData),
-                    backgroundColor: [siakadPrimary, siakadSecondary, siakadDark, '#86c5e0', '#b9dded', '#dceef6', siakadLight],
+                    backgroundColor: [systemPrimary, systemSecondary, systemDark, '#86c5e0', '#b9dded', '#dceef6', systemLight],
                     borderWidth: 0,
                 }]
             },

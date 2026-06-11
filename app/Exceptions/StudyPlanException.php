@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Http\Response;
 
-class StudyPlanException extends SiakadException
+class StudyPlanException extends SystemException
 {
     protected string $errorCode = 'STUDY_PLAN_ERROR';
 

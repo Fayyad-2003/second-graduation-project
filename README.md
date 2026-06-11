@@ -140,7 +140,7 @@
 ```bash
 # 1. Clone the repository
 git clone https://github.com/ryandaaa/system.git
-cd siakad
+cd system
 
 # 2. Install PHP dependencies
 composer install
@@ -204,7 +204,7 @@ This starts all development services concurrently:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=siakad
+DB_DATABASE=system
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
@@ -289,7 +289,7 @@ After running seeders, you can login with:
 ## Project Structure
 
 ```
-siakad/
+system/
 ├── app/
 │   ├── Console/Commands/      # Artisan commands
 │   ├── DTOs/                  # Data Transfer Objects

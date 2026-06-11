@@ -81,7 +81,7 @@
 
 ### Primary Actions
 
-Use `siakad-primary` (#6366f1) for:
+Use `system-primary` (#6366f1) for:
 
 - Primary buttons
 - Active states

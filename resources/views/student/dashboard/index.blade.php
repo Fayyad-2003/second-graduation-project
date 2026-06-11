@@ -315,8 +315,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Modern SIAKAD Colors
-        const siakadPrimary = '#6366f1';
-        const siakadSecondary = '#8b5cf6';
+        const systemPrimary = '#6366f1';
+        const systemSecondary = '#8b5cf6';
         const purpleGradient = ['#6366f1', '#8b5cf6', '#a855f7', '#c084fc'];
 
         // Detect dark mode
@@ -403,14 +403,14 @@
                 datasets: [{
                     label: 'GPA',
                     data: gpaDataHistory.map(d => d.gpa),
-                    borderColor: isDark ? '#a855f7' : siakadPrimary,
+                    borderColor: isDark ? '#a855f7' : systemPrimary,
                     backgroundColor: gradient,
                     fill: true,
                     tension: 0.4,
                     pointRadius: 6,
                     pointHoverRadius: 8,
                     pointBackgroundColor: '#ffffff',
-                    pointBorderColor: isDark ? '#a855f7' : siakadPrimary,
+                    pointBorderColor: isDark ? '#a855f7' : systemPrimary,
                     pointBorderWidth: 3,
                     borderWidth: 3,
                 }]

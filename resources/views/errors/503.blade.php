@@ -4,7 +4,7 @@
             <h1 class="text-9xl font-bold text-yellow-500">503</h1>
             <h2 class="text-2xl font-semibold text-white mt-4">{{ __('Under Maintenance') }}</h2>
             <p class="text-primary-300 mt-2 max-w-md">
-                {{ __('Siakad is undergoing scheduled maintenance. Please check back soon.') }}
+                {{ __('System is undergoing scheduled maintenance. Please check back soon.') }}
             </p>
             <div class="mt-6 flex items-center justify-center gap-2 text-primary-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">

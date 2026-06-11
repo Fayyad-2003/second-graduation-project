@@ -127,7 +127,7 @@
                             'ongoing' => 'emerald',
                             'completed' => 'amber',
                             'pending' => 'blue',
-                            default => 'siakad'
+                            default => 'system'
                             };
                             @endphp
                             <span class="inline-flex px-2.5 py-1 text-[10px] font-black bg-{{ $statusColor }}-50 dark:bg-{{ $statusColor }}-950/30 text-{{ $statusColor }}-600 dark:text-{{ $statusColor }}-400 rounded-lg border border-{{ $statusColor }}-100 dark:border-{{ $statusColor }}-900/50 uppercase tracking-widest shadow-sm">{{ __($internship->status_label) }}</span>

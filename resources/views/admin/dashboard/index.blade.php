@@ -218,9 +218,9 @@
     @if(count($gradeDistribution) > 0)
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const siakadPrimary = '#234C6A';
-        const siakadSecondary = '#456882';
-        const siakadDark = '#1B3C53';
+        const systemPrimary = '#234C6A';
+        const systemSecondary = '#456882';
+        const systemDark = '#1B3C53';
 
         // Grade Chart
         const gradeData = @json($gradeDistribution);
@@ -232,9 +232,9 @@
                 datasets: [{
                     data: Object.values(gradeData),
                     backgroundColor: [
-                        siakadPrimary,
-                        siakadSecondary,
-                        siakadDark,
+                        systemPrimary,
+                        systemSecondary,
+                        systemDark,
                         '#86c5e0',
                         '#b9dded',
                         '#dceef6',

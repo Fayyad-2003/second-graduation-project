@@ -14,7 +14,7 @@
         ['label' => __('Pending'), 'count' => $applications->where('status', 'pending')->count(), 'color' => 'amber', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
         ['label' => __('Processing'), 'count' => $applications->where('status', 'processing')->count(), 'color' => 'blue', 'icon' => 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15'],
         ['label' => __('Completed'), 'count' => $applications->where('status', 'completed')->count(), 'color' => 'emerald', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
-        ['label' => __('Total'), 'count' => $applications->count(), 'color' => 'siakad', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z']
+        ['label' => __('Total'), 'count' => $applications->count(), 'color' => 'system', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z']
         ];
         @endphp
         @foreach($stats as $stat)

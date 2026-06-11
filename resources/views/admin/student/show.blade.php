@@ -124,8 +124,8 @@
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const siakadPrimary = '#234C6A';
-        const siakadLight = '#E3E3E3';
+        const systemPrimary = '#234C6A';
+        const systemLight = '#E3E3E3';
 
         const gpaDataHistory = @json($gpaHistory);
         const ctx = document.getElementById('semesterGpaChart').getContext('2d');
@@ -136,12 +136,12 @@
                 datasets: [{
                     label: 'GPA',
                     data: gpaDataHistory.map(d => d.gpa),
-                    borderColor: siakadPrimary,
+                    borderColor: systemPrimary,
                     backgroundColor: 'rgba(35, 76, 106, 0.1)',
                     fill: true,
                     tension: 0.4,
                     pointRadius: 5,
-                    pointBackgroundColor: siakadPrimary,
+                    pointBackgroundColor: systemPrimary,
                 }]
             },
             options: {
@@ -160,7 +160,7 @@
                             stepSize: 0.5
                         },
                         grid: {
-                            color: siakadLight
+                            color: systemLight
                         }
                     },
                     x: {

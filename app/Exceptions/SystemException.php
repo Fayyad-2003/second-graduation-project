@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 /**
  * Base exception class for SIAKAD application
  */
-abstract class SiakadException extends Exception
+abstract class SystemException extends Exception
 {
     protected string $errorCode;
     protected int $httpStatus = Response::HTTP_BAD_REQUEST;

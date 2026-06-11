@@ -188,7 +188,7 @@
     <button class="print-btn" onclick="window.print()">{{ __('Print / PDF') }}</button>
 
     <div class="header">
-        <h1>{{ __('Siakad University') }}</h1>
+        <h1>{{ __('System University') }}</h1>
         <h2>{{ $student->studyProgram->faculty->name ?? __('FACULTY') }}</h2>
         <p>{{ __('University Address 2') }}</p>
     </div>
