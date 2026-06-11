@@ -1,5 +1,0 @@
-- [ ] Identify why Create Course modal closes automatically after a few seconds
-- [ ] Fix modal close logic (likely a click-overlay handler or focus/esc handling)
-- [ ] Implement code change in the correct Blade/JS file(s)
-- [ ] Smoke test: open “Add Course” modal and confirm it stays open
-- [ ] Validate no regressions for Edit modal
