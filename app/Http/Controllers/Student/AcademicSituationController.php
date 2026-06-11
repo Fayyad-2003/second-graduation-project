@@ -11,19 +11,24 @@ use App\Models\Grade;
 use App\Models\StudyPlan;
 use App\Services\AcademicCalculationService;
 use App\Services\AttendanceService;
+use App\Services\AcademicRecommendationsAiService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AcademicSituationController extends Controller
 {
     protected AcademicCalculationService $calculationService;
     protected AttendanceService $attendanceService;
+    protected AcademicRecommendationsAiService $recommendationsService;
 
     public function __construct(
         AcademicCalculationService $calculationService,
-        AttendanceService $attendanceService
+        AttendanceService $attendanceService,
+        AcademicRecommendationsAiService $recommendationsService
     ) {
         $this->calculationService = $calculationService;
         $this->attendanceService = $attendanceService;
+        $this->recommendationsService = $recommendationsService;
     }
 
     public function index()
@@ -179,5 +184,98 @@ class AcademicSituationController extends Controller
             'attendance_rate' => $attendanceRate,
             'submission_rate' => $submissionRate,
         ];
+    }
+
+    public function generateRecommendations()
+    {
+        $user = Auth::user();
+        $student = $user->student;
+
+        if (!$student) {
+            abort(403, __('Unauthorized'));
+        }
+
+        // Get current active academic year
+        $activeAcademicYear = AcademicYear::active();
+
+        // Get CGPA and overall data
+        $cgpaData = $this->calculationService->calculateCGPA($student);
+        $gpaHistory = $this->calculationService->getGPAHistory($student);
+
+        // Get all student's grades with details
+        $allGrades = Grade::where('student_id', $student->id)
+            ->with(['academicClass.course', 'academicClass.academicYear'])
+            ->get();
+
+        // Classify subjects into passed and failed
+        $passedSubjects = $allGrades->filter(fn($grade) => in_array($grade->letter_grade, ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-']));
+        $failedSubjects = $allGrades->filter(fn($grade) => in_array($grade->letter_grade, ['D+', 'D', 'E', 'F']));
+
+        // Get current semester's enrolled classes
+        $currentClasses = collect();
+        $classAttendanceSummaries = collect();
+        $classAssignmentSummaries = collect();
+
+        if ($activeAcademicYear) {
+            $currentStudyPlan = StudyPlan::where('student_id', $student->id)
+                ->where('academic_year_id', $activeAcademicYear->id)
+                ->where('status', 'approved')
+                ->first();
+
+            if ($currentStudyPlan) {
+                $currentClasses = AcademicClass::whereHas('details', function ($q) use ($currentStudyPlan) {
+                    $q->where('study_plan_id', $currentStudyPlan->id);
+                })->with(['course', 'lecturer.user'])->get();
+
+                // Get attendance summaries for current classes
+                $classAttendanceSummaries = $currentClasses->mapWithKeys(function ($class) use ($student) {
+                    $summary = $this->attendanceService->getAttendanceSummary($student->id, $class->id);
+                    return [$class->id => $summary];
+                });
+
+                // Get assignment summaries for current classes
+                $classAssignmentSummaries = $currentClasses->mapWithKeys(function ($class) use ($student) {
+                    $assignments = Assignment::where('class_id', $class->id)
+                        ->where('is_active', true)
+                        ->with(['submissions' => fn($q) => $q->where('student_id', $student->id)])
+                        ->get();
+
+                    $submitted = $assignments->filter(fn($a) => $a->submissions->isNotEmpty())->count();
+                    $notSubmitted = $assignments->filter(fn($a) => $a->submissions->isEmpty())->count();
+
+                    return [
+                        $class->id => [
+                            'total' => $assignments->count(),
+                            'submitted' => $submitted,
+                            'not_submitted' => $notSubmitted,
+                        ]
+                    ];
+                });
+            }
+        }
+
+        // Generate a situation report summary
+        $reportSummary = $this->generateSituationReport(
+            $cgpaData,
+            $gpaHistory,
+            $passedSubjects,
+            $failedSubjects,
+            $classAttendanceSummaries,
+            $classAssignmentSummaries
+        );
+
+        // Generate AI recommendations
+        $recommendations = $this->recommendationsService->generateRecommendations(
+            $student,
+            $cgpaData,
+            $reportSummary,
+            $passedSubjects,
+            $failedSubjects,
+            $currentClasses,
+            $classAttendanceSummaries,
+            $classAssignmentSummaries
+        );
+
+        return response()->json($recommendations);
     }
 }

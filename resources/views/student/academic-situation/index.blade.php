@@ -8,6 +8,35 @@
                     {{ __('Comprehensive overview of your academic performance, attendance, and assignments.') }}
                 </p>
             </div>
+            <div>
+                <button id="generateRecommendationsBtn" class="btn-primary-saas px-6 py-3 rounded-2xl text-sm font-black flex items-center gap-2 shadow-lg shadow-siakad-600/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                    {{ __('AI Recommendations') }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations Section -->
+    <div id="recommendationsSection" class="card-saas mb-10 p-8 hidden">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="p-2 bg-purple-50 dark:bg-purple-900/30 rounded-lg">
+                <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                </svg>
+            </div>
+            <h3 class="text-base font-black text-siakad-900 dark:text-white">{{ __('AI Recommendations') }}</h3>
+        </div>
+        <div id="recommendationsContent"></div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingRecommendations" class="card-saas mb-10 p-8 hidden">
+        <div class="flex items-center gap-3">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-siakad-500"></div>
+            <p class="text-sm font-black text-siakad-700 dark:text-siakad-300">{{ __('Generating recommendations...') }}</p>
         </div>
     </div>
 
@@ -22,10 +51,10 @@
                 </div>
                 @php
                 $statusColors = [
-                    'excellent' => 'bg-gradient-to-r from-emerald-500 to-emerald-600',
-                    'good' => 'bg-gradient-to-r from-siakad-500 to-siakad-600',
-                    'fair' => 'bg-gradient-to-r from-amber-500 to-amber-600',
-                    'needs_attention' => 'bg-gradient-to-r from-red-500 to-red-600',
+                'excellent' => 'bg-gradient-to-r from-emerald-500 to-emerald-600',
+                'good' => 'bg-gradient-to-r from-siakad-500 to-siakad-600',
+                'fair' => 'bg-gradient-to-r from-amber-500 to-amber-600',
+                'needs_attention' => 'bg-gradient-to-r from-red-500 to-red-600',
                 ];
                 @endphp
                 <div class="w-20 h-20 {{ $statusColors[$reportSummary['status']] }} rounded-[26px] flex items-center justify-center shadow-lg">
@@ -215,4 +244,106 @@
             @endif
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateRecommendationsBtn');
+            const recommendationsSection = document.getElementById('recommendationsSection');
+            const recommendationsContent = document.getElementById('recommendationsContent');
+            const loadingSection = document.getElementById('loadingRecommendations');
+
+            generateBtn.addEventListener('click', async function() {
+                // Show loading state
+                loadingSection.classList.remove('hidden');
+                recommendationsSection.classList.add('hidden');
+                generateBtn.disabled = true;
+                generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+                try {
+                    const response = await fetch('{{ route('students.academic-situation.generate-recommendations') }}', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Render recommendations
+                        renderRecommendations(data);
+                        recommendationsSection.classList.remove('hidden');
+                    } else {
+                        // Show error
+                        recommendationsContent.innerHTML = `
+                            <div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50">
+                                <p class="text-sm font-bold text-red-700 dark:text-red-400">${data.message || '{{ __('Failed to generate recommendations.') }}'}</p>
+                            </div>
+                        `;
+                        recommendationsSection.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    // Show error
+                    recommendationsContent.innerHTML = `
+                        <div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50">
+                            <p class="text-sm font-bold text-red-700 dark:text-red-400">{{ __('An error occurred while generating recommendations.') }}</p>
+                        </div>
+                    `;
+                    recommendationsSection.classList.remove('hidden');
+                } finally {
+                    // Hide loading
+                    loadingSection.classList.add('hidden');
+                    generateBtn.disabled = false;
+                    generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+
+            function renderRecommendations(data) {
+                let html = '';
+
+                if (data.summary) {
+                    html += `
+                        <div class="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-100 dark:border-purple-800/50">
+                            <p class="text-sm font-semibold text-purple-700 dark:text-purple-400">${data.summary}</p>
+                        </div>
+                    `;
+                }
+
+                if (data.recommendations && data.recommendations.length > 0) {
+                    html += `
+                        <h4 class="text-sm font-black text-siakad-900 dark:text-white mb-4">{{ __('Recommendations') }}</h4>
+                        <div class="space-y-4 mb-6">
+                    `;
+                    data.recommendations.forEach(rec => {
+                        html += `
+                            <div class="p-4 bg-siakad-50 dark:bg-siakad-900/20 rounded-xl border border-siakad-100 dark:border-siakad-800/50">
+                                <h5 class="text-sm font-bold text-siakad-900 dark:text-white mb-2">${rec.title}</h5>
+                                <p class="text-sm text-siakad-600 dark:text-slate-400">${rec.description}</p>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                if (data.study_tips && data.study_tips.length > 0) {
+                    html += `
+                        <h4 class="text-sm font-black text-siakad-900 dark:text-white mb-4">{{ __('Study Tips') }}</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    `;
+                    data.study_tips.forEach(tip => {
+                        html += `
+                            <div class="p-4 bg-siakad-50 dark:bg-siakad-900/20 rounded-xl border border-siakad-100 dark:border-siakad-800/50">
+                                <p class="text-sm text-siakad-600 dark:text-slate-400">${tip}</p>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                recommendationsContent.innerHTML = html;
+            }
+        });
+    </script>
 </x-app-layout>
