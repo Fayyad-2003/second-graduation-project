@@ -4,19 +4,19 @@
     </x-slot>
 
     <div class="mb-6">
-        <p class="text-sm text-siakad-secondary">{{ __('Manage your thesis and final project') }}</p>
+        <p class="text-sm text-primary-secondary">{{ __('Manage your thesis and final project') }}</p>
     </div>
 
     @if(!$thesis)
     <!-- No Thesis Yet -->
     <div class="card-saas p-12 text-center">
-        <div class="w-20 h-20 rounded-full bg-siakad-light/50 flex items-center justify-center mx-auto mb-6">
-            <svg class="w-10 h-10 text-siakad-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-20 h-20 rounded-full bg-primary-light/50 flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-primary-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
         </div>
-        <h3 class="text-xl font-bold text-siakad-dark mb-2">{{ __('No thesis submissions yet') }}</h3>
-        <p class="text-siakad-secondary mb-6">{{ __('Submit your thesis title to start the supervision process') }}</p>
+        <h3 class="text-xl font-bold text-primary-dark mb-2">{{ __('No thesis submissions yet') }}</h3>
+        <p class="text-primary-secondary mb-6">{{ __('Submit your thesis title to start the supervision process') }}</p>
         <a href="{{ route('students.thesis.create') }}" class="btn-primary-saas px-6 py-3 rounded-lg text-sm font-medium inline-flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -34,9 +34,9 @@
                     <span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-{{ $thesis->status_color }}-100 text-{{ $thesis->status_color }}-700">
                         {{ $thesis->status_label }}
                     </span>
-                    <h2 class="text-lg font-bold text-siakad-dark mt-3">{{ $thesis->title }}</h2>
+                    <h2 class="text-lg font-bold text-primary-dark mt-3">{{ $thesis->title }}</h2>
                     @if($thesis->research_field)
-                    <p class="text-sm text-siakad-secondary mt-1">{{ __('Field') }}: {{ $thesis->research_field }}</p>
+                    <p class="text-sm text-primary-secondary mt-1">{{ __('Field') }}: {{ $thesis->research_field }}</p>
                     @endif
                 </div>
             </div>
@@ -44,30 +44,30 @@
             <!-- Progress Bar -->
             <div class="mt-6">
                 <div class="flex items-center justify-between text-sm mb-2">
-                    <span class="text-siakad-secondary">{{ __('Progress') }}</span>
-                    <span class="font-semibold text-siakad-primary">{{ $thesis->progress_percent }}%</span>
+                    <span class="text-primary-secondary">{{ __('Progress') }}</span>
+                    <span class="font-semibold text-primary-primary">{{ $thesis->progress_percent }}%</span>
                 </div>
-                <div class="h-3 bg-siakad-light rounded-full overflow-hidden">
-                    <div class="h-full bg-siakad-primary rounded-full transition-all" style="width: {{ $thesis->progress_percent }}%"></div>
+                <div class="h-3 bg-primary-light rounded-full overflow-hidden">
+                    <div class="h-full bg-primary-primary rounded-full transition-all" style="width: {{ $thesis->progress_percent }}%"></div>
                 </div>
             </div>
 
             <!-- Supervisor -->
             <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="p-4 rounded-xl bg-siakad-light/30">
-                    <p class="text-xs text-siakad-secondary mb-1">{{ __('Supervisor 1') }}</p>
-                    <p class="font-medium text-siakad-dark">{{ $thesis->supervisor1?->user->name ?? __('Not yet determined') }}</p>
+                <div class="p-4 rounded-xl bg-primary-light/30">
+                    <p class="text-xs text-primary-secondary mb-1">{{ __('Supervisor 1') }}</p>
+                    <p class="font-medium text-primary-dark">{{ $thesis->supervisor1?->user->name ?? __('Not yet determined') }}</p>
                 </div>
-                <div class="p-4 rounded-xl bg-siakad-light/30">
-                    <p class="text-xs text-siakad-secondary mb-1">{{ __('Supervisor 2') }}</p>
-                    <p class="font-medium text-siakad-dark">{{ $thesis->supervisor2?->user->name ?? '-' }}</p>
+                <div class="p-4 rounded-xl bg-primary-light/30">
+                    <p class="text-xs text-primary-secondary mb-1">{{ __('Supervisor 2') }}</p>
+                    <p class="font-medium text-primary-dark">{{ $thesis->supervisor2?->user->name ?? '-' }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Timeline -->
         <div class="card-saas p-6">
-            <h3 class="font-semibold text-siakad-dark mb-4">{{ __('Timeline') }}</h3>
+            <h3 class="font-semibold text-primary-dark mb-4">{{ __('Timeline') }}</h3>
             @php
             // If status is 'completed' or progress is 100%, all milestones are completed
             $allCompleted = $thesis->status === 'completed' || $thesis->progress_percent >= 100;
@@ -123,8 +123,8 @@
                 <!-- Content -->
                 <div class="flex-1 pb-4">
                     <div class="flex items-center justify-between">
-                        <span class="text-sm {{ $isCompleted ? 'font-medium text-siakad-dark' : ($isCurrent ? 'font-medium text-[#456882]' : 'text-slate-400') }}">{{ $m['label'] }}</span>
-                        <span class="text-xs {{ $isCompleted ? 'text-siakad-secondary' : 'text-slate-400' }}">{{ $m['date'] ? $m['date']->format('d/m/Y') : ($isCompleted ? '✓' : '-') }}</span>
+                        <span class="text-sm {{ $isCompleted ? 'font-medium text-primary-dark' : ($isCurrent ? 'font-medium text-[#456882]' : 'text-slate-400') }}">{{ $m['label'] }}</span>
+                        <span class="text-xs {{ $isCompleted ? 'text-primary-secondary' : 'text-slate-400' }}">{{ $m['date'] ? $m['date']->format('d/m/Y') : ($isCompleted ? '✓' : '-') }}</span>
                     </div>
                 </div>
             </div>
@@ -142,8 +142,8 @@
                 </svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-siakad-dark">{{ $supervisionList->count() ?? 0 }}</p>
-                <p class="text-sm text-siakad-secondary">{{ __('Total Supervision') }}</p>
+                <p class="text-2xl font-bold text-primary-dark">{{ $supervisionList->count() ?? 0 }}</p>
+                <p class="text-sm text-primary-secondary">{{ __('Total Supervision') }}</p>
             </div>
         </div>
         <div class="card-saas p-5 flex items-center gap-4">
@@ -153,8 +153,8 @@
                 </svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-siakad-dark">{{ $thesis->submission_date ? round($thesis->submission_date->diffInMonths(now())) : 0 }}</p>
-                <p class="text-sm text-siakad-secondary">{{ __('Duration (Months)') }}</p>
+                <p class="text-2xl font-bold text-primary-dark">{{ $thesis->submission_date ? round($thesis->submission_date->diffInMonths(now())) : 0 }}</p>
+                <p class="text-sm text-primary-secondary">{{ __('Duration (Months)') }}</p>
             </div>
         </div>
         <div class="card-saas p-5 flex items-center gap-4">
@@ -164,8 +164,8 @@
                 </svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-siakad-dark">{{ $thesis->progress_percent }}%</p>
-                <p class="text-sm text-siakad-secondary">{{ __('Progress Completed') }}</p>
+                <p class="text-2xl font-bold text-primary-dark">{{ $thesis->progress_percent }}%</p>
+                <p class="text-sm text-primary-secondary">{{ __('Progress Completed') }}</p>
             </div>
         </div>
     </div>
@@ -174,54 +174,54 @@
     @if(in_array($thesis->status, ['supervision', 'penelitian', 'diterima', 'completed']))
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 card-saas overflow-hidden">
-            <div class="px-6 py-4 border-b border-siakad-light flex items-center justify-between">
-                <h3 class="font-semibold text-siakad-dark">{{ __('Supervision History') }}</h3>
-                <span class="text-sm text-siakad-secondary">{{ $supervisionList->count() }} {{ __('records') }}</span>
+            <div class="px-6 py-4 border-b border-primary-light flex items-center justify-between">
+                <h3 class="font-semibold text-primary-dark">{{ __('Supervision History') }}</h3>
+                <span class="text-sm text-primary-secondary">{{ $supervisionList->count() }} {{ __('records') }}</span>
             </div>
             @forelse($supervisionList as $supervision)
-            <div class="p-5 border-b border-siakad-light/50">
+            <div class="p-5 border-b border-primary-light/50">
                 <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-lg bg-siakad-primary/10 flex items-center justify-center text-siakad-primary font-bold text-sm">
+                    <div class="w-10 h-10 rounded-lg bg-primary-primary/10 flex items-center justify-center text-primary-primary font-bold text-sm">
                         {{ $loop->iteration }}
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-2">
-                            <span class="font-medium text-siakad-dark">{{ $supervision->supervision_date->format('d M Y') }}</span>
+                            <span class="font-medium text-primary-dark">{{ $supervision->supervision_date->format('d M Y') }}</span>
                             <span class="px-2 py-0.5 text-xs rounded-full bg-{{ $supervision->status_color }}-100 text-{{ $supervision->status_color }}-700">{{ $supervision->status_label }}</span>
                         </div>
-                        <p class="text-sm text-siakad-secondary mb-2">{{ $supervision->student_notes }}</p>
+                        <p class="text-sm text-primary-secondary mb-2">{{ $supervision->student_notes }}</p>
                         @if($supervision->lecturer_notes)
-                        <div class="mt-3 p-3 rounded-lg bg-siakad-light/30">
-                            <p class="text-xs text-siakad-secondary mb-1">Feedback {{ $supervision->lecturer->user->name }}:</p>
-                            <p class="text-sm text-siakad-dark">{{ $supervision->lecturer_notes }}</p>
+                        <div class="mt-3 p-3 rounded-lg bg-primary-light/30">
+                            <p class="text-xs text-primary-secondary mb-1">Feedback {{ $supervision->lecturer->user->name }}:</p>
+                            <p class="text-sm text-primary-dark">{{ $supervision->lecturer_notes }}</p>
                         </div>
                         @endif
                     </div>
                 </div>
             </div>
             @empty
-            <div class="p-8 text-center text-siakad-secondary">{{ __('No supervision notes yet') }}</div>
+            <div class="p-8 text-center text-primary-secondary">{{ __('No supervision notes yet') }}</div>
             @endforelse
         </div>
 
         <!-- Add Supervision Form -->
         <div class="lg:col-span-1">
             <div class="card-saas p-6 sticky top-24">
-                <h3 class="font-semibold text-siakad-dark mb-1">{{ __('Add Supervision Note') }}</h3>
-                <p class="text-xs text-siakad-secondary mb-6">{{ __('Record your supervision process') }}</p>
+                <h3 class="font-semibold text-primary-dark mb-1">{{ __('Add Supervision Note') }}</h3>
+                <p class="text-xs text-primary-secondary mb-6">{{ __('Record your supervision process') }}</p>
 
                 <form action="{{ route('students.thesis.supervision.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
                     <div>
-                        <label class="block text-sm font-medium text-siakad-dark mb-1">{{ __('Supervision Date') }}</label>
+                        <label class="block text-sm font-medium text-primary-dark mb-1">{{ __('Supervision Date') }}</label>
                         <input type="date" name="supervision_date" value="{{ date('Y-m-d') }}" class="input-saas w-full px-4 py-2.5 text-sm" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-siakad-dark mb-1">{{ __('Materials / Topics discussed') }}</label>
+                        <label class="block text-sm font-medium text-primary-dark mb-1">{{ __('Materials / Topics discussed') }}</label>
                         <textarea name="student_notes" rows="4" class="input-saas w-full px-4 py-2.5 text-sm" placeholder="{{ __('Enter your supervision progress...') }}" required></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-siakad-dark mb-1">{{ __('Document File') }} (Optional)</label>
+                        <label class="block text-sm font-medium text-primary-dark mb-1">{{ __('Document File') }} (Optional)</label>
                         <input type="file" name="document_file" class="input-saas w-full px-4 py-2.5 text-sm">
                     </div>
                     <button type="submit" class="w-full btn-primary-saas py-2.5 rounded-lg text-sm font-medium">

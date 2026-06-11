@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="mb-10">
-        <h1 class="text-3xl font-black tracking-tight text-siakad-900 dark:text-white">{{ __('Schedule Analysis') }}</h1>
-        <p class="text-siakad-500 font-medium mt-2 flex items-center gap-2">
-            <span class="w-8 h-px bg-siakad-200"></span>
+        <h1 class="text-3xl font-black tracking-tight text-primary-900 dark:text-white">{{ __('Schedule Analysis') }}</h1>
+        <p class="text-primary-500 font-medium mt-2 flex items-center gap-2">
+            <span class="w-8 h-px bg-primary-200"></span>
             {{ __('Analyze and resolve schedule conflicts for') }} {{ $activeYear->year ?? __('No Active Year') }}
         </p>
     </div>
@@ -10,7 +10,7 @@
     <div class="space-y-8">
         <!-- Room Conflicts -->
         <div class="card-saas overflow-hidden">
-            <div class="p-6 border-b border-siakad-100/50 dark:border-siakad-800/50 flex items-center justify-between bg-siakad-50/30 dark:bg-siakad-900/20">
+            <div class="p-6 border-b border-primary-100/50 dark:border-primary-800/50 flex items-center justify-between bg-primary-50/30 dark:bg-primary-900/20">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/30 flex items-center justify-center text-red-600 dark:text-red-400 shadow-sm">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,8 +18,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-siakad-900 dark:text-white">{{ __('Room Conflicts') }}</h3>
-                        <p class="text-xs text-siakad-500 font-bold uppercase tracking-wider">{{ __('Overlapping classes in same room') }}</p>
+                        <h3 class="text-lg font-black text-primary-900 dark:text-white">{{ __('Room Conflicts') }}</h3>
+                        <p class="text-xs text-primary-500 font-bold uppercase tracking-wider">{{ __('Overlapping classes in same room') }}</p>
                     </div>
                 </div>
                 <span class="px-4 py-1.5 text-xs font-black bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 rounded-full border border-red-200 dark:border-red-800/50 shadow-sm">
@@ -34,23 +34,23 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <p class="text-siakad-400 font-bold">{{ __('No room conflicts detected.') }}</p>
+                <p class="text-primary-400 font-bold">{{ __('No room conflicts detected.') }}</p>
             </div>
             @else
             <div class="overflow-x-auto">
                 <table class="w-full text-start border-collapse">
                     <thead>
-                        <tr class="bg-siakad-50/50 dark:bg-siakad-900/30 border-b border-siakad-100/50 dark:border-siakad-800/50">
-                            <th class="py-4 px-8 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Room') }}</th>
-                            <th class="py-4 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Day') }}</th>
-                            <th class="py-4 px-8 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Conflicting Classes') }}</th>
+                        <tr class="bg-primary-50/50 dark:bg-primary-900/30 border-b border-primary-100/50 dark:border-primary-800/50">
+                            <th class="py-4 px-8 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Room') }}</th>
+                            <th class="py-4 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Day') }}</th>
+                            <th class="py-4 px-8 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Conflicting Classes') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-siakad-50 dark:divide-siakad-800/50">
+                    <tbody class="divide-y divide-primary-50 dark:divide-primary-800/50">
                         @foreach($roomConflicts as $conflict)
-                        <tr class="hover:bg-siakad-50/30 dark:hover:bg-siakad-900/20 transition-colors">
-                            <td class="py-5 px-8 text-sm font-black text-siakad-900 dark:text-white text-start">{{ $conflict['room'] }}</td>
-                            <td class="py-5 px-6 text-xs font-bold text-siakad-600 dark:text-siakad-400 capitalize text-start">{{ $conflict['day'] }}</td>
+                        <tr class="hover:bg-primary-50/30 dark:hover:bg-primary-900/20 transition-colors">
+                            <td class="py-5 px-8 text-sm font-black text-primary-900 dark:text-white text-start">{{ $conflict['room'] }}</td>
+                            <td class="py-5 px-6 text-xs font-bold text-primary-600 dark:text-primary-400 capitalize text-start">{{ $conflict['day'] }}</td>
                             <td class="py-5 px-8 text-start">
                                 <div class="space-y-3">
                                     @foreach($conflict['schedules'] as $sched)
@@ -59,8 +59,8 @@
                                             {{ $sched->start_time->format('H:i') }} - {{ $sched->end_time->format('H:i') }}
                                         </div>
                                         <div class="min-w-0">
-                                            <p class="text-xs font-bold text-siakad-700 dark:text-siakad-300 truncate">{{ $sched->class->course->course_name }}</p>
-                                            <p class="text-[10px] text-siakad-400 font-bold uppercase tracking-wider">{{ $sched->class->class_name }}</p>
+                                            <p class="text-xs font-bold text-primary-700 dark:text-primary-300 truncate">{{ $sched->class->course->course_name }}</p>
+                                            <p class="text-[10px] text-primary-400 font-bold uppercase tracking-wider">{{ $sched->class->class_name }}</p>
                                         </div>
                                     </div>
                                     @endforeach
@@ -76,7 +76,7 @@
 
         <!-- Lecturer Conflicts -->
         <div class="card-saas overflow-hidden">
-            <div class="p-6 border-b border-siakad-100/50 dark:border-siakad-800/50 flex items-center justify-between bg-siakad-50/30 dark:bg-siakad-900/20">
+            <div class="p-6 border-b border-primary-100/50 dark:border-primary-800/50 flex items-center justify-between bg-primary-50/30 dark:bg-primary-900/20">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shadow-sm">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,8 +84,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-siakad-900 dark:text-white">{{ __('Lecturer Schedule Conflicts') }}</h3>
-                        <p class="text-xs text-siakad-500 font-bold uppercase tracking-wider">{{ __('Overlapping classes for same lecturer') }}</p>
+                        <h3 class="text-lg font-black text-primary-900 dark:text-white">{{ __('Lecturer Schedule Conflicts') }}</h3>
+                        <p class="text-xs text-primary-500 font-bold uppercase tracking-wider">{{ __('Overlapping classes for same lecturer') }}</p>
                     </div>
                 </div>
                 <span class="px-4 py-1.5 text-xs font-black bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-900/50 shadow-sm">
@@ -100,30 +100,30 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <p class="text-siakad-400 font-bold">{{ __('No lecturer conflicts detected.') }}</p>
+                <p class="text-primary-400 font-bold">{{ __('No lecturer conflicts detected.') }}</p>
             </div>
             @else
             <div class="overflow-x-auto">
                 <table class="w-full text-start border-collapse">
                     <thead>
-                        <tr class="bg-siakad-50/50 dark:bg-siakad-900/30 border-b border-siakad-100/50 dark:border-siakad-800/50">
-                            <th class="py-4 px-8 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Lecturer') }}</th>
-                            <th class="py-4 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Day') }}</th>
-                            <th class="py-4 px-8 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Overlapping Classes') }}</th>
+                        <tr class="bg-primary-50/50 dark:bg-primary-900/30 border-b border-primary-100/50 dark:border-primary-800/50">
+                            <th class="py-4 px-8 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Lecturer') }}</th>
+                            <th class="py-4 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Day') }}</th>
+                            <th class="py-4 px-8 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Overlapping Classes') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-siakad-50 dark:divide-siakad-800/50">
+                    <tbody class="divide-y divide-primary-50 dark:divide-primary-800/50">
                         @foreach($lecturerConflicts as $conflict)
-                        <tr class="hover:bg-siakad-50/30 dark:hover:bg-siakad-900/20 transition-colors">
+                        <tr class="hover:bg-primary-50/30 dark:hover:bg-primary-900/20 transition-colors">
                             <td class="py-5 px-8 text-start">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-xl bg-siakad-50 dark:bg-siakad-800 flex items-center justify-center text-siakad-600 dark:text-siakad-400 text-xs font-black">
+                                    <div class="w-8 h-8 rounded-xl bg-primary-50 dark:bg-primary-800 flex items-center justify-center text-primary-600 dark:text-primary-400 text-xs font-black">
                                         {{ strtoupper(substr($conflict['lecturer']->user->name, 0, 1)) }}
                                     </div>
-                                    <span class="text-sm font-black text-siakad-900 dark:text-white">{{ $conflict['lecturer']->user->name }}</span>
+                                    <span class="text-sm font-black text-primary-900 dark:text-white">{{ $conflict['lecturer']->user->name }}</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6 text-xs font-bold text-siakad-600 dark:text-siakad-400 capitalize text-start">{{ $conflict['day'] }}</td>
+                            <td class="py-5 px-6 text-xs font-bold text-primary-600 dark:text-primary-400 capitalize text-start">{{ $conflict['day'] }}</td>
                             <td class="py-5 px-8 text-start">
                                 <div class="space-y-3">
                                     @foreach($conflict['schedules'] as $sched)
@@ -132,8 +132,8 @@
                                             {{ $sched->start_time->format('H:i') }} - {{ $sched->end_time->format('H:i') }}
                                         </div>
                                         <div class="min-w-0">
-                                            <p class="text-xs font-bold text-siakad-700 dark:text-siakad-300 truncate">{{ $sched->class->course->course_name }}</p>
-                                            <p class="text-[10px] text-siakad-400 font-bold uppercase tracking-wider">{{ $sched->class->class_name }}</p>
+                                            <p class="text-xs font-bold text-primary-700 dark:text-primary-300 truncate">{{ $sched->class->course->course_name }}</p>
+                                            <p class="text-[10px] text-primary-400 font-bold uppercase tracking-wider">{{ $sched->class->class_name }}</p>
                                         </div>
                                     </div>
                                     @endforeach
@@ -149,7 +149,7 @@
 
         <!-- Student Conflicts -->
         <div class="card-saas overflow-hidden">
-            <div class="p-6 border-b border-siakad-100/50 dark:border-siakad-800/50 flex items-center justify-between bg-siakad-50/30 dark:bg-siakad-900/20">
+            <div class="p-6 border-b border-primary-100/50 dark:border-primary-800/50 flex items-center justify-between bg-primary-50/30 dark:bg-primary-900/20">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/30 flex items-center justify-center text-purple-600 dark:text-purple-400 shadow-sm">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,8 +157,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-siakad-900 dark:text-white">{{ __('Student Schedule Conflicts') }}</h3>
-                        <p class="text-xs text-siakad-500 font-bold uppercase tracking-wider">{{ __('Overlapping classes for same student') }}</p>
+                        <h3 class="text-lg font-black text-primary-900 dark:text-white">{{ __('Student Schedule Conflicts') }}</h3>
+                        <p class="text-xs text-primary-500 font-bold uppercase tracking-wider">{{ __('Overlapping classes for same student') }}</p>
                     </div>
                 </div>
                 <span class="px-4 py-1.5 text-xs font-black bg-purple-100 text-purple-700 dark:bg-purple-950/40 dark:text-purple-400 rounded-full border border-purple-200 dark:border-purple-900/50 shadow-sm">
@@ -173,33 +173,33 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <p class="text-siakad-400 font-bold">{{ __('No student conflicts detected.') }}</p>
+                <p class="text-primary-400 font-bold">{{ __('No student conflicts detected.') }}</p>
             </div>
             @else
             <div class="overflow-x-auto">
                 <table class="w-full text-start border-collapse">
                     <thead>
-                        <tr class="bg-siakad-50/50 dark:bg-siakad-900/30 border-b border-siakad-100/50 dark:border-siakad-800/50">
-                            <th class="py-4 px-8 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Student') }}</th>
-                            <th class="py-4 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Day') }}</th>
-                            <th class="py-4 px-8 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Overlapping Classes') }}</th>
+                        <tr class="bg-primary-50/50 dark:bg-primary-900/30 border-b border-primary-100/50 dark:border-primary-800/50">
+                            <th class="py-4 px-8 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Student') }}</th>
+                            <th class="py-4 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Day') }}</th>
+                            <th class="py-4 px-8 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Overlapping Classes') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-siakad-50 dark:divide-siakad-800/50">
+                    <tbody class="divide-y divide-primary-50 dark:divide-primary-800/50">
                         @foreach($studentConflicts as $conflict)
-                        <tr class="hover:bg-siakad-50/30 dark:hover:bg-siakad-900/20 transition-colors">
+                        <tr class="hover:bg-primary-50/30 dark:hover:bg-primary-900/20 transition-colors">
                             <td class="py-5 px-8 text-start">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-xl bg-siakad-50 dark:bg-siakad-800 flex items-center justify-center text-siakad-600 dark:text-siakad-400 text-xs font-black">
+                                    <div class="w-8 h-8 rounded-xl bg-primary-50 dark:bg-primary-800 flex items-center justify-center text-primary-600 dark:text-primary-400 text-xs font-black">
                                         {{ strtoupper(substr($conflict['student']->user->name, 0, 1)) }}
                                     </div>
                                     <div>
-                                        <p class="text-sm font-black text-siakad-900 dark:text-white leading-tight">{{ $conflict['student']->user->name }}</p>
-                                        <p class="text-[10px] text-siakad-400 font-mono font-bold">{{ $conflict['student']->nim }}</p>
+                                        <p class="text-sm font-black text-primary-900 dark:text-white leading-tight">{{ $conflict['student']->user->name }}</p>
+                                        <p class="text-[10px] text-primary-400 font-mono font-bold">{{ $conflict['student']->nim }}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td class="py-5 px-6 text-xs font-bold text-siakad-600 dark:text-siakad-400 capitalize text-start">{{ $conflict['day'] }}</td>
+                            <td class="py-5 px-6 text-xs font-bold text-primary-600 dark:text-primary-400 capitalize text-start">{{ $conflict['day'] }}</td>
                             <td class="py-5 px-8 text-start">
                                 <div class="space-y-3">
                                     @foreach($conflict['schedules'] as $sched)
@@ -208,8 +208,8 @@
                                             {{ $sched->start_time->format('H:i') }} - {{ $sched->end_time->format('H:i') }}
                                         </div>
                                         <div class="min-w-0">
-                                            <p class="text-xs font-bold text-siakad-700 dark:text-siakad-300 truncate">{{ $sched->class->course->course_name }}</p>
-                                            <p class="text-[10px] text-siakad-400 font-bold uppercase tracking-wider">{{ $sched->class->class_name }}</p>
+                                            <p class="text-xs font-bold text-primary-700 dark:text-primary-300 truncate">{{ $sched->class->course->course_name }}</p>
+                                            <p class="text-[10px] text-primary-400 font-bold uppercase tracking-wider">{{ $sched->class->class_name }}</p>
                                         </div>
                                     </div>
                                     @endforeach

@@ -4,7 +4,7 @@
     </x-slot>
 
     <div class="mb-6">
-        <a href="{{ route('lecturers.thesis.index') }}" class="inline-flex items-center gap-2 text-siakad-secondary hover:text-siakad-primary transition text-sm">
+        <a href="{{ route('lecturers.thesis.index') }}" class="inline-flex items-center gap-2 text-primary-secondary hover:text-primary-primary transition text-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
@@ -20,20 +20,20 @@
                 <div class="flex items-start justify-between mb-4">
                     <div>
                         <span class="px-3 py-1 text-xs font-medium rounded-full bg-{{ $thesis->status_color }}-100 text-{{ $thesis->status_color }}-700">{{ $thesis->status_label }}</span>
-                        <h2 class="text-lg font-bold text-siakad-dark mt-3">{{ $thesis->title }}</h2>
+                        <h2 class="text-lg font-bold text-primary-dark mt-3">{{ $thesis->title }}</h2>
                     </div>
-                    <span class="text-2xl font-bold text-siakad-primary">{{ $thesis->progress_percent }}%</span>
+                    <span class="text-2xl font-bold text-primary-primary">{{ $thesis->progress_percent }}%</span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mt-4">
-                    <div class="p-3 rounded-lg bg-siakad-light/30">
-                        <p class="text-xs text-siakad-secondary">{{ __('Student') }}</p>
-                        <p class="font-medium text-siakad-dark">{{ $thesis->student->user->name }}</p>
-                        <p class="text-xs text-siakad-secondary">{{ $thesis->student->student_number }}</p>
+                    <div class="p-3 rounded-lg bg-primary-light/30">
+                        <p class="text-xs text-primary-secondary">{{ __('Student') }}</p>
+                        <p class="font-medium text-primary-dark">{{ $thesis->student->user->name }}</p>
+                        <p class="text-xs text-primary-secondary">{{ $thesis->student->student_number }}</p>
                     </div>
-                    <div class="p-3 rounded-lg bg-siakad-light/30">
-                        <p class="text-xs text-siakad-secondary">{{ __('Field of Study') }}</p>
-                        <p class="font-medium text-siakad-dark">{{ $thesis->research_field ?? '-' }}</p>
+                    <div class="p-3 rounded-lg bg-primary-light/30">
+                        <p class="text-xs text-primary-secondary">{{ __('Field of Study') }}</p>
+                        <p class="font-medium text-primary-dark">{{ $thesis->research_field ?? '-' }}</p>
                     </div>
                 </div>
 
@@ -41,7 +41,7 @@
                 <form action="{{ route('lecturers.thesis.update-status', $thesis) }}" method="POST" class="mt-6 flex items-end gap-3">
                     @csrf @method('PUT')
                     <div class="flex-1">
-                        <label class="block text-xs font-medium text-siakad-dark mb-1">{{ __('Update Status') }}</label>
+                        <label class="block text-xs font-medium text-primary-dark mb-1">{{ __('Update Status') }}</label>
                         <select name="status" class="input-saas w-full text-sm">
                             @foreach(\App\Models\Thesis::getStatusList() as $key => $label)
                             <option value="{{ $key }}" @selected($thesis->status === $key)>{{ $label }}</option>
@@ -54,11 +54,11 @@
 
             <!-- Supervision History -->
             <div class="card-saas overflow-hidden">
-                <div class="px-6 py-4 border-b border-siakad-light">
-                    <h3 class="font-semibold text-siakad-dark">{{ __('Supervision History') }}</h3>
+                <div class="px-6 py-4 border-b border-primary-light">
+                    <h3 class="font-semibold text-primary-dark">{{ __('Supervision History') }}</h3>
                 </div>
                 @forelse($thesis->supervision as $supervision)
-                <div class="p-5 border-b border-siakad-light/50">
+                <div class="p-5 border-b border-primary-light/50">
                     <div class="flex items-start gap-4">
                         <div class="w-10 h-10 rounded-lg bg-{{ $supervision->status_color }}-100 flex items-center justify-center text-{{ $supervision->status_color }}-600">
                             @if($supervision->status === 'approved')
@@ -77,13 +77,13 @@
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-2">
-                                <span class="font-medium text-siakad-dark">{{ $supervision->supervision_date->format('d M Y') }}</span>
+                                <span class="font-medium text-primary-dark">{{ $supervision->supervision_date->format('d M Y') }}</span>
                                 <span class="px-2 py-0.5 text-xs rounded-full bg-{{ $supervision->status_color }}-100 text-{{ $supervision->status_color }}-700">{{ $supervision->status_label }}</span>
                             </div>
-                            <p class="text-sm text-siakad-secondary">{{ $supervision->student_notes }}</p>
+                            <p class="text-sm text-primary-secondary">{{ $supervision->student_notes }}</p>
 
                             @if($supervision->document_file)
-                            <a href="{{ Storage::url($supervision->document_file) }}" target="_blank" class="inline-flex items-center gap-1 text-xs text-siakad-primary mt-2">
+                            <a href="{{ Storage::url($supervision->document_file) }}" target="_blank" class="inline-flex items-center gap-1 text-xs text-primary-primary mt-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 @empty
-                <div class="p-8 text-center text-siakad-secondary">{{ __('No supervision notes yet') }}</div>
+                <div class="p-8 text-center text-primary-secondary">{{ __('No supervision notes yet') }}</div>
                 @endforelse
             </div>
         </div>
@@ -120,21 +120,21 @@
         <div class="space-y-6">
             <!-- Supervisors -->
             <div class="card-saas p-5">
-                <h3 class="font-semibold text-siakad-dark mb-4">{{ __('Supervision Team') }}</h3>
+                <h3 class="font-semibold text-primary-dark mb-4">{{ __('Supervision Team') }}</h3>
                 <div class="space-y-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-siakad-primary text-white flex items-center justify-center font-bold">1</div>
+                        <div class="w-10 h-10 rounded-lg bg-primary-primary text-white flex items-center justify-center font-bold">1</div>
                         <div>
-                            <p class="font-medium text-siakad-dark">{{ $thesis->supervisor1?->user->name ?? '-' }}</p>
-                            <p class="text-xs text-siakad-secondary">{{ __('Main Supervisor') }}</p>
+                            <p class="font-medium text-primary-dark">{{ $thesis->supervisor1?->user->name ?? '-' }}</p>
+                            <p class="text-xs text-primary-secondary">{{ __('Main Supervisor') }}</p>
                         </div>
                     </div>
                     @if($thesis->supervisor2)
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-siakad-secondary/20 text-siakad-secondary flex items-center justify-center font-bold">2</div>
+                        <div class="w-10 h-10 rounded-lg bg-primary-secondary/20 text-primary-secondary flex items-center justify-center font-bold">2</div>
                         <div>
-                            <p class="font-medium text-siakad-dark">{{ $thesis->supervisor2->user->name }}</p>
-                            <p class="text-xs text-siakad-secondary">{{ __('Co-Supervisor') }}</p>
+                            <p class="font-medium text-primary-dark">{{ $thesis->supervisor2->user->name }}</p>
+                            <p class="text-xs text-primary-secondary">{{ __('Co-Supervisor') }}</p>
                         </div>
                     </div>
                     @endif
@@ -143,7 +143,7 @@
 
             <!-- Timeline -->
             <div class="card-saas p-5">
-                <h3 class="font-semibold text-siakad-dark mb-4">{{ __('Timeline') }}</h3>
+                <h3 class="font-semibold text-primary-dark mb-4">{{ __('Timeline') }}</h3>
                 <div class="space-y-3 text-sm">
                     @php
                     $milestones = [
@@ -157,9 +157,9 @@
                     @endphp
                     @foreach($milestones as $m)
                     <div class="flex items-center gap-3">
-                        <div class="w-2 h-2 rounded-full {{ $m['date'] ? 'bg-emerald-500' : 'bg-siakad-light' }}"></div>
-                        <span class="{{ $m['date'] ? 'text-siakad-dark' : 'text-siakad-secondary' }}">{{ $m['label'] }}</span>
-                        <span class="ml-auto text-siakad-secondary">{{ $m['date'] ? $m['date']->format('d/m/Y') : '-' }}</span>
+                        <div class="w-2 h-2 rounded-full {{ $m['date'] ? 'bg-emerald-500' : 'bg-primary-light' }}"></div>
+                        <span class="{{ $m['date'] ? 'text-primary-dark' : 'text-primary-secondary' }}">{{ $m['label'] }}</span>
+                        <span class="ml-auto text-primary-secondary">{{ $m['date'] ? $m['date']->format('d/m/Y') : '-' }}</span>
                     </div>
                     @endforeach
                 </div>

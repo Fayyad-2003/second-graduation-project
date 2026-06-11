@@ -3,11 +3,11 @@
 
     <!-- Upcoming Events Section -->
     <div class="mb-8 card-saas p-6 relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-siakad-500/10 to-purple-500/10 rounded-full -mr-24 -mt-24 blur-3xl transition-all duration-500 group-hover:scale-125"></div>
+        <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-primary-500/10 to-purple-500/10 rounded-full -mr-24 -mt-24 blur-3xl transition-all duration-500 group-hover:scale-125"></div>
         <div class="relative flex items-center justify-between mb-6">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-siakad-100 to-purple-100 dark:from-siakad-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-siakad-600 dark:text-siakad-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
                 </div>
@@ -16,7 +16,7 @@
                     <p class="text-gray-500 dark:text-gray-400 font-medium mt-1 text-sm">{{ __('Important dates and campus activities') }}</p>
                 </div>
             </div>
-            <a href="{{ route('students.semester-calendar.index') }}" class="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-siakad-500 to-purple-600 text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <a href="{{ route('students.semester-calendar.index') }}" class="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-primary-500 to-purple-600 text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
                 {{ __('View Calendar') }}
             </a>
         </div>
@@ -29,12 +29,12 @@
             @foreach($upcomingEvents as $event)
             <div class="p-5 bg-white dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 group/event">
                 <div class="flex items-start justify-between mb-3">
-                    <span class="text-xs font-bold uppercase tracking-widest text-siakad-500">
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary-500">
                         {{ $event->type }}
                     </span>
                     <span class="px-2 py-1 rounded-full text-[10px] font-bold 
                                 {{ $event->type === 'holiday' ? 'bg-amber-100 text-amber-700' : 
-                                   ($event->type === 'exam' ? 'bg-red-100 text-red-700' : 'bg-siakad-100 text-siakad-700') }}">
+                                   ($event->type === 'exam' ? 'bg-red-100 text-red-700' : 'bg-primary-100 text-primary-700') }}">
                         {{ \Carbon\Carbon::parse($event->date)->translatedFormat('d M Y') }}
                     </span>
                 </div>
@@ -87,11 +87,11 @@
 
     <!-- Greeting -->
     <div class="mb-10 hidden md:block relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-siakad-500/5 via-purple-500/5 to-pink-500/5 rounded-3xl -z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-purple-500/5 to-pink-500/5 rounded-3xl -z-10"></div>
         <div class="flex items-center justify-between p-6">
             <div>
                 <h1 class="text-4xl font-black tracking-tight text-gray-900 dark:text-white">
-                    {{ $greeting }}, <span class="text-transparent bg-clip-text bg-gradient-to-r from-siakad-600 via-purple-600 to-pink-600 animate-gradient">{{ explode(' ', $user->name)[0] }}</span>!
+                    {{ $greeting }}, <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 animate-gradient">{{ explode(' ', $user->name)[0] }}</span>!
                     @php
                     $hour = now()->hour;
                     if ($hour < 11) $emoji='🌅' ;
@@ -102,16 +102,16 @@
                         <span class="inline-block animate-bounce-subtle">{{ $emoji }}</span>
                 </h1>
                 <p class="text-gray-600 dark:text-gray-400 font-medium mt-3 flex items-center gap-3">
-                    <span class="w-12 h-0.5 bg-gradient-to-r from-siakad-500 to-purple-500 rounded-full"></span>
+                    <span class="w-12 h-0.5 bg-gradient-to-r from-primary-500 to-purple-500 rounded-full"></span>
                     {{ __('Welcome back to your academic portal.') }}
                 </p>
             </div>
             <div class="flex items-center gap-4">
                 <div class="text-right hidden xl:block">
-                    <p class="text-xs font-bold text-siakad-500 uppercase tracking-widest">{{ now()->translatedFormat('l') }}</p>
-                    <p class="text-lg font-black bg-gradient-to-r from-siakad-600 to-purple-600 bg-clip-text text-transparent">{{ now()->translatedFormat('d F Y') }}</p>
+                    <p class="text-xs font-bold text-primary-500 uppercase tracking-widest">{{ now()->translatedFormat('l') }}</p>
+                    <p class="text-lg font-black bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">{{ now()->translatedFormat('d F Y') }}</p>
                 </div>
-                <div class="p-4 bg-gradient-to-br from-siakad-500 to-purple-600 rounded-[20px] shadow-lg shadow-siakad-500/30">
+                <div class="p-4 bg-gradient-to-br from-primary-500 to-purple-600 rounded-[20px] shadow-lg shadow-primary-500/30">
                     <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
@@ -124,12 +124,12 @@
         <!-- Profile & IPK Card -->
         <div class="card-saas p-8 relative overflow-hidden group">
             <!-- Decorative Elements -->
-            <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-siakad-500/10 to-purple-500/10 rounded-full -mr-20 -mt-20 blur-2xl transition-all duration-500 group-hover:scale-125"></div>
-            <div class="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-pink-500/10 to-siakad-500/10 rounded-full -ml-16 -mb-16 blur-2xl transition-all duration-500 group-hover:scale-125"></div>
+            <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-primary-500/10 to-purple-500/10 rounded-full -mr-20 -mt-20 blur-2xl transition-all duration-500 group-hover:scale-125"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-pink-500/10 to-primary-500/10 rounded-full -ml-16 -mb-16 blur-2xl transition-all duration-500 group-hover:scale-125"></div>
 
             <div class="relative flex items-center gap-5 mb-8">
                 <div class="relative group/avatar">
-                    <div class="w-20 h-20 rounded-[22px] bg-gradient-to-br from-siakad-500 via-purple-600 to-pink-600 flex items-center justify-center text-white text-3xl font-black shadow-2xl shadow-siakad-500/40 transition-all duration-300 group-hover/avatar:scale-105 group-hover/avatar:rotate-3">
+                    <div class="w-20 h-20 rounded-[22px] bg-gradient-to-br from-primary-500 via-purple-600 to-pink-600 flex items-center justify-center text-white text-3xl font-black shadow-2xl shadow-primary-500/40 transition-all duration-300 group-hover/avatar:scale-105 group-hover/avatar:rotate-3">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
                     <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-br from-emerald-400 to-emerald-600 border-4 border-white dark:border-gray-800 rounded-full shadow-lg"></div>
@@ -142,7 +142,7 @@
 
             <div class="relative grid grid-cols-2 gap-5">
                 <!-- IPK Card -->
-                <div class="bg-gradient-to-br from-siakad-600 via-siakad-700 to-purple-700 rounded-[20px] p-6 text-white shadow-2xl shadow-siakad-600/30 transform transition-all duration-300 hover:scale-105 hover:-rotate-1 relative overflow-hidden group/ipk">
+                <div class="bg-gradient-to-br from-primary-600 via-primary-700 to-purple-700 rounded-[20px] p-6 text-white shadow-2xl shadow-primary-600/30 transform transition-all duration-300 hover:scale-105 hover:-rotate-1 relative overflow-hidden group/ipk">
                     <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover/ipk:opacity-100 transition-opacity"></div>
                     <p class="text-[10px] font-black opacity-80 uppercase tracking-widest mb-2 relative z-10">{{ __('GPA') }}</p>
                     <div class="flex items-baseline gap-2 relative z-10">
@@ -152,17 +152,17 @@
                 </div>
 
                 <!-- IPS Card -->
-                <div class="bg-white dark:bg-gray-800/50 rounded-[20px] p-6 border-2 border-gray-200 dark:border-gray-700 shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1 hover:border-siakad-500 relative overflow-hidden group/ips">
-                    <div class="absolute inset-0 bg-gradient-to-br from-siakad-500/5 to-purple-500/5 opacity-0 group-hover/ips:opacity-100 transition-opacity"></div>
+                <div class="bg-white dark:bg-gray-800/50 rounded-[20px] p-6 border-2 border-gray-200 dark:border-gray-700 shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1 hover:border-primary-500 relative overflow-hidden group/ips">
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-purple-500/5 opacity-0 group-hover/ips:opacity-100 transition-opacity"></div>
                     <p class="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2 relative z-10">{{ __('Semester IP') }}</p>
-                    <p class="text-4xl font-black bg-gradient-to-r from-siakad-600 to-purple-600 bg-clip-text text-transparent relative z-10">{{ $currentSemesterGpa ? number_format($currentSemesterGpa['gpa'], 2) : '-' }}</p>
+                    <p class="text-4xl font-black bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent relative z-10">{{ $currentSemesterGpa ? number_format($currentSemesterGpa['gpa'], 2) : '-' }}</p>
                 </div>
             </div>
 
             <div class="relative mt-8 pt-6 border-t border-gray-200 dark:border-gray-700/50 space-y-4">
                 <div class="flex items-center justify-between group/stat">
                     <div class="flex items-center gap-3">
-                        <div class="w-2 h-2 rounded-full bg-gradient-to-r from-siakad-500 to-purple-500"></div>
+                        <div class="w-2 h-2 rounded-full bg-gradient-to-r from-primary-500 to-purple-500"></div>
                         <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Credits Passed') }}</span>
                     </div>
                     <span class="text-base font-black text-gray-900 dark:text-white px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full">{{ $gpaData['total_credits'] ?? 0 }}</span>
@@ -172,7 +172,7 @@
                         <div class="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></div>
                         <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Max SKS') }}</span>
                     </div>
-                    <span class="text-base font-black bg-gradient-to-r from-siakad-600 to-purple-600 bg-clip-text text-transparent px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full">{{ $maxCredits }}</span>
+                    <span class="text-base font-black bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full">{{ $maxCredits }}</span>
                 </div>
             </div>
         </div>
@@ -182,16 +182,16 @@
             <!-- Pengisian KRS -->
             <a href="{{ route('students.study-plan.index') }}"
                 class="card-saas p-8 group relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]">
-                <div class="absolute inset-0 bg-gradient-to-br from-siakad-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div class="absolute top-0 right-0 p-4">
                     @if($currentStudyPlan && $currentStudyPlan->status === 'draft')
                     <span class="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">{{ __('Draft') }}</span>
                     @elseif(!$currentStudyPlan)
-                    <span class="px-3 py-1.5 bg-gradient-to-r from-siakad-500 to-purple-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">{{ __('Open') }}</span>
+                    <span class="px-3 py-1.5 bg-gradient-to-r from-primary-500 to-purple-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">{{ __('Open') }}</span>
                     @endif
                 </div>
-                <div class="relative w-16 h-16 bg-gradient-to-br from-siakad-100 to-purple-100 dark:from-siakad-900/30 dark:to-purple-900/30 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                    <svg class="w-8 h-8 text-siakad-600 dark:text-siakad-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="relative w-16 h-16 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                    <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                     </svg>
                 </div>
@@ -257,11 +257,11 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
         <!-- Credits per Semester Chart -->
         <div class="card-saas p-8 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-siakad-500/10 to-purple-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-500/10 to-purple-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
             <div class="flex items-center justify-between mb-6">
                 <h3 class="font-black text-gray-900 dark:text-white text-lg">{{ __('Credits per Semester') }}</h3>
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-siakad-100 to-purple-100 dark:from-siakad-900/30 dark:to-purple-900/30 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-siakad-600 dark:text-siakad-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
                 </div>

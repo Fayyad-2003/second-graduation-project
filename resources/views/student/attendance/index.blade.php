@@ -115,18 +115,18 @@
             <div class="card-saas p-2 flex flex-col md:flex-row gap-2">
                 <!-- Search (Full Width) -->
                 <div class="relative flex-1">
-                    <svg class="absolute left-4 top-3.5 w-5 h-5 text-siakad-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="absolute left-4 top-3.5 w-5 h-5 text-primary-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                     <input
                         x-model="search"
                         type="text"
                         placeholder="{{ __('Search for courses, codes or lecturers...') }}"
-                        class="w-full pl-12 pr-4 py-3 bg-transparent border-none text-siakad-dark placeholder-siakad-secondary focus:ring-0 focus:outline-none text-sm font-medium">
+                        class="w-full pl-12 pr-4 py-3 bg-transparent border-none text-primary-dark placeholder-primary-secondary focus:ring-0 focus:outline-none text-sm font-medium">
                 </div>
 
                 <!-- Filters, Sort & View Toggle -->
-                <div class="flex flex-wrap md:flex-nowrap items-center gap-2 p-1 bg-siakad-light dark:bg-slate-700 rounded-xl flex-shrink-0 w-full md:w-auto">
+                <div class="flex flex-wrap md:flex-nowrap items-center gap-2 p-1 bg-primary-light dark:bg-slate-700 rounded-xl flex-shrink-0 w-full md:w-auto">
                     <!-- Filter Buttons -->
                     <div class="flex w-full md:w-auto gap-1">
                         <button @click="filter = 'all'"
@@ -178,7 +178,7 @@
         <div x-show="filter === 'all' && todayCourses.length > 0" class="mb-10" style="display: none;">
             <div class="flex items-center gap-2 mb-4">
                 <div class="w-1 h-6 bg-[#234C6A] rounded-full"></div>
-                <h2 class="text-lg font-bold text-siakad-dark">{{ __('Today\'s Courses') }}</h2>
+                <h2 class="text-lg font-bold text-primary-dark">{{ __('Today\'s Courses') }}</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -214,9 +214,9 @@
         <!-- Main Content -->
         <div>
             <div class="flex items-center gap-2 mb-4">
-                <div class="w-1 h-6 bg-siakad-secondary rounded-full"></div>
-                <h2 class="text-lg font-bold text-siakad-dark">{{ __('All Subjects') }}</h2>
-                <span class="text-xs font-semibold px-2 py-1 bg-siakad-light dark:bg-slate-700 text-siakad-secondary rounded-full" x-text="filteredCourses.length"></span>
+                <div class="w-1 h-6 bg-primary-secondary rounded-full"></div>
+                <h2 class="text-lg font-bold text-primary-dark">{{ __('All Subjects') }}</h2>
+                <span class="text-xs font-semibold px-2 py-1 bg-primary-light dark:bg-slate-700 text-primary-secondary rounded-full" x-text="filteredCourses.length"></span>
             </div>
 
             <!-- Empty State -->
@@ -237,31 +237,31 @@
             <div x-show="viewMode === 'card'" class="space-y-6">
                 @foreach($attendanceBySemester as $semester => $courses)
                 <div x-data="{ open: {{ $loop->first ? 'true' : 'false' }} }" class="card-saas overflow-hidden">
-                    <button @click="open = !open" class="w-full px-6 py-4 flex items-center justify-between hover:bg-siakad-light/30 dark:hover:bg-slate-700/30 transition cursor-pointer">
+                    <button @click="open = !open" class="w-full px-6 py-4 flex items-center justify-between hover:bg-primary-light/30 dark:hover:bg-slate-700/30 transition cursor-pointer">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-siakad-primary flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-xl bg-primary-primary flex items-center justify-center">
                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
                             </div>
                             <div class="text-left">
-                                <h3 class="font-bold text-siakad-dark">{{ $semester }}</h3>
-                                <p class="text-xs text-siakad-secondary">{{ count($courses) }} {{ __('subjects') }}</p>
+                                <h3 class="font-bold text-primary-dark">{{ $semester }}</h3>
+                                <p class="text-xs text-primary-secondary">{{ count($courses) }} {{ __('subjects') }}</p>
                             </div>
                         </div>
-                        <svg class="w-5 h-5 text-siakad-secondary transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-primary-secondary transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div x-show="open" x-collapse class="border-t border-siakad-light dark:border-slate-700">
+                    <div x-show="open" x-collapse class="border-t border-primary-light dark:border-slate-700">
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
                             @foreach($courses as $course)
-                            <div class="bg-siakad-light/30 dark:bg-slate-700/30 rounded-xl p-5 hover:shadow-md transition-all duration-300 group relative">
+                            <div class="bg-primary-light/30 dark:bg-slate-700/30 rounded-xl p-5 hover:shadow-md transition-all duration-300 group relative">
                                 <div class="flex justify-between items-start mb-4">
                                     <div>
-                                        <span class="inline-block px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-siakad-secondary text-[10px] font-bold tracking-wide uppercase">{{ $course['code'] }}</span>
-                                        <h3 class="font-bold text-siakad-dark text-sm mt-2 group-hover:text-[#234C6A] transition-colors line-clamp-1">{{ $course['name'] }}</h3>
-                                        <p class="text-siakad-secondary text-xs mt-0.5 line-clamp-1">{{ $course['lecturer'] }}</p>
+                                        <span class="inline-block px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-primary-secondary text-[10px] font-bold tracking-wide uppercase">{{ $course['code'] }}</span>
+                                        <h3 class="font-bold text-primary-dark text-sm mt-2 group-hover:text-[#234C6A] transition-colors line-clamp-1">{{ $course['name'] }}</h3>
+                                        <p class="text-primary-secondary text-xs mt-0.5 line-clamp-1">{{ $course['lecturer'] }}</p>
                                     </div>
                                     <div class="text-right">
                                         <span class="text-xl font-extrabold" style="color: {{ $course['color'] }}">{{ $course['percentage'] }}%</span>
@@ -357,7 +357,7 @@
             <div x-show="viewMode === 'list' && totalPages > 1" class="mt-8 flex items-center justify-center gap-2" style="display: none;">
                 <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1"
                     class="px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                    :class="currentPage === 1 ? 'bg-siakad-light dark:bg-slate-700 text-siakad-secondary' : 'card-saas text-siakad-secondary hover:text-siakad-dark'">
+                    :class="currentPage === 1 ? 'bg-primary-light dark:bg-slate-700 text-primary-secondary' : 'card-saas text-primary-secondary hover:text-primary-dark'">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
@@ -366,14 +366,14 @@
                 <template x-for="page in totalPages" :key="page">
                     <button @click="goToPage(page)"
                         class="w-10 h-10 rounded-lg text-sm font-semibold transition-colors"
-                        :class="currentPage === page ? 'bg-[#234C6A] text-white shadow-md' : 'card-saas text-siakad-secondary hover:text-siakad-dark'"
+                        :class="currentPage === page ? 'bg-[#234C6A] text-white shadow-md' : 'card-saas text-primary-secondary hover:text-primary-dark'"
                         x-text="page">
                     </button>
                 </template>
 
                 <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages"
                     class="px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                    :class="currentPage === totalPages ? 'bg-siakad-light dark:bg-slate-700 text-siakad-secondary' : 'card-saas text-siakad-secondary hover:text-siakad-dark'">
+                    :class="currentPage === totalPages ? 'bg-primary-light dark:bg-slate-700 text-primary-secondary' : 'card-saas text-primary-secondary hover:text-primary-dark'">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
@@ -381,7 +381,7 @@
             </div>
 
             <!-- Page Info (only for list view) -->
-            <div x-show="viewMode === 'list' && totalPages > 1" class="mt-3 text-center text-xs text-siakad-secondary" style="display: none;">
+            <div x-show="viewMode === 'list' && totalPages > 1" class="mt-3 text-center text-xs text-primary-secondary" style="display: none;">
                 {{ __('Showing') }} <span x-text="((currentPage - 1) * perPage) + 1"></span> - <span x-text="Math.min(currentPage * perPage, filteredCourses.length)"></span> {{ __('of') }} <span x-text="filteredCourses.length"></span> {{ __('subjects') }}
             </div>
         </div>

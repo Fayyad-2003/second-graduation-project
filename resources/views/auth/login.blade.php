@@ -15,13 +15,13 @@
             <x-input-label for="email" :value="__('Email address')" class="sr-only" />
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400 group-focus-within:text-siakad-primary transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <svg class="h-5 w-5 text-gray-400 group-focus-within:text-primary-primary transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                         <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                     </svg>
                 </div>
                 <input id="email"
-                    class="block w-full pl-11 pr-4 py-3.5 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-siakad-primary focus:border-siakad-primary transition-all duration-200 outline-none placeholder-gray-400 dark:placeholder-gray-500 font-medium sm:text-sm"
+                    class="block w-full pl-11 pr-4 py-3.5 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-primary-primary focus:border-primary-primary transition-all duration-200 outline-none placeholder-gray-400 dark:placeholder-gray-500 font-medium sm:text-sm"
                     type="email"
                     name="email"
                     value="{{ old('email') }}"
@@ -39,12 +39,12 @@
 
             <div class="relative" x-data="{ show: false }">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400 group-focus-within:text-siakad-primary transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <svg class="h-5 w-5 text-gray-400 group-focus-within:text-primary-primary transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
                     </svg>
                 </div>
                 <input id="password"
-                    class="block w-full pl-11 pr-12 py-3.5 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-siakad-primary focus:border-siakad-primary transition-all duration-200 outline-none placeholder-gray-400 dark:placeholder-gray-500 font-medium sm:text-sm"
+                    class="block w-full pl-11 pr-12 py-3.5 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-primary-primary focus:border-primary-primary transition-all duration-200 outline-none placeholder-gray-400 dark:placeholder-gray-500 font-medium sm:text-sm"
                     :type="show ? 'text' : 'password'"
                     name="password"
                     required
@@ -73,7 +73,7 @@
                     <div class="flex items-center h-5">
                         <input id="remember_me"
                             type="checkbox"
-                            class="w-4 h-4 border border-gray-300 rounded text-siakad-primary focus:ring-siakad-primary/20 dark:bg-gray-800 dark:border-gray-600 dark:checked:bg-siakad-primary transition duration-150 ease-in-out"
+                            class="w-4 h-4 border border-gray-300 rounded text-primary-primary focus:ring-primary-primary/20 dark:bg-gray-800 dark:border-gray-600 dark:checked:bg-primary-primary transition duration-150 ease-in-out"
                             name="remember">
                     </div>
                     <div class="ml-2 text-sm">
@@ -83,14 +83,14 @@
             </label>
 
             @if (Route::has('password.request'))
-            <a class="text-sm font-medium text-siakad-primary hover:text-siakad-dark dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors" href="{{ route('password.request') }}">
+            <a class="text-sm font-medium text-primary-primary hover:text-primary-dark dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors" href="{{ route('password.request') }}">
                 {{ __('Forgot your password?') }}
             </a>
             @endif
         </div>
 
         <div class="pt-2">
-            <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-siakad-primary hover:bg-siakad-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-siakad-primary transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg">
+            <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-primary transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg">
                 {{ __('Log in') }}
             </button>
         </div>
@@ -99,7 +99,7 @@
         <!-- Future: Social Login -->
 
         <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-8">
-            {{ __('Having trouble?') }} <a href="#" class="font-medium text text-siakad-primary hover:text-siakad-dark dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors">{{ __('Contact support') }}</a>
+            {{ __('Having trouble?') }} <a href="#" class="font-medium text text-primary-primary hover:text-primary-dark dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors">{{ __('Contact support') }}</a>
         </p>
     </form>
 </x-guest-layout>

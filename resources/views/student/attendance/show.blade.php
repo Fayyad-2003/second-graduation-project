@@ -5,7 +5,7 @@
 
     <div class="mb-6">
         <a href="{{ route('students.attendance.index') }}"
-            class="inline-flex items-center gap-2 text-siakad-secondary hover:text-[#234C6A] transition text-sm font-medium">
+            class="inline-flex items-center gap-2 text-primary-secondary hover:text-[#234C6A] transition text-sm font-medium">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
@@ -43,8 +43,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
-            <p class="text-2xl font-bold text-siakad-dark">{{ $summary['present'] }}</p>
-            <p class="text-xs text-siakad-secondary">{{ __('Present') }}</p>
+            <p class="text-2xl font-bold text-primary-dark">{{ $summary['present'] }}</p>
+            <p class="text-xs text-primary-secondary">{{ __('Present') }}</p>
         </div>
         <div class="card-saas p-4 text-center">
             <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center mx-auto mb-2">
@@ -53,8 +53,8 @@
                         d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
-            <p class="text-2xl font-bold text-siakad-dark">{{ $summary['sick'] }}</p>
-            <p class="text-xs text-siakad-secondary">{{ __('Sick') }}</p>
+            <p class="text-2xl font-bold text-primary-dark">{{ $summary['sick'] }}</p>
+            <p class="text-xs text-primary-secondary">{{ __('Sick') }}</p>
         </div>
         <div class="card-saas p-4 text-center">
             <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mx-auto mb-2">
@@ -64,8 +64,8 @@
                     </path>
                 </svg>
             </div>
-            <p class="text-2xl font-bold text-siakad-dark">{{ $summary['excused'] }}</p>
-            <p class="text-xs text-siakad-secondary">{{ __('Permission') }}</p>
+            <p class="text-2xl font-bold text-primary-dark">{{ $summary['excused'] }}</p>
+            <p class="text-xs text-primary-secondary">{{ __('Permission') }}</p>
         </div>
         <div class="card-saas p-4 text-center">
             <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center mx-auto mb-2">
@@ -74,15 +74,15 @@
                     </path>
                 </svg>
             </div>
-            <p class="text-2xl font-bold text-siakad-dark">{{ $summary['absent'] }}</p>
-            <p class="text-xs text-siakad-secondary">{{ __('Absent') }}</p>
+            <p class="text-2xl font-bold text-primary-dark">{{ $summary['absent'] }}</p>
+            <p class="text-xs text-primary-secondary">{{ __('Absent') }}</p>
         </div>
     </div>
 
     <!-- Attendance History -->
     <div class="card-saas overflow-hidden">
-        <div class="px-6 py-4 border-b border-siakad-light dark:border-slate-700">
-            <h3 class="font-bold text-siakad-dark">{{ __('Attendance history for each meeting') }}</h3>
+        <div class="px-6 py-4 border-b border-primary-light dark:border-slate-700">
+            <h3 class="font-bold text-primary-dark">{{ __('Attendance history for each meeting') }}</h3>
         </div>
 
         @if($meetingList->isEmpty())
@@ -94,11 +94,11 @@
                     </path>
                 </svg>
             </div>
-            <p class="text-siakad-secondary">{{ __('No meetings recorded yet') }}</p>
+            <p class="text-primary-secondary">{{ __('No meetings recorded yet') }}</p>
         </div>
         @else
         <!-- Mobile View -->
-        <div class="md:hidden divide-y divide-siakad-light dark:divide-slate-700">
+        <div class="md:hidden divide-y divide-primary-light dark:divide-slate-700">
             @foreach($meetingList as $meeting)
             @php
             $attendance = $attendanceData[$meeting->id] ?? null;
@@ -125,14 +125,14 @@
                             class="w-8 h-8 rounded-lg bg-[#234C6A]/10 text-[#234C6A] flex items-center justify-center font-bold text-sm">
                             {{ $meeting->meeting_number }}
                         </div>
-                        <span class="font-medium text-siakad-dark text-sm">{{ __('Meeting') }} {{ $meeting->meeting_number }}</span>
+                        <span class="font-medium text-primary-dark text-sm">{{ __('Meeting') }} {{ $meeting->meeting_number }}</span>
                     </div>
                     <span
                         class="inline-flex px-2.5 py-1 rounded-full text-xs font-semibold {{ $statusColors[$status] }}">
                         {{ $statusLabels[$status] }}
                     </span>
                 </div>
-                <div class="text-xs text-siakad-secondary ml-11">
+                <div class="text-xs text-primary-secondary ml-11">
                     {{ $meeting->date->format('d M Y') }}
                     @if($meeting->topicalal) • {{ $meeting->topicalal }} @endif
                 </div>
@@ -152,7 +152,7 @@
                         <th class="text-center px-6 py-3 text-xs font-semibold uppercase tracking-wider">{{ __('Status') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-siakad-light dark:divide-slate-700">
+                <tbody class="divide-y divide-primary-light dark:divide-slate-700">
                     @foreach($meetingList as $meeting)
                     @php
                     $attendance = $attendanceData[$meeting->id] ?? null;
@@ -172,20 +172,20 @@
                     'not_recorded' => __('Not Recorded'),
                     ];
                     @endphp
-                    <tr class="hover:bg-siakad-light/30 dark:hover:bg-slate-700/50 transition">
+                    <tr class="hover:bg-primary-light/30 dark:hover:bg-slate-700/50 transition">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-lg bg-[#234C6A]/10 text-[#234C6A] flex items-center justify-center font-bold">
                                     {{ $meeting->meeting_number }}
                                 </div>
-                                <span class="font-medium text-siakad-dark">{{ __('Meeting') }} {{ $meeting->meeting_number }}</span>
+                                <span class="font-medium text-primary-dark">{{ __('Meeting') }} {{ $meeting->meeting_number }}</span>
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-siakad-secondary">
+                        <td class="px-6 py-4 text-primary-secondary">
                             {{ $meeting->date->format('d M Y') }}
                         </td>
-                        <td class="px-6 py-4 text-siakad-secondary">
+                        <td class="px-6 py-4 text-primary-secondary">
                             {{ $meeting->topicalal ?? '-' }}
                         </td>
                         <td class="px-6 py-4 text-center">

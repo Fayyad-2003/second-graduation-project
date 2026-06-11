@@ -32,10 +32,10 @@
 
     <style>
         :root {
-            --siakad-dark: #0c4a6e;
-            --siakad-primary: #0284c7;
-            --siakad-secondary: #0ea5e9;
-            --siakad-light: #e0f2fe;
+            --primary-dark: #0c4a6e;
+            --primary-primary: #0284c7;
+            --primary-secondary: #0ea5e9;
+            --primary-light: #e0f2fe;
             --bg-body: #f8fafc;
             --bg-card: #ffffff;
             --bg-sidebar: #ffffff;
@@ -136,27 +136,27 @@
         }
 
         /* Dark Mode Text Overrides */
-        .dark .text-siakad-dark {
+        .dark .text-primary-dark {
             color: var(--text-primary) !important;
         }
 
-        .dark .text-siakad-secondary {
+        .dark .text-primary-secondary {
             color: #D1D5DB !important;
         }
 
-        .dark .text-siakad-primary {
+        .dark .text-primary-primary {
             color: #60A5FA !important;
         }
 
-        .dark .border-siakad-light {
+        .dark .border-primary-light {
             border-color: var(--border-color) !important;
         }
 
-        .dark .divide-siakad-light> :not([hidden])~ :not([hidden]) {
+        .dark .divide-primary-light> :not([hidden])~ :not([hidden]) {
             border-color: var(--border-color) !important;
         }
 
-        .dark .bg-siakad-light {
+        .dark .bg-primary-light {
             background-color: #334155 !important;
         }
 
@@ -191,7 +191,7 @@
 
         .btn-ghost-saas {
             background: linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(56, 189, 248, 0.05) 100%);
-            color: var(--siakad-primary);
+            color: var(--primary-primary);
             border-radius: 14px;
             transition: all 0.3s ease;
             border: 1px solid rgba(14, 165, 233, 0.1);
@@ -223,7 +223,7 @@
 
         .input-saas:focus {
             background-color: var(--bg-card);
-            border-color: var(--siakad-primary);
+            border-color: var(--primary-primary);
             box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12), 0 4px 12px -2px rgba(14, 165, 233, 0.2);
             outline: none;
             transform: translateY(-1px);
@@ -244,12 +244,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--siakad-light);
+            background: var(--primary-light);
             border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--siakad-secondary);
+            background: var(--primary-secondary);
         }
 
         /* Animations */
@@ -457,14 +457,14 @@
                 <div class="flex items-center gap-3 overflow-hidden">
                     <button @click="if(!sidebarOpen) sidebarOpen = true"
                         :class="!sidebarOpen ? 'cursor-pointer hover:scale-110' : 'cursor-default'"
-                        class="w-11 h-11 rounded-2xl bg-gradient-to-br from-siakad-primary to-siakad-dark flex items-center justify-center flex-shrink-0 transition-all duration-300 shadow-lg hover:shadow-xl">
+                        class="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary-primary to-primary-dark flex items-center justify-center flex-shrink-0 transition-all duration-300 shadow-lg hover:shadow-xl">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
                             </path>
                     </button>
                     <div class="sidebar-logo-text">
-                        <h1 class="text-lg font-bold bg-gradient-to-r from-siakad-primary to-siakad-dark bg-clip-text text-transparent">{{ config('app.name') }}
+                        <h1 class="text-lg font-bold bg-gradient-to-r from-primary-primary to-primary-dark bg-clip-text text-transparent">{{ config('app.name') }}
                         </h1>
                         <p class="text-[10px] font-medium tracking-wider uppercase" style="color: var(--text-secondary);">{{ __('Academic Management') }}
                         </p>
@@ -495,7 +495,7 @@
                 @if(Auth::user()->isAdmin())
                 <!-- Admin Panel -->
                 <a href="{{ url('admin/dashboard') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/dashboard') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
@@ -506,13 +506,13 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('Master Data') }}
                     </p>
                 </div>
                 @if(Auth::user()->role === 'superadmin')
                 <a href="{{ url('admin/faculty') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/faculty*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/faculty*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
@@ -521,7 +521,7 @@
                     <span class="sidebar-text">{{ __('Faculties') }}</span>
                 </a>
                 <a href="{{ url('admin/academic-year') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/academic-year*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/academic-year*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
@@ -530,7 +530,7 @@
                     <span class="sidebar-text">{{ __('Academic Year') }}</span>
                 </a>
                 <a href="{{ url('admin/users') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/users*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/users*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
@@ -540,7 +540,7 @@
                 </a>
                 @endif
                 <a href="{{ url('admin/study-program') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/study-program*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/study-program*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -549,7 +549,7 @@
                     <span class="sidebar-text">{{ __('Study Programs') }}</span>
                 </a>
                 <a href="{{ url('admin/course') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/course*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/course*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -558,7 +558,7 @@
                     <span class="sidebar-text">{{ __('Courses') }}</span>
                 </a>
                 <a href="{{ url('admin/class') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/class*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/class*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
@@ -568,12 +568,12 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('Administration') }}
                     </p>
                 </div>
                 <a href="{{ url('admin/student') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/student*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/student*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
@@ -582,7 +582,7 @@
                     <span class="sidebar-text">{{ __('Students') }}</span>
                 </a>
                 <a href="{{ url('admin/lecturer') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/lecturer*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/lecturer*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -590,7 +590,7 @@
                     <span class="sidebar-text">{{ __('Lecturers') }}</span>
                 </a>
                 <a href="{{ route('admin.notification.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/notification*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/notification*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
@@ -599,7 +599,7 @@
                     <span class="sidebar-text">{{ __('Notifications') }}</span>
                 </a>
                 <a href="{{ route('admin.document-application.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/document-*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/document-*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -612,7 +612,7 @@
                     @endif
                 </a>
                 <a href="{{ route('admin.document-type.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/document-type*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/document-type*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
@@ -623,7 +623,7 @@
                     <span class="sidebar-text">{{ __('Document Settings') }}</span>
                 </a>
                 <a href="{{ route('admin.report.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/report*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/report*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -636,7 +636,7 @@
                     @endif
                 </a>
                 <a href="{{ url('admin/room') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/room*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/room*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
@@ -647,12 +647,12 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('Academic') }}
                     </p>
                 </div>
                 <a href="{{ route('admin.schedule-analysis.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('admin.schedule-analysis.*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('admin.schedule-analysis.*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 17v-2m3 2v-4m3 2v-6m-8-3h7a2 2 0 012 2v12a2 2 0 01-2 2h-7a2 2 0 01-2-2V5a2 2 0 012-2z">
@@ -661,7 +661,7 @@
                     <span class="sidebar-text">{{ __('Schedule Analysis') }}</span>
                 </a>
                 <a href="{{ url('admin/study-plan-approval') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/study-plan-approval*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/study-plan-approval*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
@@ -675,7 +675,7 @@
                     @endif
                 </a>
                 <a href="{{ url('admin/thesis') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/thesis*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/thesis*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -684,7 +684,7 @@
                     <span class="sidebar-text">{{ __('Theses & Projects') }}</span>
                 </a>
                 <a href="{{ url('admin/internship') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/internship*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/internship*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
@@ -693,7 +693,7 @@
                     <span class="sidebar-text">{{ __('Internship') }}</span>
                 </a>
                 <a href="{{ url('admin/lecturer-attendance') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/lecturer-attendance*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/lecturer-attendance*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -701,7 +701,7 @@
                     <span class="sidebar-text">{{ __('Lecturer Attendance') }}</span>
                 </a>
                 <a href="{{ url('admin/semester-calendar') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('admin/semester-calendar*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/semester-calendar*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
@@ -713,7 +713,7 @@
 
                 @if(Auth::user()->role === 'student')
                 <a href="{{ url('students/dashboard') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/dashboard') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/dashboard') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
@@ -724,12 +724,12 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('Academic') }}
                     </p>
                 </div>
                 <a href="{{ url('students/study-plan') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/study-plan*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/study-plan*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -745,7 +745,7 @@
                     @endif
                 </a>
                 <a href="{{ url('students/transcript') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/transcript*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/transcript*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
@@ -754,7 +754,7 @@
                     <span class="sidebar-text">{{ __('Academic Transcript') }}</span>
                 </a>
                 <a href="{{ url('students/semester-calendar') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/semester-calendar*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/semester-calendar*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
@@ -763,14 +763,14 @@
                     <span class="sidebar-text">{{ __('Semester Calendar') }}</span>
                 </a>
                 <a href="{{ url('students/graduation-checker') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/graduation-checker*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/graduation-checker*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6M12 20h.01M5 12.5V17a3 3 0 003 3h8a3 3 0 003-3v-4.5" />
                     </svg>
                     <span class="sidebar-text">{{ __('Graduation Checker') }}</span>
                 </a>
                 <a href="{{ route('students.document-application.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/document-application*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/document-application*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -779,7 +779,7 @@
                     <span class="sidebar-text">{{ __('Document Requests') }}</span>
                 </a>
                 <a href="{{ url('students/attendance') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/attendance*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/attendance*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
@@ -788,7 +788,7 @@
                     <span class="sidebar-text">{{ __('Attendance') }}</span>
                 </a>
                 <a href="{{ url('students/schedule') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/schedule*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/schedule*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
@@ -797,7 +797,7 @@
                     <span class="sidebar-text">{{ __('Academic Schedule') }}</span>
                 </a>
                 <a href="{{ url('students/grade-report') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/grade-report*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/grade-report*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -806,7 +806,7 @@
                     <span class="sidebar-text">{{ __('Grade Report') }}</span>
                 </a>
                 <a href="{{ url('students/thesis') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/thesis*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/thesis*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -815,7 +815,7 @@
                     <span class="sidebar-text">{{ __('Theses & Projects') }}</span>
                 </a>
                 <a href="{{ url('students/internship') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/internship*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/internship*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
@@ -824,7 +824,7 @@
                     <span class="sidebar-text">{{ __('Internship') }}</span>
                 </a>
                 <a href="{{ route('students.report.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/report*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/report*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -835,7 +835,7 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('AI Assistant') }}
                     </p>
                 </div>
@@ -846,11 +846,11 @@
                         </svg>
                     </x-slot>
                     <a href="{{ url('students/ai-advisor') }}"
-                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/ai-advisor*') ? 'active' : '' }}">
+                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/ai-advisor*') ? 'active' : '' }}">
                         <span class="sidebar-text">{{ __('Chat with AI') }}</span>
                     </a>
                 </x-sidebar-dropdown>
-                
+
                 <x-sidebar-dropdown title="AI Learning Tools" :active="request()->is('students/study-plan-ai*') || request()->is('students/quiz-ai*') || request()->is('students/career-roadmap*') || request()->is('students/subject-search*') || request()->is('students/skill-tree*') || request()->is('students/source-finder*') || request()->routeIs('students.recommendations.*')">
                     <x-slot name="icon">
                         <svg class="w-[18px] h-[18px] flex-shrink-0 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -858,42 +858,42 @@
                         </svg>
                     </x-slot>
                     <a href="{{ url('students/study-plan-ai') }}"
-                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/study-plan-ai*') ? 'active' : '' }}">
+                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/study-plan-ai*') ? 'active' : '' }}">
                         <span class="sidebar-text">{{ __('Smart Study Plan') }}</span>
                     </a>
                     <a href="{{ url('students/quiz-ai') }}"
-                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/quiz-ai*') ? 'active' : '' }}">
+                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/quiz-ai*') ? 'active' : '' }}">
                         <span class="sidebar-text">{{ __('AI Quizzes') }}</span>
                     </a>
                     <a href="{{ url('students/career-roadmap') }}"
-                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/career-roadmap*') ? 'active' : '' }}">
+                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/career-roadmap*') ? 'active' : '' }}">
                         <span class="sidebar-text">{{ __('Career Roadmap') }}</span>
                     </a>
                     <a href="{{ url('students/subject-search') }}"
-                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/subject-search*') ? 'active' : '' }}">
+                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/subject-search*') ? 'active' : '' }}">
                         <span class="sidebar-text">{{ __('Subject Search') }}</span>
                     </a>
                     <a href="{{ url('students/skill-tree') }}"
-                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/skill-tree*') ? 'active' : '' }}">
+                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/skill-tree*') ? 'active' : '' }}">
                         <span class="sidebar-text">{{ __('Skill Tree') }}</span>
                     </a>
                     <a href="{{ url('students/source-finder') }}"
-                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/source-finder*') ? 'active' : '' }}">
+                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/source-finder*') ? 'active' : '' }}">
                         <span class="sidebar-text">{{ __('Source Finder') }}</span>
                     </a>
                     <a href="{{ route('students.recommendations.index') }}"
-                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('students.recommendations.*') ? 'active' : '' }}">
+                        class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('students.recommendations.*') ? 'active' : '' }}">
                         <span class="sidebar-text">{{ __('Recommendations') }}</span>
                     </a>
                 </x-sidebar-dropdown>
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('E-Learning') }}
                     </p>
                 </div>
                 <a href="{{ url('students/lms') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/lms*') || request()->is('students/material*') || request()->is('students/assignment*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/lms*') || request()->is('students/material*') || request()->is('students/assignment*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -904,12 +904,12 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('Personal') }}
                     </p>
                 </div>
                 <a href="{{ route('students.profile.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('students/profile*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/profile*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -920,7 +920,7 @@
 
                 @if(Auth::user()->role === 'lecturer')
                 <a href="{{ route('lecturers.dashboard') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.dashboard') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.dashboard') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
@@ -932,7 +932,7 @@
                 <div class="pt-5 pb-2">
                 </div>
                 <a href="{{ route('lecturers.supervision.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.supervision.index') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.supervision.index') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
@@ -941,7 +941,7 @@
                     <span class="sidebar-text">{{ __('Supervised Students') }}</span>
                 </a>
                 <a href="{{ route('lecturers.supervision.study-plan-approval') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.supervision.study-plan-approval') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.supervision.study-plan-approval') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
@@ -961,12 +961,12 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('Communication') }}
                     </p>
                 </div>
                 <a href="{{ route('lecturers.chat-requests.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.chat-requests.*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.chat-requests.*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
@@ -978,11 +978,11 @@
                     @endphp
                     @if($pendingChatRequests > 0)
                     <span
-                        class="ml-auto px-2.5 py-1 text-[10px] font-bold bg-gradient-to-br from-siakad-primary to-siakad-dark text-white rounded-full shadow-lg">{{ $pendingChatRequests }}</span>
+                        class="ml-auto px-2.5 py-1 text-[10px] font-bold bg-gradient-to-br from-primary-primary to-primary-dark text-white rounded-full shadow-lg">{{ $pendingChatRequests }}</span>
                     @endif
                 </a>
                 <a href="{{ route('lecturers.notification.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->is('lecturers/notification*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('lecturers/notification*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
@@ -993,12 +993,12 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('Teaching') }}
                     </p>
                 </div>
                 <a href="{{ route('lecturers.grading.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.grading.*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.grading.*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
@@ -1007,7 +1007,7 @@
                     <span class="sidebar-text">{{ __('Grading') }}</span>
                 </a>
                 <a href="{{ route('lecturers.attendance-input.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.attendance-input.*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.attendance-input.*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
@@ -1016,7 +1016,7 @@
                     <span class="sidebar-text">{{ __('Student Attendance') }}</span>
                 </a>
                 <a href="{{ route('lecturers.thesis.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.thesis.*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.thesis.*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -1025,7 +1025,7 @@
                     <span class="sidebar-text">{{ __('Thesis Supervision') }}</span>
                 </a>
                 <a href="{{ route('lecturers.internship.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.internship.*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.internship.*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
@@ -1034,7 +1034,7 @@
                     <span class="sidebar-text">{{ __('Internship Supervision') }}</span>
                 </a>
                 <a href="{{ route('lecturers.attendance.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.attendance.*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.attendance.*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -1044,12 +1044,12 @@
 
                 <div class="pt-5 pb-2">
                     <p
-                        class="px-3 text-[9px] font-bold text-siakad-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
+                        class="px-3 text-[9px] font-bold text-primary-secondary/50 uppercase tracking-[0.15em] sidebar-section-title">
                         {{ __('E-Learning') }}
                     </p>
                 </div>
                 <a href="{{ route('lecturers.lms.index') }}"
-                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-siakad-secondary text-sm font-medium {{ request()->routeIs('lecturers.lms.*') || request()->routeIs('lecturers.material.*') || request()->routeIs('lecturers.assignment.*') ? 'active' : '' }}">
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('lecturers.lms.*') || request()->routeIs('lecturers.material.*') || request()->routeIs('lecturers.assignment.*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -1062,9 +1062,9 @@
 
             <!-- User Info -->
             <div class="absolute bottom-0 left-0 right-0 p-4" style="background: linear-gradient(to top, var(--bg-sidebar) 0%, transparent 100%);">
-                <div class="flex items-center gap-3 user-section bg-gradient-to-r from-siakad-primary/10 to-siakad-dark/10 rounded-2xl p-3 backdrop-blur-sm">
+                <div class="flex items-center gap-3 user-section bg-gradient-to-r from-primary-primary/10 to-primary-dark/10 rounded-2xl p-3 backdrop-blur-sm">
                     <div
-                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-siakad-primary to-siakad-dark flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow-lg">
+                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-primary to-primary-dark flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow-lg">
                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                     </div>
                     <div class="flex-1 min-w-0 sidebar-user-info">
@@ -1098,7 +1098,7 @@
                     <!-- Mobile Hamburger (not for student) -->
                     @if(Auth::user()->role !== 'student')
                     <button @click="mobileSidebarOpen = true"
-                        class="md:hidden p-2 -ml-2 rounded-lg text-siakad-secondary hover:bg-siakad-light/50 transition">
+                        class="md:hidden p-2 -ml-2 rounded-lg text-primary-secondary hover:bg-primary-light/50 transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16"></path>
@@ -1107,7 +1107,7 @@
                     @endif
 
                     @isset($header)
-                    <h1 class="text-xl font-bold truncate max-w-[200px] md:max-w-none bg-gradient-to-r from-siakad-primary to-siakad-dark bg-clip-text text-transparent">{{ $header }}</h1>
+                    <h1 class="text-xl font-bold truncate max-w-[200px] md:max-w-none bg-gradient-to-r from-primary-primary to-primary-dark bg-clip-text text-transparent">{{ $header }}</h1>
                     @endisset
                 </div>
                 <div class="flex items-center gap-3 md:gap-5">
@@ -1173,7 +1173,7 @@
                                 @forelse($notifications as $notif)
                                 @php $isRead = $notif->read_at !== null; @endphp
                                 <a href="{{ route('notifications.index') }}"
-                                    class="block px-4 py-3 hover:bg-siakad-light/30 transition {{ !$isRead ? 'bg-indigo-50/50' : '' }}"
+                                    class="block px-4 py-3 hover:bg-primary-light/30 transition {{ !$isRead ? 'bg-indigo-50/50' : '' }}"
                                     style="border-bottom: 1px solid var(--border-color);">
                                     <div class="flex gap-3">
                                         <span class="text-lg">{{ $notif->icon }}</span>
@@ -1199,7 +1199,7 @@
                             </div>
                             @if($notifications->isNotEmpty())
                             <a href="{{ route('notifications.index') }}"
-                                class="block px-4 py-3 text-center text-sm text-indigo-600 hover:bg-siakad-light/30 transition">{{ __('View All') }}</a>
+                                class="block px-4 py-3 text-center text-sm text-indigo-600 hover:bg-primary-light/30 transition">{{ __('View All') }}</a>
                             @endif
                         </div>
                     </div>
@@ -1239,7 +1239,7 @@
     <nav
         class="fixed bottom-0 z-50 w-full bg-white border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700 md:hidden flex justify-around items-center h-16 pb-safe safe-area-bottom">
         <a href="{{ url('students/dashboard') }}"
-            class="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium {{ request()->is('students/dashboard') ? 'text-siakad-primary dark:text-blue-400' : 'text-gray-500 dark:text-gray-400' }}">
+            class="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium {{ request()->is('students/dashboard') ? 'text-primary-primary dark:text-blue-400' : 'text-gray-500 dark:text-gray-400' }}">
             <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
@@ -1249,7 +1249,7 @@
         </a>
 
         <a href="{{ url('students/schedule') }}"
-            class="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium {{ request()->is('students/schedule*') ? 'text-siakad-primary dark:text-blue-400' : 'text-gray-500 dark:text-gray-400' }}">
+            class="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium {{ request()->is('students/schedule*') ? 'text-primary-primary dark:text-blue-400' : 'text-gray-500 dark:text-gray-400' }}">
             <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -1258,9 +1258,9 @@
         </a>
 
         <a href="{{ route('students.attendance.index') }}"
-            class="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium {{ request()->routeIs('students.attendance.*') ? 'text-siakad-primary dark:text-blue-400' : 'text-gray-500 dark:text-gray-400' }}">
+            class="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium {{ request()->routeIs('students.attendance.*') ? 'text-primary-primary dark:text-blue-400' : 'text-gray-500 dark:text-gray-400' }}">
             <div
-                class="w-12 h-12 bg-siakad-primary rounded-full flex items-center justify-center -mt-6 border-4 border-white dark:border-gray-900 shadow-lg">
+                class="w-12 h-12 bg-primary-primary rounded-full flex items-center justify-center -mt-6 border-4 border-white dark:border-gray-900 shadow-lg">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 4v1m6 11h2m-6 0h-2v4h2v-4zM6 16H4v4h2v-4zM6 9H4v5h2V9zm6 0h-2v5h2V9zm6 0h-2v5h2V9z">
@@ -1271,7 +1271,7 @@
         </a>
 
         <a href="{{ url('students/grade-report') }}"
-            class="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium {{ request()->is('students/grade-report*') ? 'text-siakad-primary dark:text-blue-400' : 'text-gray-500 dark:text-gray-400' }}">
+            class="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium {{ request()->is('students/grade-report*') ? 'text-primary-primary dark:text-blue-400' : 'text-gray-500 dark:text-gray-400' }}">
             <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">

@@ -1,14 +1,14 @@
 <x-app-layout>
     <div class="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div>
-            <h1 class="text-3xl font-black tracking-tight text-siakad-900 dark:text-white">{{ __('GPA Warning') }}</h1>
-            <p class="text-siakad-500 font-medium mt-2 flex items-center gap-2">
-                <span class="w-8 h-px bg-siakad-200"></span>
+            <h1 class="text-3xl font-black tracking-tight text-primary-900 dark:text-white">{{ __('GPA Warning') }}</h1>
+            <p class="text-primary-500 font-medium mt-2 flex items-center gap-2">
+                <span class="w-8 h-px bg-primary-200"></span>
                 {{ __('Monitor and notify students with low cumulative GPA.') }}
             </p>
         </div>
         <a href="{{ route('admin.student.index') }}"
-            class="btn-ghost-saas px-5 py-2.5 rounded-xl text-sm font-black flex items-center gap-2 border border-siakad-100 dark:border-siakad-800 text-siakad-600">
+            class="btn-ghost-saas px-5 py-2.5 rounded-xl text-sm font-black flex items-center gap-2 border border-primary-100 dark:border-primary-800 text-primary-600">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
             </svg>
@@ -37,8 +37,8 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-3xl font-black text-siakad-900 dark:text-white leading-tight">{{ $totalAtRisk }}</p>
-                    <p class="text-[10px] text-siakad-400 font-black uppercase tracking-widest mt-1">{{ __('Total At-Risk') }}</p>
+                    <p class="text-3xl font-black text-primary-900 dark:text-white leading-tight">{{ $totalAtRisk }}</p>
+                    <p class="text-[10px] text-primary-400 font-black uppercase tracking-widest mt-1">{{ __('Total At-Risk') }}</p>
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
                 </div>
                 <div>
                     <p class="text-3xl font-black text-red-600 dark:text-red-400 leading-tight">{{ $dangerCount }}</p>
-                    <p class="text-[10px] text-siakad-400 font-black uppercase tracking-widest mt-1">{{ __('Academic Probation') }}</p>
+                    <p class="text-[10px] text-primary-400 font-black uppercase tracking-widest mt-1">{{ __('Academic Probation') }}</p>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
                 </div>
                 <div>
                     <p class="text-3xl font-black text-yellow-600 dark:text-yellow-400 leading-tight">{{ $cautionCount }}</p>
-                    <p class="text-[10px] text-siakad-400 font-black uppercase tracking-widest mt-1">{{ __('Low GPA Warning') }}</p>
+                    <p class="text-[10px] text-primary-400 font-black uppercase tracking-widest mt-1">{{ __('Low GPA Warning') }}</p>
                 </div>
             </div>
         </div>
@@ -104,7 +104,7 @@
                     {{ __('Filter') }}
                 </button>
                 @if(request()->anyFilled(['study_program_id', 'batch', 'level']))
-                <a href="{{ route('admin.gpa-warning.index') }}" class="btn-ghost-saas px-4 py-2.5 rounded-xl text-sm font-bold text-siakad-400 hover:text-siakad-600">
+                <a href="{{ route('admin.gpa-warning.index') }}" class="btn-ghost-saas px-4 py-2.5 rounded-xl text-sm font-bold text-primary-400 hover:text-primary-600">
                     {{ __('Reset') }}
                 </a>
                 @endif
@@ -119,27 +119,27 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
         </div>
-        <h3 class="text-xl font-black text-siakad-900 dark:text-white mb-2">{{ __('All Clear!') }}</h3>
-        <p class="text-siakad-400 font-bold max-w-sm mx-auto leading-relaxed">{{ __('No students are currently at risk based on the defined GPA thresholds.') }}</p>
+        <h3 class="text-xl font-black text-primary-900 dark:text-white mb-2">{{ __('All Clear!') }}</h3>
+        <p class="text-primary-400 font-bold max-w-sm mx-auto leading-relaxed">{{ __('No students are currently at risk based on the defined GPA thresholds.') }}</p>
     </div>
     @else
     <form id="notifyForm" action="{{ route('admin.gpa-warning.notify') }}" method="POST">
         @csrf
 
         <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div class="flex items-center gap-4 bg-siakad-50/50 dark:bg-siakad-900/30 px-5 py-2.5 rounded-2xl border border-siakad-100/50 dark:border-siakad-800/50">
-                <label class="flex items-center gap-3 text-sm font-black text-siakad-700 dark:text-siakad-300 cursor-pointer">
-                    <input type="checkbox" id="selectAll" class="w-5 h-5 rounded-lg border-siakad-200 text-siakad-primary focus:ring-siakad-primary transition-all cursor-pointer">
+            <div class="flex items-center gap-4 bg-primary-50/50 dark:bg-primary-900/30 px-5 py-2.5 rounded-2xl border border-primary-100/50 dark:border-primary-800/50">
+                <label class="flex items-center gap-3 text-sm font-black text-primary-700 dark:text-primary-300 cursor-pointer">
+                    <input type="checkbox" id="selectAll" class="w-5 h-5 rounded-lg border-primary-200 text-primary-primary focus:ring-primary-primary transition-all cursor-pointer">
                     {{ __('Select All') }}
                 </label>
-                <div id="selectedCount" class="hidden h-5 w-px bg-siakad-200 dark:bg-siakad-800"></div>
-                <span id="selectedCountLabel" class="text-xs font-black text-siakad-primary uppercase tracking-widest hidden">
+                <div id="selectedCount" class="hidden h-5 w-px bg-primary-200 dark:bg-primary-800"></div>
+                <span id="selectedCountLabel" class="text-xs font-black text-primary-primary uppercase tracking-widest hidden">
                     <span id="selectedNumber">0</span> {{ __('Selected') }}
                 </span>
             </div>
-            
+
             <button type="submit" id="notifyBtn" disabled
-                class="btn-primary-saas px-6 py-3 rounded-xl text-sm font-black flex items-center gap-2 shadow-lg shadow-siakad-600/20 disabled:opacity-50 disabled:shadow-none transition-all">
+                class="btn-primary-saas px-6 py-3 rounded-xl text-sm font-black flex items-center gap-2 shadow-lg shadow-primary-600/20 disabled:opacity-50 disabled:shadow-none transition-all">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                 </svg>
@@ -152,53 +152,53 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-start border-collapse">
                     <thead>
-                        <tr class="bg-siakad-50/50 dark:bg-siakad-900/30 border-b border-siakad-100/50 dark:border-siakad-800/50">
+                        <tr class="bg-primary-50/50 dark:bg-primary-900/30 border-b border-primary-100/50 dark:border-primary-800/50">
                             <th class="py-5 px-8 w-16 text-center"></th>
-                            <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Student') }}</th>
-                            <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Student ID') }}</th>
-                            <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-start">{{ __('Program') }}</th>
-                            <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-center">{{ __('Batch') }}</th>
-                            <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-center">{{ __('GPA') }}</th>
-                            <th class="py-5 px-6 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-center">{{ __('Status') }}</th>
-                            <th class="py-5 px-8 text-[10px] font-black text-siakad-400 uppercase tracking-widest text-end">{{ __('Actions') }}</th>
+                            <th class="py-5 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Student') }}</th>
+                            <th class="py-5 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Student ID') }}</th>
+                            <th class="py-5 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-start">{{ __('Program') }}</th>
+                            <th class="py-5 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-center">{{ __('Batch') }}</th>
+                            <th class="py-5 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-center">{{ __('GPA') }}</th>
+                            <th class="py-5 px-6 text-[10px] font-black text-primary-400 uppercase tracking-widest text-center">{{ __('Status') }}</th>
+                            <th class="py-5 px-8 text-[10px] font-black text-primary-400 uppercase tracking-widest text-end">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-siakad-50 dark:divide-siakad-800/50">
+                    <tbody class="divide-y divide-primary-50 dark:divide-primary-800/50">
                         @foreach($atRiskStudents as $item)
                         @php $s = $item['student']; @endphp
-                        <tr class="hover:bg-siakad-50/30 dark:hover:bg-siakad-900/20 transition-colors group">
+                        <tr class="hover:bg-primary-50/30 dark:hover:bg-primary-900/20 transition-colors group">
                             <td class="py-5 px-8 text-center">
                                 <input type="checkbox" name="student_ids[]" value="{{ $s->id }}"
-                                    class="student-checkbox w-5 h-5 rounded-lg border-siakad-200 text-siakad-primary focus:ring-siakad-primary transition-all cursor-pointer">
+                                    class="student-checkbox w-5 h-5 rounded-lg border-primary-200 text-primary-primary focus:ring-primary-primary transition-all cursor-pointer">
                             </td>
                             <td class="py-5 px-6 text-start">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-siakad-50 to-siakad-100 dark:from-siakad-900/50 dark:to-siakad-800/50 flex items-center justify-center text-siakad-600 dark:text-siakad-400 text-sm font-black shadow-sm group-hover:scale-110 transition-transform">
+                                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/50 dark:to-primary-800/50 flex items-center justify-center text-primary-600 dark:text-primary-400 text-sm font-black shadow-sm group-hover:scale-110 transition-transform">
                                         {{ strtoupper(substr($s->user->name ?? '-', 0, 1)) }}
                                     </div>
                                     <div class="min-w-0">
-                                        <p class="text-sm font-black text-siakad-900 dark:text-white truncate leading-tight">{{ $s->user->name ?? '-' }}</p>
+                                        <p class="text-sm font-black text-primary-900 dark:text-white truncate leading-tight">{{ $s->user->name ?? '-' }}</p>
                                         @if($s->academicAdvisor)
-                                        <p class="text-[10px] text-siakad-400 font-bold uppercase tracking-wider mt-0.5">{{ __('Advisor') }}: {{ $s->academicAdvisor->user->name ?? '-' }}</p>
+                                        <p class="text-[10px] text-primary-400 font-bold uppercase tracking-wider mt-0.5">{{ __('Advisor') }}: {{ $s->academicAdvisor->user->name ?? '-' }}</p>
                                         @endif
                                     </div>
                                 </div>
                             </td>
                             <td class="py-5 px-6 text-start">
-                                <span class="text-xs font-black text-siakad-700 dark:text-siakad-300 font-mono tracking-wider">{{ $s->student_number }}</span>
+                                <span class="text-xs font-black text-primary-700 dark:text-primary-300 font-mono tracking-wider">{{ $s->student_number }}</span>
                             </td>
                             <td class="py-5 px-6 text-start">
-                                <p class="text-xs font-bold text-siakad-600 dark:text-siakad-400 leading-tight">{{ $s->studyProgram->name ?? '-' }}</p>
+                                <p class="text-xs font-bold text-primary-600 dark:text-primary-400 leading-tight">{{ $s->studyProgram->name ?? '-' }}</p>
                             </td>
                             <td class="py-5 px-6 text-center">
-                                <span class="inline-flex px-2.5 py-1 text-[10px] font-black bg-siakad-50 dark:bg-siakad-900 text-siakad-500 dark:text-siakad-400 rounded-lg border border-siakad-100 dark:border-siakad-800 uppercase tracking-widest">{{ $s->batch }}</span>
+                                <span class="inline-flex px-2.5 py-1 text-[10px] font-black bg-primary-50 dark:bg-primary-900 text-primary-500 dark:text-primary-400 rounded-lg border border-primary-100 dark:border-primary-800 uppercase tracking-widest">{{ $s->batch }}</span>
                             </td>
                             <td class="py-5 px-6 text-center">
                                 <div class="flex flex-col items-center">
                                     <span class="text-lg font-black {{ $item['level'] === 'danger' ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400' }}">
                                         {{ number_format($item['gpa'], 2) }}
                                     </span>
-                                    <span class="text-[9px] font-black text-siakad-400 uppercase tracking-widest">{{ $item['total_credits'] }} {{ __('Credits') }}</span>
+                                    <span class="text-[9px] font-black text-primary-400 uppercase tracking-widest">{{ $item['total_credits'] }} {{ __('Credits') }}</span>
                                 </div>
                             </td>
                             <td class="py-5 px-6 text-center">
@@ -214,7 +214,7 @@
                             </td>
                             <td class="py-5 px-8 text-end">
                                 <a href="{{ route('admin.student.show', $s) }}"
-                                    class="p-2 text-siakad-secondary hover:text-siakad-primary hover:bg-siakad-primary/10 rounded-lg transition"
+                                    class="p-2 text-primary-secondary hover:text-primary-primary hover:bg-primary-primary/10 rounded-lg transition"
                                     title="{{ __('Details') }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -239,17 +239,17 @@
                 @else
                 <div class="absolute top-0 right-0 w-1 h-full bg-amber-500"></div>
                 @endif
-                
+
                 <div class="flex items-start justify-between gap-4 mb-4">
                     <div class="flex items-center gap-4">
                         <input type="checkbox" name="student_ids[]" value="{{ $s->id }}"
-                            class="student-checkbox w-6 h-6 rounded-lg border-siakad-200 text-siakad-primary focus:ring-siakad-primary transition-all cursor-pointer">
-                        <div class="w-10 h-10 rounded-2xl bg-siakad-50 dark:bg-siakad-900 flex items-center justify-center text-siakad-600 dark:text-siakad-400 text-sm font-black shadow-sm">
+                            class="student-checkbox w-6 h-6 rounded-lg border-primary-200 text-primary-primary focus:ring-primary-primary transition-all cursor-pointer">
+                        <div class="w-10 h-10 rounded-2xl bg-primary-50 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-400 text-sm font-black shadow-sm">
                             {{ strtoupper(substr($s->user->name ?? '-', 0, 1)) }}
                         </div>
                         <div class="min-w-0">
-                            <h4 class="text-sm font-black text-siakad-900 dark:text-white truncate leading-tight">{{ $s->user->name ?? '-' }}</h4>
-                            <p class="text-[10px] text-siakad-400 font-mono font-bold mt-0.5 tracking-wider">{{ $s->student_number }}</p>
+                            <h4 class="text-sm font-black text-primary-900 dark:text-white truncate leading-tight">{{ $s->user->name ?? '-' }}</h4>
+                            <p class="text-[10px] text-primary-400 font-mono font-bold mt-0.5 tracking-wider">{{ $s->student_number }}</p>
                         </div>
                     </div>
                     @if($item['level'] === 'danger')
@@ -259,23 +259,23 @@
                     @endif
                 </div>
 
-                <div class="grid grid-cols-3 gap-4 bg-siakad-50/50 dark:bg-siakad-900/30 p-3 rounded-2xl border border-siakad-100/50 dark:border-siakad-800/50 mb-4">
+                <div class="grid grid-cols-3 gap-4 bg-primary-50/50 dark:bg-primary-900/30 p-3 rounded-2xl border border-primary-100/50 dark:border-primary-800/50 mb-4">
                     <div class="text-center">
-                        <span class="block text-[8px] font-black text-siakad-400 uppercase tracking-widest mb-1">{{ __('GPA') }}</span>
+                        <span class="block text-[8px] font-black text-primary-400 uppercase tracking-widest mb-1">{{ __('GPA') }}</span>
                         <span class="text-sm font-black {{ $item['level'] === 'danger' ? 'text-red-600' : 'text-amber-600' }}">{{ number_format($item['gpa'], 2) }}</span>
                     </div>
-                    <div class="text-center border-x border-siakad-100/50 dark:border-siakad-800/50">
-                        <span class="block text-[8px] font-black text-siakad-400 uppercase tracking-widest mb-1">{{ __('Credits') }}</span>
-                        <span class="text-sm font-black text-siakad-900 dark:text-white">{{ $item['total_credits'] }}</span>
+                    <div class="text-center border-x border-primary-100/50 dark:border-primary-800/50">
+                        <span class="block text-[8px] font-black text-primary-400 uppercase tracking-widest mb-1">{{ __('Credits') }}</span>
+                        <span class="text-sm font-black text-primary-900 dark:text-white">{{ $item['total_credits'] }}</span>
                     </div>
                     <div class="text-center">
-                        <span class="block text-[8px] font-black text-siakad-400 uppercase tracking-widest mb-1">{{ __('Batch') }}</span>
-                        <span class="text-sm font-black text-siakad-900 dark:text-white">{{ $s->batch }}</span>
+                        <span class="block text-[8px] font-black text-primary-400 uppercase tracking-widest mb-1">{{ __('Batch') }}</span>
+                        <span class="text-sm font-black text-primary-900 dark:text-white">{{ $s->batch }}</span>
                     </div>
                 </div>
 
                 <a href="{{ route('admin.student.show', $s) }}"
-                    class="btn-ghost-saas w-full py-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 border border-siakad-100 dark:border-siakad-800">
+                    class="btn-ghost-saas w-full py-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 border border-primary-100 dark:border-primary-800">
                     {{ __('View Full Details') }}
                 </a>
             </div>

@@ -4,17 +4,17 @@
     </x-slot>
 
     <div class="card-saas p-6 mb-8 relative overflow-hidden">
-        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-siakad-primary/5 rounded-full"></div>
+        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-primary-primary/5 rounded-full"></div>
         <div class="relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div class="flex items-center gap-5">
-                <a href="{{ route('lecturers.exam.index', $class->id) }}" class="w-12 h-12 rounded-xl bg-siakad-50 dark:bg-siakad-800 flex items-center justify-center hover:scale-110 transition-transform">
-                    <svg class="w-6 h-6 text-siakad-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('lecturers.exam.index', $class->id) }}" class="w-12 h-12 rounded-xl bg-primary-50 dark:bg-primary-800 flex items-center justify-center hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
                     </svg>
                 </a>
                 <div>
-                    <h2 class="text-2xl font-black text-siakad-900 dark:text-white">{{ $exam->title }}</h2>
-                    <p class="text-siakad-500 font-medium mt-1">{{ $class->course->course_name }}</p>
+                    <h2 class="text-2xl font-black text-primary-900 dark:text-white">{{ $exam->title }}</h2>
+                    <p class="text-primary-500 font-medium mt-1">{{ $class->course->course_name }}</p>
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -25,12 +25,12 @@
                     {{ __('Questions Bank') }}
                 </a>
                 <div class="text-right">
-                    <p class="text-xs font-black text-siakad-400 uppercase tracking-widest">{{ __('Exam Max Points') }}</p>
-                    <p class="text-2xl font-black text-siakad-700 dark:text-siakad-300">{{ $exam->max_score }}</p>
+                    <p class="text-xs font-black text-primary-400 uppercase tracking-widest">{{ __('Exam Max Points') }}</p>
+                    <p class="text-2xl font-black text-primary-700 dark:text-primary-300">{{ $exam->max_score }}</p>
                 </div>
                 <div class="h-12 w-px bg-slate-200 dark:bg-slate-700"></div>
                 <div class="text-right">
-                    <p class="text-xs font-black text-siakad-400 uppercase tracking-widest">{{ __('Total Points') }}</p>
+                    <p class="text-xs font-black text-primary-400 uppercase tracking-widest">{{ __('Total Points') }}</p>
                     <p id="total-points" class="text-2xl font-black text-emerald-600 dark:text-emerald-400">0</p>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                         </label>
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-2 flex-wrap">
-                                <span class="px-3 py-1 text-[10px] font-black bg-siakad-100 dark:bg-siakad-800 text-siakad-700 dark:text-siakad-300 rounded-full">{{ __($question->question_type) }}</span>
+                                <span class="px-3 py-1 text-[10px] font-black bg-primary-100 dark:bg-primary-800 text-primary-700 dark:text-primary-300 rounded-full">{{ __($question->question_type) }}</span>
                                 @php
                                 $difficultyColors = [
                                 'easy' => ['bg-green-100', 'text-green-700', 'dark:bg-green-900/30', 'dark:text-green-400'],
@@ -92,8 +92,8 @@
                                 <span class="px-3 py-1 text-[10px] font-black bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full">{{ $question->points }} {{ __('points') }}</span>
                             </div>
                             <div class="flex items-start justify-between gap-4">
-                                <p class="text-sm font-bold text-siakad-800 dark:text-white">{{ $question->question_text }}</p>
-                                <a href="{{ route('lecturers.exam-questions.edit', [$class->id, $question->id]) }}" class="p-2 text-siakad-500 hover:text-siakad-700 hover:bg-siakad-50 dark:hover:bg-siakad-800 rounded-xl transition-all flex-shrink-0" title="{{ __('Edit Question') }}">
+                                <p class="text-sm font-bold text-primary-800 dark:text-white">{{ $question->question_text }}</p>
+                                <a href="{{ route('lecturers.exam-questions.edit', [$class->id, $question->id]) }}" class="p-2 text-primary-500 hover:text-primary-700 hover:bg-primary-50 dark:hover:bg-primary-800 rounded-xl transition-all flex-shrink-0" title="{{ __('Edit Question') }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                     </svg>
@@ -102,8 +102,8 @@
                             @if($question->question_type === 'multiple_choice' && $question->options)
                             <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 @foreach($question->options as $key => $option)
-                                <div class="text-xs text-siakad-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 px-3 py-2 rounded-lg border border-slate-100 dark:border-slate-700">
-                                    <span class="font-black text-siakad-400 mr-2">{{ strtoupper($key) }}:</span> {{ $option }}
+                                <div class="text-xs text-primary-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 px-3 py-2 rounded-lg border border-slate-100 dark:border-slate-700">
+                                    <span class="font-black text-primary-400 mr-2">{{ strtoupper($key) }}:</span> {{ $option }}
                                 </div>
                                 @endforeach
                             </div>
@@ -114,14 +114,14 @@
             </div>
             @empty
             <div class="card-saas p-12 text-center">
-                <div class="w-20 h-20 bg-siakad-50 dark:bg-siakad-900/50 rounded-3xl flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-10 h-10 text-siakad-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-20 h-20 bg-primary-50 dark:bg-primary-900/50 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 0 002-2M9 5a2 2 0 012-2h2a2 0 012-2"></path>
                     </svg>
                 </div>
-                <p class="text-siakad-400 font-bold text-lg mb-2">{{ __('No questions yet') }}</p>
-                <p class="text-siakad-300 text-sm mb-6">{{ __('Add your first question to the bank') }}</p>
-                <a href="{{ route('lecturers.exam-questions.index', $class->id) }}" class="btn-primary-saas px-6 py-3 rounded-2xl text-sm font-black shadow-lg shadow-siakad-600/20">
+                <p class="text-primary-400 font-bold text-lg mb-2">{{ __('No questions yet') }}</p>
+                <p class="text-primary-300 text-sm mb-6">{{ __('Add your first question to the bank') }}</p>
+                <a href="{{ route('lecturers.exam-questions.index', $class->id) }}" class="btn-primary-saas px-6 py-3 rounded-2xl text-sm font-black shadow-lg shadow-primary-600/20">
                     {{ __('Add First Question') }}
                 </a>
             </div>
@@ -131,7 +131,7 @@
         @if($subjectQuestions->count() > 0)
         <div class="mt-8 flex items-center justify-end gap-3">
             <a href="{{ route('lecturers.exam.index', $class->id) }}" class="btn-ghost-saas px-6 py-2.5 rounded-xl text-sm font-black">{{ __('Back to Exams') }}</a>
-            <button type="submit" id="save-btn" class="btn-primary-saas px-8 py-2.5 rounded-xl text-sm font-black shadow-lg shadow-siakad-600/20">{{ __('Save Questions') }}</button>
+            <button type="submit" id="save-btn" class="btn-primary-saas px-8 py-2.5 rounded-xl text-sm font-black shadow-lg shadow-primary-600/20">{{ __('Save Questions') }}</button>
         </div>
         @endif
     </form>

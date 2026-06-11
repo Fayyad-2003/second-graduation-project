@@ -4,12 +4,12 @@
     <div class="p-5">
         <div class="flex items-start gap-3 mb-3">
             <div
-                class="w-12 h-12 bg-gradient-to-br from-siakad-primary to-siakad-dark rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                class="w-12 h-12 bg-gradient-to-br from-primary-primary to-primary-dark rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                 {{ $class->class_name }}
             </div>
             <div class="min-w-0 flex-1">
                 <div class="flex items-start justify-between gap-2">
-                    <h3 class="font-semibold text-siakad-dark dark:text-white truncate">
+                    <h3 class="font-semibold text-primary-dark dark:text-white truncate">
                         {{ $class->course->course_name }}
                     </h3>
                     @if($class->is_archived ?? false)
@@ -19,13 +19,13 @@
                     </span>
                     @endif
                 </div>
-                <p class="text-xs text-siakad-secondary dark:text-gray-400">{{ $class->course->course_code }} •
+                <p class="text-xs text-primary-secondary dark:text-gray-400">{{ $class->course->course_code }} •
                     {{ $class->course->credits }} {{ __('Credits') }}
                 </p>
             </div>
         </div>
 
-        <p class="text-xs text-siakad-secondary dark:text-gray-400 mb-4">
+        <p class="text-xs text-primary-secondary dark:text-gray-400 mb-4">
             {{ __('Lecturer') }}: {{ $class->lecturer->user->name ?? '-' }}
         </p>
 
@@ -46,11 +46,11 @@
         <div class="flex flex-col gap-2">
             <div class="flex gap-2">
                 <a href="{{ route('students.material.index', $class->id) }}"
-                    class="flex-1 text-center px-3 py-2 text-sm font-medium bg-siakad-light dark:bg-gray-700 text-siakad-dark dark:text-white rounded-lg hover:bg-siakad-light/80 dark:hover:bg-gray-600 transition">
+                    class="flex-1 text-center px-3 py-2 text-sm font-medium bg-primary-light dark:bg-gray-700 text-primary-dark dark:text-white rounded-lg hover:bg-primary-light/80 dark:hover:bg-gray-600 transition">
                     {{ __('Learning Material') }}
                 </a>
                 <a href="{{ route('students.assignment.index', $class->id) }}"
-                    class="flex-1 text-center px-3 py-2 text-sm font-medium {{ $class->is_archived ?? false ? 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300' : 'bg-siakad-primary text-white hover:bg-siakad-primary/90' }} rounded-lg transition">
+                    class="flex-1 text-center px-3 py-2 text-sm font-medium {{ $class->is_archived ?? false ? 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300' : 'bg-primary-primary text-white hover:bg-primary-primary/90' }} rounded-lg transition">
                     {{ __('Assignment') }}
                 </a>
             </div>

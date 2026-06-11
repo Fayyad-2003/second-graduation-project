@@ -9,7 +9,7 @@
 
     <!-- Faculty Info Banner for admin_faculty -->
     @if(!$isSuperAdmin && $faculty)
-    <div class="mb-8 p-8 bg-gradient-to-r from-siakad-600 via-purple-600 to-pink-600 rounded-[24px] shadow-2xl relative overflow-hidden group">
+    <div class="mb-8 p-8 bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 rounded-[24px] shadow-2xl relative overflow-hidden group">
         <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 transition-transform duration-700 group-hover:scale-150 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24 transition-transform duration-700 group-hover:scale-150 blur-3xl"></div>
         <div class="relative flex items-center gap-6">
@@ -34,15 +34,15 @@
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-{{ $isSuperAdmin ? '6' : '5' }} gap-6 mb-10">
         @if($isSuperAdmin)
         <div class="card-saas p-6 group relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-siakad-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
             <div class="relative flex items-center gap-4">
-                <div class="w-14 h-14 bg-gradient-to-br from-siakad-100 to-purple-100 dark:from-siakad-900/30 dark:to-purple-900/30 rounded-[18px] flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <svg class="w-7 h-7 text-siakad-600 dark:text-siakad-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-14 h-14 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30 rounded-[18px] flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                    <svg class="w-7 h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                     </svg>
                 </div>
                 <div>
-                    <p class="text-3xl font-black bg-gradient-to-r from-siakad-600 to-purple-600 bg-clip-text text-transparent">{{ $stats['faculty'] }}</p>
+                    <p class="text-3xl font-black bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">{{ $stats['faculty'] }}</p>
                     <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider mt-0.5">{{ __('Faculties') }}</p>
                 </div>
             </div>
@@ -129,13 +129,13 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <!-- Grade Distribution -->
         <div class="card-saas p-6 dark:bg-gray-800">
-            <h3 class="font-semibold text-siakad-dark dark:text-white mb-4">{{ __('Grade Distribution') }}</h3>
+            <h3 class="font-semibold text-primary-dark dark:text-white mb-4">{{ __('Grade Distribution') }}</h3>
             @if(count($gradeDistribution) > 0)
             <div class="h-48">
                 <canvas id="gradeChart"></canvas>
             </div>
             @else
-            <div class="h-48 flex items-center justify-center text-siakad-secondary dark:text-gray-500 text-sm">
+            <div class="h-48 flex items-center justify-center text-primary-secondary dark:text-gray-500 text-sm">
                 {{ __('No grade data available yet') }}
             </div>
             @endif
@@ -143,15 +143,15 @@
 
         <!-- Students per Study Program -->
         <div class="card-saas p-6 dark:bg-gray-800">
-            <h3 class="font-semibold text-siakad-dark dark:text-white mb-4">{{ __('Students per Study Program') }}</h3>
+            <h3 class="font-semibold text-primary-dark dark:text-white mb-4">{{ __('Students per Study Program') }}</h3>
             <div class="space-y-3 max-h-48 overflow-y-auto">
                 @forelse($studyProgramStats as $studyProgram)
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-siakad-secondary dark:text-gray-400 truncate flex-1 mr-2">{{ $studyProgram->name }}</span>
-                    <span class="text-sm font-semibold text-siakad-dark dark:text-white">{{ $studyProgram->students_count }}</span>
+                    <span class="text-sm text-primary-secondary dark:text-gray-400 truncate flex-1 mr-2">{{ $studyProgram->name }}</span>
+                    <span class="text-sm font-semibold text-primary-dark dark:text-white">{{ $studyProgram->students_count }}</span>
                 </div>
                 @empty
-                <div class="text-center text-siakad-secondary dark:text-gray-500 text-sm py-4">
+                <div class="text-center text-primary-secondary dark:text-gray-500 text-sm py-4">
                     {{ __('No data available yet') }}
                 </div>
                 @endforelse
@@ -160,15 +160,15 @@
 
         <!-- Lecturers per Study Program -->
         <div class="card-saas p-6 dark:bg-gray-800">
-            <h3 class="font-semibold text-siakad-dark dark:text-white mb-4">{{ __('Lecturers per Study Program') }}</h3>
+            <h3 class="font-semibold text-primary-dark dark:text-white mb-4">{{ __('Lecturers per Study Program') }}</h3>
             <div class="space-y-3 max-h-48 overflow-y-auto">
                 @forelse($lecturersByStudyProgram as $studyProgram)
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-siakad-secondary dark:text-gray-400 truncate flex-1 mr-2">{{ $studyProgram->name }}</span>
-                    <span class="text-sm font-semibold text-siakad-dark dark:text-white">{{ $studyProgram->lecturers_count }}</span>
+                    <span class="text-sm text-primary-secondary dark:text-gray-400 truncate flex-1 mr-2">{{ $studyProgram->name }}</span>
+                    <span class="text-sm font-semibold text-primary-dark dark:text-white">{{ $studyProgram->lecturers_count }}</span>
                 </div>
                 @empty
-                <div class="text-center text-siakad-secondary dark:text-gray-500 text-sm py-4">
+                <div class="text-center text-primary-secondary dark:text-gray-500 text-sm py-4">
                     {{ __('No data available yet') }}
                 </div>
                 @endforelse
@@ -179,38 +179,38 @@
     <!-- Quick Links -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         @if($isSuperAdmin)
-        <a href="{{ route('admin.faculty.index') }}" class="card-saas p-4 hover:border-siakad-primary/30 dark:hover:border-blue-500/30 group flex items-center gap-3 dark:bg-gray-800">
-            <div class="w-9 h-9 bg-siakad-primary/10 dark:bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-siakad-primary/20 dark:group-hover:bg-blue-500/30 transition">
-                <svg class="w-4 h-4 text-siakad-primary dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="{{ route('admin.faculty.index') }}" class="card-saas p-4 hover:border-primary-primary/30 dark:hover:border-blue-500/30 group flex items-center gap-3 dark:bg-gray-800">
+            <div class="w-9 h-9 bg-primary-primary/10 dark:bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-primary-primary/20 dark:group-hover:bg-blue-500/30 transition">
+                <svg class="w-4 h-4 text-primary-primary dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
             </div>
-            <span class="text-sm font-medium text-siakad-dark dark:text-white">{{ __('Faculty Management') }}</span>
+            <span class="text-sm font-medium text-primary-dark dark:text-white">{{ __('Faculty Management') }}</span>
         </a>
         @endif
-        <a href="{{ route('admin.study-program.index') }}" class="card-saas p-4 hover:border-siakad-primary/30 dark:hover:border-blue-500/30 group flex items-center gap-3 dark:bg-gray-800">
-            <div class="w-9 h-9 bg-siakad-secondary/10 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-siakad-secondary/20 dark:group-hover:bg-gray-600 transition">
-                <svg class="w-4 h-4 text-siakad-secondary dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="{{ route('admin.study-program.index') }}" class="card-saas p-4 hover:border-primary-primary/30 dark:hover:border-blue-500/30 group flex items-center gap-3 dark:bg-gray-800">
+            <div class="w-9 h-9 bg-primary-secondary/10 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-primary-secondary/20 dark:group-hover:bg-gray-600 transition">
+                <svg class="w-4 h-4 text-primary-secondary dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
             </div>
-            <span class="text-sm font-medium text-siakad-dark dark:text-white">{{ __('Study Program Management') }}</span>
+            <span class="text-sm font-medium text-primary-dark dark:text-white">{{ __('Study Program Management') }}</span>
         </a>
-        <a href="{{ route('admin.student.index') }}" class="card-saas p-4 hover:border-siakad-primary/30 dark:hover:border-blue-500/30 group flex items-center gap-3 dark:bg-gray-800">
-            <div class="w-9 h-9 bg-siakad-primary/10 dark:bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-siakad-primary/20 dark:group-hover:bg-blue-500/30 transition">
-                <svg class="w-4 h-4 text-siakad-primary dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="{{ route('admin.student.index') }}" class="card-saas p-4 hover:border-primary-primary/30 dark:hover:border-blue-500/30 group flex items-center gap-3 dark:bg-gray-800">
+            <div class="w-9 h-9 bg-primary-primary/10 dark:bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-primary-primary/20 dark:group-hover:bg-blue-500/30 transition">
+                <svg class="w-4 h-4 text-primary-primary dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                 </svg>
             </div>
-            <span class="text-sm font-medium text-siakad-dark dark:text-white">{{ __('Student Management') }}</span>
+            <span class="text-sm font-medium text-primary-dark dark:text-white">{{ __('Student Management') }}</span>
         </a>
-        <a href="{{ route('admin.lecturer.index') }}" class="card-saas p-4 hover:border-siakad-primary/30 dark:hover:border-blue-500/30 group flex items-center gap-3 dark:bg-gray-800">
-            <div class="w-9 h-9 bg-siakad-dark/10 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-siakad-dark/20 dark:group-hover:bg-gray-600 transition">
-                <svg class="w-4 h-4 text-siakad-dark dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="{{ route('admin.lecturer.index') }}" class="card-saas p-4 hover:border-primary-primary/30 dark:hover:border-blue-500/30 group flex items-center gap-3 dark:bg-gray-800">
+            <div class="w-9 h-9 bg-primary-dark/10 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-primary-dark/20 dark:group-hover:bg-gray-600 transition">
+                <svg class="w-4 h-4 text-primary-dark dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
             </div>
-            <span class="text-sm font-medium text-siakad-dark dark:text-white">{{ __('Lecturer Management') }}</span>
+            <span class="text-sm font-medium text-primary-dark dark:text-white">{{ __('Lecturer Management') }}</span>
         </a>
     </div>
 

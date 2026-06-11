@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="mb-10">
-        <h1 class="text-3xl font-black tracking-tight text-siakad-900 dark:text-white">{{ __('Supervised Students') }}</h1>
-        <p class="text-siakad-500 font-medium mt-2 flex items-center gap-2">
-            <span class="w-8 h-px bg-siakad-200"></span>
+        <h1 class="text-3xl font-black tracking-tight text-primary-900 dark:text-white">{{ __('Supervised Students') }}</h1>
+        <p class="text-primary-500 font-medium mt-2 flex items-center gap-2">
+            <span class="w-8 h-px bg-primary-200"></span>
             {{ __('List of students under your academic supervision.') }}
         </p>
     </div>
@@ -13,7 +13,9 @@
             <div class="flex-1 min-w-[300px]">
                 <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <svg class="w-4 h-4 text-siakad-400 group-focus-within:text-siakad-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <svg class="w-4 h-4 text-primary-400 group-focus-within:text-primary-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
                     </div>
                     <input type="text" id="searchInput" placeholder="{{ __('Search by Name/Student ID...') }}"
                         class="input-saas pl-11 pr-4 py-2.5 text-sm w-full">
@@ -53,19 +55,21 @@
                 tableContainer.style.opacity = '0.5';
 
                 fetch(url, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                .then(response => response.text())
-                .then(html => {
-                    tableContainer.innerHTML = html;
-                    tableContainer.style.opacity = '1';
-                    bindPaginationLinks();
-                    bindSortableHeaders();
-                })
-                .catch(err => {
-                    console.error(err);
-                    tableContainer.style.opacity = '1';
-                });
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        tableContainer.innerHTML = html;
+                        tableContainer.style.opacity = '1';
+                        bindPaginationLinks();
+                        bindSortableHeaders();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        tableContainer.style.opacity = '1';
+                    });
             }
 
             function bindPaginationLinks() {
@@ -83,7 +87,7 @@
                 tableContainer.querySelectorAll('.sortable-header').forEach(header => {
                     header.addEventListener('click', function() {
                         const sortField = this.dataset.sort;
-                        
+
                         // Toggle direction if same field, otherwise default to asc
                         if (currentSort === sortField) {
                             currentDir = currentDir === 'asc' ? 'desc' : 'asc';
@@ -91,7 +95,7 @@
                             currentSort = sortField;
                             currentDir = 'asc';
                         }
-                        
+
                         fetchData(1);
                     });
                 });

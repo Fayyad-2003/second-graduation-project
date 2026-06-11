@@ -3,7 +3,7 @@
 
     <div class="mb-6 flex items-center justify-between">
         <div>
-            <p class="text-sm text-siakad-secondary">{{ __('All your notifications') }}</p>
+            <p class="text-sm text-primary-secondary">{{ __('All your notifications') }}</p>
         </div>
         @if($unreadCount > 0)
         <form action="{{ route('notifications.mark-all-read') }}" method="POST">
@@ -27,8 +27,8 @@
             <div class="flex-1 min-w-0">
                 <div class="flex items-start justify-between gap-4">
                     <div>
-                        <h3 class="font-semibold {{ !$isRead ? 'text-indigo-700' : 'text-siakad-dark' }}">{{ $notif->title }}</h3>
-                        <p class="text-sm text-siakad-secondary mt-1">{{ $notif->message }}</p>
+                        <h3 class="font-semibold {{ !$isRead ? 'text-indigo-700' : 'text-primary-dark' }}">{{ $notif->title }}</h3>
+                        <p class="text-sm text-primary-secondary mt-1">{{ $notif->message }}</p>
                         @php $data = is_string($notif->data) ? json_decode($notif->data, true) : $notif->data; @endphp
                         @if(!empty($data['changes']))
                         <div class="mt-2 text-xs space-y-1">
@@ -45,7 +45,7 @@
                         </div>
                         @endif
                     </div>
-                    <p class="text-xs text-siakad-secondary whitespace-nowrap">
+                    <p class="text-xs text-primary-secondary whitespace-nowrap">
                         {{ $notif->created_at instanceof \Carbon\Carbon ? $notif->created_at->diffForHumans() : \Carbon\Carbon::parse($notif->created_at)->diffForHumans() }}
                     </p>
                 </div>

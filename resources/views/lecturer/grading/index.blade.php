@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="mb-10">
-        <h1 class="text-3xl font-black tracking-tight text-siakad-900 dark:text-white">{{ __('Student Grading') }}</h1>
-        <p class="text-siakad-500 font-medium mt-2 flex items-center gap-2">
-            <span class="w-8 h-px bg-siakad-200"></span>
+        <h1 class="text-3xl font-black tracking-tight text-primary-900 dark:text-white">{{ __('Student Grading') }}</h1>
+        <p class="text-primary-500 font-medium mt-2 flex items-center gap-2">
+            <span class="w-8 h-px bg-primary-200"></span>
             {{ __('Evaluate student performance and manage grade records for your courses.') }}
         </p>
     </div>
@@ -11,15 +11,15 @@
     <div class="mb-8 card-saas p-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-siakad-50 dark:bg-siakad-900/50 flex items-center justify-center text-siakad-primary border border-siakad-100 dark:border-siakad-800">
+                <div class="w-12 h-12 rounded-2xl bg-primary-50 dark:bg-primary-900/50 flex items-center justify-center text-primary-primary border border-primary-100 dark:border-primary-800">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-black text-siakad-900 dark:text-white">{{ __('Teaching Load') }}</p>
-                    <p class="text-xs font-bold text-siakad-400 uppercase tracking-widest mt-0.5">
-                        <span id="totalClass" class="text-siakad-primary">{{ $teachingClasses->count() }}</span> {{ __('Active Classes') }}
+                    <p class="text-sm font-black text-primary-900 dark:text-white">{{ __('Teaching Load') }}</p>
+                    <p class="text-xs font-bold text-primary-400 uppercase tracking-widest mt-0.5">
+                        <span id="totalClass" class="text-primary-primary">{{ $teachingClasses->count() }}</span> {{ __('Active Classes') }}
                     </p>
                 </div>
             </div>
@@ -28,11 +28,11 @@
                 <!-- Search -->
                 <div class="relative flex-1 w-full group">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <svg class="w-4 h-4 text-siakad-400 group-focus-within:text-siakad-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-primary-400 group-focus-within:text-primary-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
-                    <input type="text" id="searchInput" placeholder="{{ __('Search course name or code...') }}" 
+                    <input type="text" id="searchInput" placeholder="{{ __('Search course name or code...') }}"
                         class="input-saas pl-11 pr-4 py-2.5 text-sm w-full">
                 </div>
                 <!-- Filter Semester -->
@@ -48,13 +48,13 @@
 
     @if($teachingClasses->isEmpty() && !request('search') && !request('semester'))
     <div class="card-saas p-16 text-center max-w-lg mx-auto">
-        <div class="w-20 h-20 rounded-3xl bg-siakad-50 dark:bg-siakad-900/50 flex items-center justify-center mx-auto mb-6 border border-siakad-100 dark:border-siakad-800">
-            <svg class="w-10 h-10 text-siakad-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-20 h-20 rounded-3xl bg-primary-50 dark:bg-primary-900/50 flex items-center justify-center mx-auto mb-6 border border-primary-100 dark:border-primary-800">
+            <svg class="w-10 h-10 text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
             </svg>
         </div>
-        <h3 class="text-xl font-black text-siakad-900 dark:text-white mb-2">{{ __('No classes yet') }}</h3>
-        <p class="text-siakad-500 font-medium">{{ __('You don\'t have any classes to teach this semester.') }}</p>
+        <h3 class="text-xl font-black text-primary-900 dark:text-white mb-2">{{ __('No classes yet') }}</h3>
+        <p class="text-primary-500 font-medium">{{ __('You don\'t have any classes to teach this semester.') }}</p>
     </div>
     @else
     <div id="cardsContainer" class="space-y-6">
@@ -83,10 +83,10 @@
                 content.style.marginTop = '1.5rem';
                 icon.classList.remove('-rotate-90');
 
-                btn.classList.add('ring-2', 'ring-siakad-primary', 'dark:ring-siakad-600', 'bg-siakad-50/50', 'dark:bg-siakad-900/30');
-                badge.classList.add('bg-siakad-primary', 'text-white');
-                badge.classList.remove('bg-white', 'dark:bg-siakad-800', 'text-siakad-primary');
-                title.classList.add('text-siakad-primary');
+                btn.classList.add('ring-2', 'ring-primary-primary', 'dark:ring-primary-600', 'bg-primary-50/50', 'dark:bg-primary-900/30');
+                badge.classList.add('bg-primary-primary', 'text-white');
+                badge.classList.remove('bg-white', 'dark:bg-primary-800', 'text-primary-primary');
+                title.classList.add('text-primary-primary');
             } else {
                 // Collapse
                 content.style.maxHeight = '0px';
@@ -94,10 +94,10 @@
                 content.style.marginTop = '0';
                 icon.classList.add('-rotate-90');
 
-                btn.classList.remove('ring-2', 'ring-siakad-primary', 'dark:ring-siakad-600', 'bg-siakad-50/50', 'dark:bg-siakad-900/30');
-                badge.classList.remove('bg-siakad-primary', 'text-white');
-                badge.classList.add('bg-white', 'dark:bg-siakad-800', 'text-siakad-primary');
-                title.classList.remove('text-siakad-primary');
+                btn.classList.remove('ring-2', 'ring-primary-primary', 'dark:ring-primary-600', 'bg-primary-50/50', 'dark:bg-primary-900/30');
+                badge.classList.remove('bg-primary-primary', 'text-white');
+                badge.classList.add('bg-white', 'dark:bg-primary-800', 'text-primary-primary');
+                title.classList.remove('text-primary-primary');
             }
         }
 

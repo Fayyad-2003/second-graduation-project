@@ -20,19 +20,19 @@
     <div class="card-saas p-4 mb-6 dark:bg-gray-800">
         <div class="flex items-center gap-4">
             <div
-                class="w-12 h-12 bg-gradient-to-br from-siakad-primary to-siakad-dark rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                class="w-12 h-12 bg-gradient-to-br from-primary-primary to-primary-dark rounded-xl flex items-center justify-center text-white font-bold text-lg">
                 {{ $class->class_name }}
             </div>
             <div class="flex-1">
                 <div class="flex items-center gap-2">
-                    <h2 class="text-lg font-bold text-siakad-dark dark:text-white">{{ $class->course->course_name }}
+                    <h2 class="text-lg font-bold text-primary-dark dark:text-white">{{ $class->course->course_name }}
                     </h2>
                     @if($isArchived)
                     <span
                         class="px-2 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-full">{{ __('Archive') }}</span>
                     @endif
                 </div>
-                <p class="text-sm text-siakad-secondary dark:text-gray-400">{{ $class->course->course_code }} •
+                <p class="text-sm text-primary-secondary dark:text-gray-400">{{ $class->course->course_code }} •
                     {{ $class->course->credits }} {{ __('Credits') }} • {{ __('Lecturer') }}: {{ $class->lecturer->user->name ?? '-' }}
                 </p>
             </div>
@@ -44,17 +44,17 @@
         @forelse($meetingList as $meeting)
         <div class="card-saas dark:bg-gray-800 overflow-hidden">
             <!-- Meeting Header -->
-            <div class="px-5 py-4 border-b border-siakad-light dark:border-gray-700">
+            <div class="px-5 py-4 border-b border-primary-light dark:border-gray-700">
                 <div class="flex items-center gap-3">
                     <div
-                        class="w-10 h-10 bg-siakad-primary/10 dark:bg-blue-500/20 rounded-full flex items-center justify-center">
+                        class="w-10 h-10 bg-primary-primary/10 dark:bg-blue-500/20 rounded-full flex items-center justify-center">
                         <span
-                            class="text-sm font-bold text-siakad-primary dark:text-blue-400">{{ $meeting->meeting_number }}</span>
+                            class="text-sm font-bold text-primary-primary dark:text-blue-400">{{ $meeting->meeting_number }}</span>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-siakad-dark dark:text-white">{{ __('Meeting') }} {{ $meeting->meeting_number }}
+                        <h3 class="font-semibold text-primary-dark dark:text-white">{{ __('Meeting') }} {{ $meeting->meeting_number }}
                         </h3>
-                        <p class="text-xs text-siakad-secondary dark:text-gray-400">
+                        <p class="text-xs text-primary-secondary dark:text-gray-400">
                             {{ $meeting->date?->format('d M Y') ?? __('Not scheduled yet') }}
                             @if($meeting->topic)
                             <span class="mx-1">•</span>
@@ -95,15 +95,15 @@
                             </div>
                             @endif
                             <div>
-                                <h4 class="font-medium text-siakad-dark dark:text-white text-sm">{{ $material->title }}
+                                <h4 class="font-medium text-primary-dark dark:text-white text-sm">{{ $material->title }}
                                 </h4>
                                 @if($material->description)
-                                <p class="text-xs text-siakad-secondary dark:text-gray-400 line-clamp-1">
+                                <p class="text-xs text-primary-secondary dark:text-gray-400 line-clamp-1">
                                     {{ $material->description }}
                                 </p>
                                 @endif
                                 @if($material->isFile())
-                                <p class="text-xs text-siakad-secondary dark:text-gray-500">{{ $material->file_name }} •
+                                <p class="text-xs text-primary-secondary dark:text-gray-500">{{ $material->file_name }} •
                                     {{ $material->formatted_file_size }}
                                 </p>
                                 @endif
@@ -112,7 +112,7 @@
                         <div class="flex items-center gap-2">
                             @if($material->isFile())
                             <a href="{{ route('students.material.download', [$class->id, $material->id]) }}"
-                                class="px-3 py-1.5 text-xs font-medium bg-siakad-primary text-white rounded-lg hover:bg-siakad-primary/90 transition flex items-center gap-1">
+                                class="px-3 py-1.5 text-xs font-medium bg-primary-primary text-white rounded-lg hover:bg-primary-primary/90 transition flex items-center gap-1">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -135,7 +135,7 @@
                     @endforeach
                 </div>
                 @else
-                <div class="text-center py-8 text-siakad-secondary dark:text-gray-400">
+                <div class="text-center py-8 text-primary-secondary dark:text-gray-400">
                     <svg class="w-10 h-10 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -149,7 +149,7 @@
         </div>
         @empty
         <div class="card-saas p-8 text-center dark:bg-gray-800">
-            <p class="text-siakad-secondary dark:text-gray-400">{{ __('No meetings scheduled for this semester.') }}</p>
+            <p class="text-primary-secondary dark:text-gray-400">{{ __('No meetings scheduled for this semester.') }}</p>
         </div>
         @endforelse
     </div>
@@ -157,7 +157,7 @@
     <!-- Back Link -->
     <div class="mt-6">
         <a href="{{ route('students.lms.index') }}"
-            class="text-sm text-siakad-secondary hover:text-siakad-primary transition">
+            class="text-sm text-primary-secondary hover:text-primary-primary transition">
             &larr; {{ __('Back to Materials & Assignments Page') }}
         </a>
     </div>
