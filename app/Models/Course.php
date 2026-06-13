@@ -16,6 +16,7 @@ class Course extends Model
         'course_name',
         'credits',
         'semester',
+        'description',
         'study_program_id',
         'subject_classification_id',
         'is_elective',

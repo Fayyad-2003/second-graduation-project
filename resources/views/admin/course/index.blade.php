@@ -120,6 +120,9 @@
                                 <p class="text-sm font-black text-primary-900 dark:text-white truncate">{{ $mk->course_name }}</p>
                                 @php $prefix = substr($mk->course_code, 0, 2); @endphp
                                 <p class="text-[10px] text-primary-400 font-bold uppercase tracking-wider text-start">{{ $categories[$prefix] ?? '' }}</p>
+                                @if($mk->description)
+                                <p class="text-[10px] text-primary-500 dark:text-primary-400 mt-0.5 line-clamp-1 italic">{{ $mk->description }}</p>
+                                @endif
                             </div>
                         </td>
                         <td class="py-5 px-6 text-center">
@@ -152,7 +155,7 @@
                         </td>
                         <td class="py-5 px-8 text-end">
                             <div class="flex items-center justify-end gap-2">
-                                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }})"
+                                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }}, {{ json_encode($mk->description) }})"
                                     class="p-2 text-primary-secondary hover:text-primary-primary hover:bg-primary-primary/10 rounded-lg transition-colors" title="{{ __('Edit') }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -233,10 +236,16 @@
                     </div>
                 </div>
                 @endif
+                @if($mk->description)
+                <div class="bg-primary-50/50 dark:bg-primary-900/50 p-3 rounded-2xl border border-primary-100/50 dark:border-primary-800/50 col-span-2">
+                    <span class="block text-[10px] text-primary-400 font-black uppercase tracking-widest mb-1">{{ __('Description') }}</span>
+                    <p class="text-xs text-primary-700 dark:text-primary-300 leading-relaxed">{{ $mk->description }}</p>
+                </div>
+                @endif
             </div>
 
             <div class="flex items-center gap-3 pt-4 border-t border-primary-50 dark:border-primary-800">
-                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }})"
+                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }}, {{ json_encode($mk->description) }})"
                     class="flex-1 py-3 text-xs font-black text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-800 rounded-xl hover:bg-primary-primary hover:text-white transition-all text-center">
                     {{ __('Edit') }}
                 </button>
@@ -359,6 +368,14 @@
                                 </select>
                                 <p class="text-[10px] text-primary-400 mt-2 ml-1 italic">{{ __('Press Ctrl/Cmd to select multiple') }}</p>
                             </div>
+
+                            <div>
+                                <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Description') }}</label>
+                                <textarea name="description" rows="3"
+                                    class="input-saas w-full px-4 py-3 text-sm rounded-xl resize-none"
+                                    placeholder="{{ __('Optional: describe the course content, goals, or notes...') }}"></textarea>
+                                <p class="text-[10px] text-primary-400 mt-1.5 ml-1">{{ __('Max 2000 characters. Visible to students on their subject tree.') }}</p>
+                            </div>
                         </div>
 
                         <div class="mt-8 flex items-center justify-end gap-3">
@@ -463,6 +480,14 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div>
+                                <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Description') }}</label>
+                                <textarea name="description" id="editDescription" rows="3"
+                                    class="input-saas w-full px-4 py-3 text-sm rounded-xl resize-none"
+                                    placeholder="{{ __('Optional: describe the course content, goals, or notes...') }}"></textarea>
+                                <p class="text-[10px] text-primary-400 mt-1.5 ml-1">{{ __('Max 2000 characters. Visible to students on their subject tree.') }}</p>
+                            </div>
                         </div>
 
                         <div class="mt-8 flex items-center justify-end gap-3">
@@ -507,13 +532,14 @@
             study_programSelect.value = '';
         }
 
-        function editCourse(id, code, name, credits, semester, study_programId, facultyId, prerequisites, classificationId) {
+        function editCourse(id, code, name, credits, semester, study_programId, facultyId, prerequisites, classificationId, description) {
             document.getElementById('editForm').action = `/admin/course/${id}`;
             document.getElementById('editCode').value = code;
             document.getElementById('editName').value = name;
             document.getElementById('editCredits').value = credits;
             document.getElementById('editSemester').value = semester;
             document.getElementById('editClassification').value = classificationId || '';
+            document.getElementById('editDescription').value = description || '';
 
             // Set faculty and study_program
             const facultySelect = document.getElementById('editFacultySelect');

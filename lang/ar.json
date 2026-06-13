@@ -1209,5 +1209,7 @@
     "Rules reset to system defaults successfully.": "تمت إعادة تعيين القواعد إلى الإعدادات الافتراضية للنظام بنجاح.",
     "This GPA range overlaps with an existing rule.": "يتداخل نطاق المعدل هذا مع قاعدة موجودة.",
     "Plan Settings": "إعدادات الخطة",
-    "Label": "التسمية"
+    "Label": "التسمية",
+    "Optional: describe the course content, goals, or notes...": "اختياري: صف محتوى المادة أو أهدافها أو ملاحظاتك...",
+    "Max 2000 characters. Visible to students on their subject tree.": "الحد الأقصى 2000 حرف. يظهر للطلاب في شجرة المواد الدراسية."
 }
