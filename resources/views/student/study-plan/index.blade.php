@@ -265,7 +265,7 @@
 
                 <div class="max-h-[65vh] overflow-y-auto divide-y divide-primary-100 dark:divide-primary-700">
                     @forelse($availableClasses as $semester => $classList)
-                    <div x-data="{ open: false }" class="bg-white dark:bg-primary-800">
+                    <div x-data="{ open: false }" class="bg-white dark:bg-gray-800">
                         <button @click="open = !open" class="w-full px-6 py-4 flex items-center justify-between hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-all duration-200 cursor-pointer group">
                             <div class="text-left">
                                 <h4 class="font-bold text-primary-900 dark:text-white text-sm group-hover:text-primary-700 transition-colors">{{ $semester }}</h4>

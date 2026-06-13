@@ -674,6 +674,16 @@
                         class="ml-auto px-2.5 py-1 text-[10px] font-bold bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-full shadow-lg">{{ $pendingCount }}</span>
                     @endif
                 </a>
+                <a href="{{ url('admin/study-plan-settings') }}"
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/study-plan-settings*') ? 'active' : '' }}">
+                    <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
+                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
+                        </path>
+                    </svg>
+                    <span class="sidebar-text">{{ __('Plan Settings') }}</span>
+                </a>
+
                 <a href="{{ url('admin/thesis') }}"
                     class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/thesis*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

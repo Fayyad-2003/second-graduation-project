@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Student;
 use App\Models\Grade;
+use App\Models\GpaCreditRule;
 use App\Models\StudyPlan;
 use App\Models\AcademicYear;
 use Illuminate\Support\Collection;
@@ -101,15 +102,31 @@ class AcademicCalculationService
     }
 
     /**
-     * Determine max credits allowed based on GPA
+     * Determine max credits allowed based on GPA.
+     * Reads from gpa_credit_rules database table first; falls back to
+     * config/system.php if the table is empty.
      */
     public function getMaxCredits(float $gpa): int
     {
+        $dbRules = GpaCreditRule::orderByDesc('min_gpa')->get();
+
+        if ($dbRules->isNotEmpty()) {
+            foreach ($dbRules as $rule) {
+                if ($gpa >= $rule->min_gpa && $gpa <= $rule->max_gpa) {
+                    return $rule->max_credits;
+                }
+            }
+            // GPA is below the lowest rule; return the lowest rule's credits
+            return $dbRules->last()->max_credits;
+        }
+
+        // Fallback to config/system.php rules
         $rules = config('system.max_credits.gpa_rules', [
-            ['min' => 3.00, 'max' => 4.00, 'credits' => 24],
-            ['min' => 2.50, 'max' => 2.99, 'credits' => 21],
-            ['min' => 2.00, 'max' => 2.49, 'credits' => 18],
-            ['min' => 0.00, 'max' => 1.99, 'credits' => 15],
+            ['min' => 3.51, 'max' => 4.00, 'credits' => 24],
+            ['min' => 3.01, 'max' => 3.50, 'credits' => 22],
+            ['min' => 2.51, 'max' => 3.00, 'credits' => 20],
+            ['min' => 2.00, 'max' => 2.50, 'credits' => 18],
+            ['min' => 0.00, 'max' => 1.99, 'credits' => 14],
         ]);
 
         foreach ($rules as $rule) {
@@ -118,7 +135,7 @@ class AcademicCalculationService
             }
         }
 
-        return 18; // Default
+        return config('system.max_credits.default', 24);
     }
 
     /**

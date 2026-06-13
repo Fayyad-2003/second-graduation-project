@@ -260,15 +260,14 @@
                 generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
                 try {
-                    const response = await fetch('{{ route('
-                        students.academic - situation.generate - recommendations ') }}', {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            }
-                        });
+                    const response = await fetch("{{ route('students.academic-situation.generate-recommendations') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    });
 
                     const data = await response.json();
 

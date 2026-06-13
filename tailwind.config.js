@@ -97,6 +97,10 @@ export default {
                     800: "#075985",
                     900: "#0c4a6e",
                     950: "#082f49",
+                    primary: "#0284c7",
+                    secondary: "#0ea5e9",
+                    dark: "#0c4a6e",
+                    light: "#e0f2fe",
                 },
                 // Secondary - Used for secondary actions, accents
                 secondary: {
