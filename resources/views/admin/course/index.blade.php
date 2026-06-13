@@ -126,7 +126,12 @@
                             </div>
                         </td>
                         <td class="py-5 px-6 text-center">
-                            <span class="inline-flex px-2.5 py-1 text-[10px] font-black bg-primary-50 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-lg border border-primary-100 dark:border-primary-800 uppercase">{{ $mk->credits }}</span>
+                            <span class="inline-flex px-2.5 py-1 text-[10px] font-black bg-primary-50 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-lg border border-primary-100 dark:border-primary-800 uppercase" title="{{ $mk->theory_credits }} {{ __('Theory') }} + {{ $mk->practical_hours }} {{ __('Practical Hours') }}">
+                                {{ $mk->credits }}
+                                @if($mk->has_practical)
+                                    <span class="text-primary-400 dark:text-primary-500 ml-1">({{ $mk->theory_credits }}+{{ $mk->practical_hours }})</span>
+                                @endif
+                            </span>
                         </td>
                         <td class="py-5 px-6 text-center">
                             <span class="inline-flex px-2.5 py-1 text-[10px] font-black bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 rounded-lg border border-emerald-100 dark:border-emerald-900/50 uppercase">{{ __('Sem') }} {{ $mk->semester }}</span>
@@ -155,7 +160,7 @@
                         </td>
                         <td class="py-5 px-8 text-end">
                             <div class="flex items-center justify-end gap-2">
-                                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }}, {{ json_encode($mk->description) }})"
+                                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->theory_credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }}, {{ json_encode($mk->description) }}, {{ $mk->has_practical ? 'true' : 'false' }}, {{ $mk->practical_hours }})"
                                     class="p-2 text-primary-secondary hover:text-primary-primary hover:bg-primary-primary/10 rounded-lg transition-colors" title="{{ __('Edit') }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -214,7 +219,12 @@
             <div class="grid grid-cols-2 gap-3 mb-6">
                 <div class="bg-primary-50/50 dark:bg-primary-900/50 p-3 rounded-2xl border border-primary-100/50 dark:border-primary-800/50">
                     <span class="block text-[10px] text-primary-400 font-black uppercase tracking-widest mb-1">{{ __('Credits') }}</span>
-                    <span class="font-black text-primary-900 dark:text-white">{{ $mk->credits }}</span>
+                    <span class="font-black text-primary-900 dark:text-white">
+                        {{ $mk->credits }}
+                        @if($mk->has_practical)
+                            <span class="text-xs text-primary-500 font-normal">({{ $mk->theory_credits }} T + {{ $mk->practical_hours }} P)</span>
+                        @endif
+                    </span>
                 </div>
                 <div class="bg-primary-50/50 dark:bg-primary-900/50 p-3 rounded-2xl border border-primary-100/50 dark:border-primary-800/50">
                     <span class="block text-[10px] text-primary-400 font-black uppercase tracking-widest mb-1">{{ __('Semester') }}</span>
@@ -245,7 +255,7 @@
             </div>
 
             <div class="flex items-center gap-3 pt-4 border-t border-primary-50 dark:border-primary-800">
-                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }}, {{ json_encode($mk->description) }})"
+                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->theory_credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }}, {{ json_encode($mk->description) }}, {{ $mk->has_practical ? 'true' : 'false' }}, {{ $mk->practical_hours }})"
                     class="flex-1 py-3 text-xs font-black text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-800 rounded-xl hover:bg-primary-primary hover:text-white transition-all text-center">
                     {{ __('Edit') }}
                 </button>
@@ -340,13 +350,29 @@
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Credits') }}</label>
-                                    <input type="number" name="credits" min="1" max="6" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="3" required>
+                                    <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Lecture/Theory Credits') }}</label>
+                                    <input type="number" name="theory_credits" id="createTheoryCredits" min="1" max="6" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="3" required oninput="calculateTotalCreditsCreate()">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Semester') }}</label>
                                     <input type="number" name="semester" min="1" max="8" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="1" required>
                                 </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 items-center">
+                                <div class="flex items-center mt-2">
+                                    <input type="checkbox" name="has_practical" id="createHasPractical" value="1" class="rounded border-primary-300 text-primary-primary focus:ring-primary-primary h-4 w-4" onchange="togglePracticalInputCreate()">
+                                    <label for="createHasPractical" class="ml-2 text-xs font-black text-primary-700 dark:text-primary-300 uppercase tracking-wider">{{ __('Has Practical Part?') }}</label>
+                                </div>
+                                <div id="createPracticalHoursGroup" class="hidden">
+                                    <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Practical Hours') }}</label>
+                                    <input type="number" name="practical_hours" id="createPracticalHours" min="0" step="2" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="0" value="0" oninput="calculateTotalCreditsCreate()">
+                                    <p class="text-[9px] text-primary-400 mt-1 ml-1">{{ __('Must be even. 2 hours = 1 credit.') }}</p>
+                                </div>
+                            </div>
+
+                            <div id="createTotalCreditsPreview" class="bg-primary-50/50 dark:bg-primary-900/50 p-4 rounded-2xl border border-primary-100/50 dark:border-primary-800/50 text-xs font-black text-primary-700 dark:text-primary-300">
+                                {{ __('Total Computed Credits') }}: <span id="createTotalCreditsValue" class="text-primary-primary text-sm font-black ml-1">3</span> {{ __('Credits') }}
                             </div>
 
                             <div>
@@ -453,13 +479,29 @@
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Credits') }}</label>
-                                    <input type="number" name="credits" id="editCredits" min="1" max="6" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required>
+                                    <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Lecture/Theory Credits') }}</label>
+                                    <input type="number" name="theory_credits" id="editTheoryCredits" min="1" max="6" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required oninput="calculateTotalCreditsEdit()">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Semester') }}</label>
                                     <input type="number" name="semester" id="editSemester" min="1" max="8" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required>
                                 </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 items-center">
+                                <div class="flex items-center mt-2">
+                                    <input type="checkbox" name="has_practical" id="editHasPractical" value="1" class="rounded border-primary-300 text-primary-primary focus:ring-primary-primary h-4 w-4" onchange="togglePracticalInputEdit()">
+                                    <label for="editHasPractical" class="ml-2 text-xs font-black text-primary-700 dark:text-primary-300 uppercase tracking-wider">{{ __('Has Practical Part?') }}</label>
+                                </div>
+                                <div id="editPracticalHoursGroup" class="hidden">
+                                    <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Practical Hours') }}</label>
+                                    <input type="number" name="practical_hours" id="editPracticalHours" min="0" step="2" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="0" oninput="calculateTotalCreditsEdit()">
+                                    <p class="text-[9px] text-primary-400 mt-1 ml-1">{{ __('Must be even. 2 hours = 1 credit.') }}</p>
+                                </div>
+                            </div>
+
+                            <div id="editTotalCreditsPreview" class="bg-primary-50/50 dark:bg-primary-900/50 p-4 rounded-2xl border border-primary-100/50 dark:border-primary-800/50 text-xs font-black text-primary-700 dark:text-primary-300">
+                                {{ __('Total Computed Credits') }}: <span id="editTotalCreditsValue" class="text-primary-primary text-sm font-black ml-1">3</span> {{ __('Credits') }}
                             </div>
 
                             <div>
@@ -532,14 +574,22 @@
             study_programSelect.value = '';
         }
 
-        function editCourse(id, code, name, credits, semester, study_programId, facultyId, prerequisites, classificationId, description) {
+        function editCourse(id, code, name, theoryCredits, semester, study_programId, facultyId, prerequisites, classificationId, description, hasPractical, practicalHours) {
             document.getElementById('editForm').action = `/admin/course/${id}`;
             document.getElementById('editCode').value = code;
             document.getElementById('editName').value = name;
-            document.getElementById('editCredits').value = credits;
+            document.getElementById('editTheoryCredits').value = theoryCredits;
             document.getElementById('editSemester').value = semester;
             document.getElementById('editClassification').value = classificationId || '';
             document.getElementById('editDescription').value = description || '';
+
+            // Set practical part fields
+            const hasPrCheck = document.getElementById('editHasPractical');
+            hasPrCheck.checked = !!hasPractical;
+            document.getElementById('editPracticalHours').value = practicalHours || 0;
+
+            togglePracticalInputEdit();
+            calculateTotalCreditsEdit();
 
             // Set faculty and study_program
             const facultySelect = document.getElementById('editFacultySelect');
@@ -565,6 +615,48 @@
             }
 
             document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        // Live calculation and toggles for Create Modal
+        function togglePracticalInputCreate() {
+            const hasPractical = document.getElementById('createHasPractical').checked;
+            const group = document.getElementById('createPracticalHoursGroup');
+            if (hasPractical) {
+                group.classList.remove('hidden');
+            } else {
+                group.classList.add('hidden');
+                document.getElementById('createPracticalHours').value = 0;
+            }
+            calculateTotalCreditsCreate();
+        }
+
+        function calculateTotalCreditsCreate() {
+            const theoryCredits = parseInt(document.getElementById('createTheoryCredits').value) || 0;
+            const hasPractical = document.getElementById('createHasPractical').checked;
+            const practicalHours = parseInt(document.getElementById('createPracticalHours').value) || 0;
+            const total = theoryCredits + (hasPractical ? Math.floor(practicalHours / 2) : 0);
+            document.getElementById('createTotalCreditsValue').innerText = total;
+        }
+
+        // Live calculation and toggles for Edit Modal
+        function togglePracticalInputEdit() {
+            const hasPractical = document.getElementById('editHasPractical').checked;
+            const group = document.getElementById('editPracticalHoursGroup');
+            if (hasPractical) {
+                group.classList.remove('hidden');
+            } else {
+                group.classList.add('hidden');
+                document.getElementById('editPracticalHours').value = 0;
+            }
+            calculateTotalCreditsEdit();
+        }
+
+        function calculateTotalCreditsEdit() {
+            const theoryCredits = parseInt(document.getElementById('editTheoryCredits').value) || 0;
+            const hasPractical = document.getElementById('editHasPractical').checked;
+            const practicalHours = parseInt(document.getElementById('editPracticalHours').value) || 0;
+            const total = theoryCredits + (hasPractical ? Math.floor(practicalHours / 2) : 0);
+            document.getElementById('editTotalCreditsValue').innerText = total;
         }
     </script>
 </x-app-layout>

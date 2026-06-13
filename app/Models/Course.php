@@ -20,10 +20,14 @@ class Course extends Model
         'study_program_id',
         'subject_classification_id',
         'is_elective',
+        'has_practical',
+        'practical_hours',
+        'theory_credits',
     ];
 
     protected $casts = [
         'is_elective' => 'boolean',
+        'has_practical' => 'boolean',
     ];
 
     public function classification()

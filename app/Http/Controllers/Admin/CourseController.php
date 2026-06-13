@@ -133,14 +133,29 @@ class CourseController extends Controller
         $validated = $request->validate([
             'course_code' => 'required|string|unique:courses,course_code',
             'course_name' => 'required|string',
-            'credits' => 'required|integer|min:1',
+            'theory_credits' => 'required|integer|min:1',
             'semester' => 'required|integer|min:1',
             'description' => 'nullable|string|max:2000',
             'study_program_id' => 'nullable|exists:study_programs,id',
             'subject_classification_id' => 'nullable|exists:subject_classifications,id',
             'prerequisites' => 'nullable|array',
             'prerequisites.*' => 'exists:courses,id',
+            'has_practical' => 'nullable|boolean',
+            'practical_hours' => 'nullable|integer|min:0',
         ]);
+
+        $hasPractical = (bool) $request->input('has_practical', false);
+        $practicalHours = (int) $request->input('practical_hours', 0);
+
+        if ($hasPractical && ($practicalHours % 2 !== 0)) {
+            return redirect()->back()->withErrors([
+                'practical_hours' => __('Practical hours must be an even number (each 2 practical hours equals 1 credit).')
+            ])->withInput();
+        }
+
+        $validated['has_practical'] = $hasPractical;
+        $validated['practical_hours'] = $hasPractical ? $practicalHours : 0;
+        $validated['credits'] = $validated['theory_credits'] + ($validated['has_practical'] ? ($validated['practical_hours'] / 2) : 0);
 
         if (empty($validated['study_program_id']) && $request->get('faculty_scoped')) {
             $studyProgram = StudyProgram::where('faculty_id', $request->get('faculty_scope'))->first();
@@ -163,14 +178,29 @@ class CourseController extends Controller
         $validated = $request->validate([
             'course_code' => 'required|string|unique:courses,course_code,' . $course->id,
             'course_name' => 'required|string',
-            'credits' => 'required|integer|min:1',
+            'theory_credits' => 'required|integer|min:1',
             'semester' => 'required|integer|min:1',
             'description' => 'nullable|string|max:2000',
             'study_program_id' => 'nullable|exists:study_programs,id',
             'subject_classification_id' => 'nullable|exists:subject_classifications,id',
             'prerequisites' => 'nullable|array',
             'prerequisites.*' => 'exists:courses,id',
+            'has_practical' => 'nullable|boolean',
+            'practical_hours' => 'nullable|integer|min:0',
         ]);
+
+        $hasPractical = (bool) $request->input('has_practical', false);
+        $practicalHours = (int) $request->input('practical_hours', 0);
+
+        if ($hasPractical && ($practicalHours % 2 !== 0)) {
+            return redirect()->back()->withErrors([
+                'practical_hours' => __('Practical hours must be an even number (each 2 practical hours equals 1 credit).')
+            ])->withInput();
+        }
+
+        $validated['has_practical'] = $hasPractical;
+        $validated['practical_hours'] = $hasPractical ? $practicalHours : 0;
+        $validated['credits'] = $validated['theory_credits'] + ($validated['has_practical'] ? ($validated['practical_hours'] / 2) : 0);
 
         $course->update($validated);
         $course->prerequisites()->sync($request->prerequisites ?? []);

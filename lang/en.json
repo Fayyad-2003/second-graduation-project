@@ -864,5 +864,13 @@
     "Total Points": "Total Points",
     "Exam Max Points": "Exam Max Points",
     "Total points exceed exam max points!": "Total points exceed exam max points!",
-    "Total points are less than exam max points!": "Total points are less than exam max points!"
+    "Total points are less than exam max points!": "Total points are less than exam max points!",
+    "Has Practical Part?": "Has Practical Part?",
+    "Practical Hours": "Practical Hours",
+    "Theory Credits": "Theory Credits",
+    "Lecture/Theory Credits": "Lecture/Theory Credits",
+    "Total Computed Credits": "Total Computed Credits",
+    "Practical hours must be an even number (each 2 practical hours equals 1 credit).": "Practical hours must be an even number (each 2 practical hours equals 1 credit).",
+    "Theory": "Theory",
+    "Must be even. 2 hours = 1 credit.": "Must be even. 2 hours = 1 credit."
 }

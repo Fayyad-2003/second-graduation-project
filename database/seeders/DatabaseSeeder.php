@@ -303,6 +303,7 @@ class DatabaseSeeder extends Seeder
                 'course_code' => $d['code'],
                 'course_name' => $d['name'],
                 'credits' => $d['credits'],
+                'theory_credits' => $d['credits'],
                 'semester' => $d['sem'],
                 'study_program_id' => $spId,
                 'subject_classification_id' => $classifications[$d['class']]->id ?? null,

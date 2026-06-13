@@ -1211,5 +1211,13 @@
     "Plan Settings": "إعدادات الخطة",
     "Label": "التسمية",
     "Optional: describe the course content, goals, or notes...": "اختياري: صف محتوى المادة أو أهدافها أو ملاحظاتك...",
-    "Max 2000 characters. Visible to students on their subject tree.": "الحد الأقصى 2000 حرف. يظهر للطلاب في شجرة المواد الدراسية."
+    "Max 2000 characters. Visible to students on their subject tree.": "الحد الأقصى 2000 حرف. يظهر للطلاب في شجرة المواد الدراسية.",
+    "Has Practical Part?": "هل يوجد قسم عملي؟",
+    "Practical Hours": "الساعات العملية",
+    "Theory Credits": "الساعات النظرية",
+    "Lecture/Theory Credits": "ساعات المحاضرة/النظرية",
+    "Total Computed Credits": "إجمالي الساعات المعتمدة",
+    "Practical hours must be an even number (each 2 practical hours equals 1 credit).": "يجب أن تكون الساعات العملية عدداً زوجياً (كل ساعتين عمليتين تعادل ساعة معتمدة واحدة).",
+    "Theory": "نظري",
+    "Must be even. 2 hours = 1 credit.": "يجب أن يكون زوجياً. ساعتان = ساعة معتمدة واحدة."
 }
