@@ -23,3 +23,12 @@ require __DIR__ . '/semester-calendar.php';
 require __DIR__ . '/recommendations.php';
 require __DIR__ . '/academic-situation.php';
 require __DIR__ . '/subject-tree.php';
+
+// Warnings Routes
+use App\Http\Controllers\Student\WarningController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth', 'role:student'])->prefix('students')->name('students.')->group(function () {
+    Route::get('warnings', [WarningController::class, 'index'])->name('warnings.index');
+    Route::post('warnings/{warning}/mark-as-read', [WarningController::class, 'markAsRead'])->name('warnings.mark-as-read');
+});

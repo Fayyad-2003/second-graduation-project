@@ -598,6 +598,15 @@
                     </svg>
                     <span class="sidebar-text">{{ __('Notifications') }}</span>
                 </a>
+                <a href="{{ route('admin.warnings.index') }}"
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/warnings*') ? 'active' : '' }}">
+                    <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                    <span class="sidebar-text">{{ __('Student Warnings') }}</span>
+                </a>
                 <a href="{{ route('admin.document-application.index') }}"
                     class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('admin/document-*') ? 'active' : '' }}">
                     <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -771,6 +780,22 @@
                         </path>
                     </svg>
                     <span class="sidebar-text">{{ __('Semester Calendar') }}</span>
+                </a>
+                <a href="{{ route('students.warnings.index') }}"
+                    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/warnings*') ? 'active' : '' }}">
+                    <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                    <span class="sidebar-text">{{ __('My Warnings') }}</span>
+                    @php
+                    $student = Auth::user()->student;
+                    $unreadWarnings = $student ? \App\Models\Warning::where('student_id', $student->id)->where('is_read', false)->count() : 0;
+                    @endphp
+                    @if($unreadWarnings > 0)
+                    <span class="ml-auto px-2.5 py-1 text-[10px] font-bold bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-full shadow-lg">{{ $unreadWarnings }}</span>
+                    @endif
                 </a>
                 <a href="{{ url('students/graduation-checker') }}"
                     class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/graduation-checker*') ? 'active' : '' }}">

@@ -74,4 +74,9 @@ class Student extends Model
     {
         return $this->hasMany(Internship::class);
     }
+
+    public function warnings()
+    {
+        return $this->hasMany(Warning::class);
+    }
 }

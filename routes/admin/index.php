@@ -19,3 +19,11 @@ require __DIR__ . '/report.php';
 require __DIR__ . '/semester-calendar.php';
 require __DIR__ . '/schedule-analysis.php';
 
+// Warnings Routes
+use App\Http\Controllers\Admin\WarningController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth', 'role:superadmin|admin|admin_faculty'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('warnings', WarningController::class)->only(['index', 'store', 'destroy']);
+});
+
