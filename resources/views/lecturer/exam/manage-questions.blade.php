@@ -138,11 +138,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const examMaxPoints = {
-                {
-                    $exam - > max_score
-                }
-            };
+            const examMaxPoints = {{ $exam->max_score }};
             const checkboxes = document.querySelectorAll('.question-checkbox');
             const totalPointsElement = document.getElementById('total-points');
             const pointsWarning = document.getElementById('points-warning');

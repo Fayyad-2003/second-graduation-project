@@ -12,6 +12,7 @@
         <form action="{{ route('admin.course.index') }}" method="GET" class="flex flex-wrap items-center gap-4">
             @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
             @if(request('order')) <input type="hidden" name="order" value="{{ request('order') }}"> @endif
+            <input type="hidden" name="view" value="{{ $viewMode }}">
 
             <div class="flex-1 min-w-[300px]">
                 <div class="relative group">
@@ -51,6 +52,13 @@
                 @endforeach
             </select>
 
+            <select name="study_program_id" onchange="this.form.submit()" class="input-saas px-4 py-2.5 text-sm w-full sm:w-48">
+                <option value="">{{ __('All Study Programs') }}</option>
+                @foreach($studyPrograms as $sp)
+                <option value="{{ $sp->id }}" {{ $selectedStudyProgramId == $sp->id ? 'selected' : '' }}>{{ $sp->name }}</option>
+                @endforeach
+            </select>
+
             <div class="w-px h-8 bg-primary-100 hidden lg:block mx-2"></div>
 
             <div class="flex items-center gap-2 ml-auto">
@@ -72,8 +80,217 @@
         </form>
     </div>
 
-    <!-- Data Table -->
-    <div class="card-saas overflow-hidden">
+    <!-- View Switcher -->
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-2 bg-primary-100/50 dark:bg-primary-900/50 p-1.5 rounded-2xl border border-primary-200/50 dark:border-primary-800/50">
+            <a href="{{ route('admin.course.index', array_merge(request()->all(), ['view' => 'table'])) }}"
+                class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all {{ $viewMode !== 'tree' ? 'bg-white dark:bg-primary-800 text-primary-primary shadow-sm' : 'text-primary-secondary hover:text-primary-primary' }}">
+                {{ __('Table List') }}
+            </a>
+            <a href="{{ route('admin.course.index', array_merge(request()->all(), ['view' => 'tree'])) }}"
+                class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all {{ $viewMode === 'tree' ? 'bg-white dark:bg-primary-800 text-primary-primary shadow-sm' : 'text-primary-secondary hover:text-primary-primary' }}">
+                {{ __('Subject Tree') }}
+            </a>
+        </div>
+    </div>
+
+    @if($viewMode === 'tree')
+        @php
+        $totalCourses = $coursesBySemester->flatten()->count();
+        $totalCredits = $coursesBySemester->flatten()->sum('credits');
+        $totalTheoryCredits = $coursesBySemester->flatten()->sum('theory_credits');
+        $totalPracticalHours = $coursesBySemester->flatten()->sum('practical_hours');
+        @endphp
+
+        <!-- Subject Tree View -->
+        <div class="card-saas overflow-hidden sm:rounded-xl mb-10">
+            <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                            {{ __('Curriculum Tree') }}
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-300 mt-1 text-sm">
+                            {{ __('Curriculum structure grouped by semester. Lines connect prerequisite subjects.') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Metrics Summary -->
+                <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="p-4 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl border border-blue-200 dark:border-blue-700">
+                        <div class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">{{ __('Total Subjects') }}</div>
+                        <div class="text-3xl font-black text-blue-800 dark:text-blue-100">{{ $totalCourses }}</div>
+                        <div class="text-xs text-blue-600/80 dark:text-blue-400/80 mt-1">{{ __('Courses registered') }}</div>
+                    </div>
+
+                    <div class="p-4 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl border border-green-200 dark:border-green-700">
+                        <div class="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase tracking-wider mb-1">{{ __('Total Credits') }}</div>
+                        <div class="text-3xl font-black text-green-800 dark:text-green-100">{{ $totalCredits }}</div>
+                        <div class="text-xs text-green-600/80 dark:text-green-400/80 mt-1">{{ __('SKS credits') }}</div>
+                    </div>
+
+                    <div class="p-4 bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/30 dark:to-purple-900/30 rounded-2xl border border-purple-200 dark:border-purple-700">
+                        <div class="text-[10px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-1">{{ __('Theory Credits') }}</div>
+                        <div class="text-3xl font-black text-purple-800 dark:text-purple-100">{{ $totalTheoryCredits }}</div>
+                        <div class="text-xs text-purple-600/80 dark:text-purple-400/80 mt-1">{{ __('Lecture SKS') }}</div>
+                    </div>
+
+                    <div class="p-4 bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 rounded-2xl border border-amber-200 dark:border-amber-700">
+                        <div class="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1">{{ __('Practical Hours') }}</div>
+                        <div class="text-3xl font-black text-amber-800 dark:text-amber-100">{{ $totalPracticalHours }}</div>
+                        <div class="text-xs text-amber-600/80 dark:text-amber-400/80 mt-1">{{ __('Total weekly hours') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 space-y-8 overflow-x-auto relative">
+                <svg id="connector-svg" class="absolute top-0 left-0 w-full h-full pointer-events-none" style="z-index: 0;"></svg>
+
+                @forelse($coursesBySemester as $semester => $courses)
+                <div class="relative z-10">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 pb-1 border-b border-gray-200 dark:border-gray-700">
+                        {{ __('Semester') }} {{ $semester }}
+                    </h3>
+                    <div class="flex gap-4 flex-wrap">
+                        @foreach($courses as $course)
+                        <div id="course-{{ $course->id }}" class="relative min-w-[200px] p-4 rounded-xl border bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary-primary group">
+                            
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <div class="font-black text-sm text-primary-900 dark:text-white font-mono bg-primary-50 dark:bg-primary-900 px-2 py-1 rounded border border-primary-100 dark:border-primary-800">
+                                        {{ $course->course_code }}
+                                    </div>
+                                    <div class="text-xs font-bold text-primary-600 dark:text-primary-300 mt-2">
+                                        {{ $course->course_name }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1.5 mb-2">
+                                <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-primary-50 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded border border-primary-100 dark:border-primary-850 uppercase">
+                                    {{ $course->credits }} SKS
+                                </span>
+                                @if($course->has_practical)
+                                <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 rounded border border-amber-100 dark:border-amber-900/50 uppercase">
+                                    {{ __('Practical') }}
+                                </span>
+                                @endif
+                                @if($course->classification)
+                                <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 rounded border border-purple-100 dark:border-purple-900/50 uppercase">
+                                    {{ __($course->classification->name) }}
+                                </span>
+                                @endif
+                            </div>
+
+                            @if(count($course->prerequisites) > 0)
+                            <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                                <div class="text-[9px] font-bold text-gray-500 uppercase tracking-wider mb-1">{{ __('Prerequisites') }}:</div>
+                                <div class="flex flex-wrap gap-1">
+                                    @foreach($course->prerequisites as $prereq)
+                                    <span class="text-[9px] px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300 font-bold border border-sky-100 dark:border-sky-900/50">
+                                        {{ $prereq->course_code }}
+                                    </span>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+
+                            <!-- Action Buttons inside Tree Nodes -->
+                            <div class="flex items-center gap-2 mt-3 pt-2 border-t border-gray-100 dark:border-gray-850/80">
+                                <button onclick="editCourse({{ $course->id }}, '{{ $course->course_code }}', '{{ addslashes($course->course_name) }}', {{ $course->theory_credits }}, {{ $course->semester }}, {{ $course->study_program_id ?? 'null' }}, {{ $course->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($course->prerequisites->pluck('id')) }}, {{ $course->subject_classification_id ?? 'null' }}, {{ json_encode($course->description) }}, {{ $course->has_practical ? 'true' : 'false' }}, {{ $course->practical_hours }})"
+                                    class="p-1.5 text-primary-secondary hover:text-primary-primary hover:bg-primary-primary/10 rounded-lg transition-colors cursor-pointer" title="{{ __('Edit') }}">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </button>
+                                <form action="{{ route('admin.course.destroy', $course) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this course?') }}')">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="p-1.5 text-primary-secondary hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer" title="{{ __('Delete') }}">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @empty
+                <div class="p-12 text-center">
+                    <div class="w-16 h-16 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <p class="text-primary-400 font-bold mb-2">{{ __('No subjects registered in this study program yet.') }}</p>
+                    <p class="text-xs text-primary-300">{{ __('Use the toolbar to select a different study program or create a new course.') }}</p>
+                </div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Tree SVG Styles & Script -->
+        <style>
+            .connector-line {
+                stroke: #3b82f6;
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                fill: none;
+                opacity: 0.65;
+            }
+        </style>
+
+        <script>
+            const courseConnections = @json($courseConnections);
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const svg = document.getElementById('connector-svg');
+                const container = document.querySelector('.overflow-x-auto');
+
+                function drawConnectors() {
+                    if (!svg || !container) return;
+
+                    svg.setAttribute('width', container.scrollWidth);
+                    svg.setAttribute('height', container.scrollHeight);
+                    svg.innerHTML = '';
+
+                    courseConnections.forEach(function(conn) {
+                        const courseEl = document.getElementById('course-' + conn.courseId);
+                        const prereqEl = document.getElementById('course-' + conn.prereqId);
+
+                        if (!courseEl || !prereqEl) return;
+
+                        const courseRect = courseEl.getBoundingClientRect();
+                        const prereqRect = prereqEl.getBoundingClientRect();
+                        const containerRect = container.getBoundingClientRect();
+
+                        const x1 = prereqRect.left + prereqRect.width / 2 - containerRect.left + container.scrollLeft;
+                        const y1 = prereqRect.bottom - containerRect.top + container.scrollTop;
+                        const x2 = courseRect.left + courseRect.width / 2 - containerRect.left + container.scrollLeft;
+                        const y2 = courseRect.top - containerRect.top + container.scrollTop;
+
+                        const midY = (y1 + y2) / 2;
+
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        const d = `M ${x1} ${y1} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2}`;
+                        path.setAttribute('d', d);
+                        path.setAttribute('class', 'connector-line');
+                        svg.appendChild(path);
+                    });
+                }
+
+                window.addEventListener('load', drawConnectors);
+                window.addEventListener('resize', drawConnectors);
+                container.addEventListener('scroll', drawConnectors);
+                setTimeout(drawConnectors, 150);
+            });
+        </script>
+    @else
+        <!-- Data Table -->
+        <div class="card-saas overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-start border-collapse">
                 <thead>
@@ -285,6 +502,7 @@
         {{ $courses->links() }}
     </div>
     @endif
+    @endif
     <!-- Create Modal -->
     <div id="createModal" class="hidden fixed inset-0 z-50 overflow-y-auto" x-cloak>
         <div class="flex items-center justify-center min-h-screen p-4">
@@ -314,7 +532,7 @@
 
                     <form action="{{ route('admin.course.store') }}" method="POST">
                         @csrf
-                        <div class="space-y-5 max-h-[60vh] overflow-y-auto pr-2 scrollbar-hide">
+                        <div class="space-y-5 max-h-[60vh] overflow-y-auto pr-2">
                             @if($isSuperAdmin)
                             <div>
                                 <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Faculties') }}</label>
@@ -346,6 +564,14 @@
                                     <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Course Name') }}</label>
                                     <input type="text" name="course_name" class="input-saas w-full px-4 py-3 text-sm rounded-xl" placeholder="{{ __('Enter course name') }}" required>
                                 </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Description') }}</label>
+                                <textarea name="description" rows="3"
+                                    class="input-saas w-full px-4 py-3 text-sm rounded-xl resize-none"
+                                    placeholder="{{ __('Optional: describe the course content, goals, or notes...') }}"></textarea>
+                                <p class="text-[10px] text-primary-400 mt-1.5 ml-1">{{ __('Max 2000 characters. Visible to students on their subject tree.') }}</p>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
@@ -387,21 +613,39 @@
 
                             <div>
                                 <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Prerequisites') }}</label>
-                                <select name="prerequisites[]" multiple class="input-saas w-full px-4 py-3 text-sm rounded-xl h-32 scrollbar-hide">
-                                    @foreach($allCourses as $course)
-                                    <option value="{{ $course->id }}">{{ $course->course_name }} ({{ $course->course_code }})</option>
-                                    @endforeach
-                                </select>
-                                <p class="text-[10px] text-primary-400 mt-2 ml-1 italic">{{ __('Press Ctrl/Cmd to select multiple') }}</p>
+                                <div id="createPrereqContainer" class="relative">
+                                    <!-- Selected Tags -->
+                                    <div id="createPrereqTags" class="flex flex-wrap gap-1.5 mb-2 min-h-[8px]"></div>
+                                    <!-- Search Input -->
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg class="w-3.5 h-3.5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                        </div>
+                                        <input type="text" id="createPrereqSearch" placeholder="{{ __('Search courses to add as prerequisite...') }}"
+                                            class="input-saas w-full pl-9 pr-4 py-2.5 text-sm rounded-xl"
+                                            autocomplete="off"
+                                            onfocus="showPrereqDropdown('create')" oninput="filterPrereqDropdown('create')">
+                                    </div>
+                                    <!-- Dropdown -->
+                                    <div id="createPrereqDropdown" class="hidden absolute z-50 w-full mt-1 bg-white dark:bg-primary-900 border border-primary-200 dark:border-primary-700 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                                        @foreach($allCourses as $course)
+                                        <div class="prereq-option px-4 py-2.5 text-sm cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-800 transition-colors flex items-center justify-between"
+                                            data-id="{{ $course->id }}" data-name="{{ $course->course_name }}" data-code="{{ $course->course_code }}"
+                                            onclick="togglePrereq('create', {{ $course->id }}, '{{ addslashes($course->course_name) }}', '{{ $course->course_code }}')">
+                                            <span>
+                                                <span class="font-mono text-[10px] font-black text-primary-500 bg-primary-50 dark:bg-primary-800 px-1.5 py-0.5 rounded mr-2">{{ $course->course_code }}</span>
+                                                <span class="text-primary-700 dark:text-primary-300">{{ $course->course_name }}</span>
+                                            </span>
+                                            <svg class="w-4 h-4 text-emerald-500 prereq-check hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <!-- Hidden inputs container -->
+                                    <div id="createPrereqInputs"></div>
+                                </div>
+                                <p class="text-[10px] text-primary-400 mt-2 ml-1 italic">{{ __('Search and click to add or remove prerequisites') }}</p>
                             </div>
 
-                            <div>
-                                <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Description') }}</label>
-                                <textarea name="description" rows="3"
-                                    class="input-saas w-full px-4 py-3 text-sm rounded-xl resize-none"
-                                    placeholder="{{ __('Optional: describe the course content, goals, or notes...') }}"></textarea>
-                                <p class="text-[10px] text-primary-400 mt-1.5 ml-1">{{ __('Max 2000 characters. Visible to students on their subject tree.') }}</p>
-                            </div>
                         </div>
 
                         <div class="mt-8 flex items-center justify-end gap-3">
@@ -443,7 +687,7 @@
 
                     <form id="editForm" method="POST">
                         @csrf @method('PUT')
-                        <div class="space-y-5 max-h-[60vh] overflow-y-auto pr-2 scrollbar-hide">
+                        <div class="space-y-5 max-h-[60vh] overflow-y-auto pr-2">
                             @if($isSuperAdmin)
                             <div>
                                 <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Faculties') }}</label>
@@ -475,6 +719,14 @@
                                     <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Course Name') }}</label>
                                     <input type="text" name="course_name" id="editName" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required>
                                 </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Description') }}</label>
+                                <textarea name="description" id="editDescription" rows="3"
+                                    class="input-saas w-full px-4 py-3 text-sm rounded-xl resize-none"
+                                    placeholder="{{ __('Optional: describe the course content, goals, or notes...') }}"></textarea>
+                                <p class="text-[10px] text-primary-400 mt-1.5 ml-1">{{ __('Max 2000 characters. Visible to students on their subject tree.') }}</p>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
@@ -516,20 +768,39 @@
 
                             <div>
                                 <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Prerequisites') }}</label>
-                                <select name="prerequisites[]" id="editPrerequisites" multiple class="input-saas w-full px-4 py-3 text-sm rounded-xl h-32 scrollbar-hide">
-                                    @foreach($allCourses as $course)
-                                    <option value="{{ $course->id }}">{{ $course->course_name }} ({{ $course->course_code }})</option>
-                                    @endforeach
-                                </select>
+                                <div id="editPrereqContainer" class="relative">
+                                    <!-- Selected Tags -->
+                                    <div id="editPrereqTags" class="flex flex-wrap gap-1.5 mb-2 min-h-[8px]"></div>
+                                    <!-- Search Input -->
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg class="w-3.5 h-3.5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                        </div>
+                                        <input type="text" id="editPrereqSearch" placeholder="{{ __('Search courses to add as prerequisite...') }}"
+                                            class="input-saas w-full pl-9 pr-4 py-2.5 text-sm rounded-xl"
+                                            autocomplete="off"
+                                            onfocus="showPrereqDropdown('edit')" oninput="filterPrereqDropdown('edit')">
+                                    </div>
+                                    <!-- Dropdown -->
+                                    <div id="editPrereqDropdown" class="hidden absolute z-50 w-full mt-1 bg-white dark:bg-primary-900 border border-primary-200 dark:border-primary-700 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                                        @foreach($allCourses as $course)
+                                        <div class="prereq-option px-4 py-2.5 text-sm cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-800 transition-colors flex items-center justify-between"
+                                            data-id="{{ $course->id }}" data-name="{{ $course->course_name }}" data-code="{{ $course->course_code }}"
+                                            onclick="togglePrereq('edit', {{ $course->id }}, '{{ addslashes($course->course_name) }}', '{{ $course->course_code }}')">
+                                            <span>
+                                                <span class="font-mono text-[10px] font-black text-primary-500 bg-primary-50 dark:bg-primary-800 px-1.5 py-0.5 rounded mr-2">{{ $course->course_code }}</span>
+                                                <span class="text-primary-700 dark:text-primary-300">{{ $course->course_name }}</span>
+                                            </span>
+                                            <svg class="w-4 h-4 text-emerald-500 prereq-check hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <!-- Hidden inputs container -->
+                                    <div id="editPrereqInputs"></div>
+                                </div>
+                                <p class="text-[10px] text-primary-400 mt-2 ml-1 italic">{{ __('Search and click to add or remove prerequisites') }}</p>
                             </div>
 
-                            <div>
-                                <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Description') }}</label>
-                                <textarea name="description" id="editDescription" rows="3"
-                                    class="input-saas w-full px-4 py-3 text-sm rounded-xl resize-none"
-                                    placeholder="{{ __('Optional: describe the course content, goals, or notes...') }}"></textarea>
-                                <p class="text-[10px] text-primary-400 mt-1.5 ml-1">{{ __('Max 2000 characters. Visible to students on their subject tree.') }}</p>
-                            </div>
                         </div>
 
                         <div class="mt-8 flex items-center justify-end gap-3">
@@ -543,6 +814,10 @@
     </div>
 
     <script>
+        // ===== Prerequisite Picker State =====
+        const selectedPrereqs = { create: new Map(), edit: new Map() };
+        let editingCourseId = null;
+
         // Filter study program based on faculty for Create modal
         function filterStudyProgramCreate() {
             const facultyId = document.getElementById('createFacultySelect')?.value || '';
@@ -550,12 +825,11 @@
             const options = study_programSelect.querySelectorAll('option');
 
             options.forEach(option => {
-                if (option.value === '') return; // Keep placeholder
+                if (option.value === '') return;
                 const optFacultyId = option.getAttribute('data-faculty');
                 option.style.display = (facultyId === '' || optFacultyId === facultyId) ? '' : 'none';
             });
 
-            // Reset selection
             study_programSelect.value = '';
         }
 
@@ -574,7 +848,125 @@
             study_programSelect.value = '';
         }
 
+        // ===== Prerequisite Picker Functions =====
+        function showPrereqDropdown(mode) {
+            document.getElementById(mode + 'PrereqDropdown').classList.remove('hidden');
+            filterPrereqDropdown(mode);
+        }
+
+        function hidePrereqDropdown(mode) {
+            setTimeout(() => {
+                document.getElementById(mode + 'PrereqDropdown').classList.add('hidden');
+            }, 200);
+        }
+
+        function filterPrereqDropdown(mode) {
+            const search = document.getElementById(mode + 'PrereqSearch').value.toLowerCase();
+            const dropdown = document.getElementById(mode + 'PrereqDropdown');
+            const options = dropdown.querySelectorAll('.prereq-option');
+            let hasVisible = false;
+
+            options.forEach(option => {
+                const name = option.dataset.name.toLowerCase();
+                const code = option.dataset.code.toLowerCase();
+                const id = parseInt(option.dataset.id);
+                const isCurrentCourse = (mode === 'edit' && id === editingCourseId);
+                const matchesSearch = name.includes(search) || code.includes(search);
+
+                if (isCurrentCourse) {
+                    option.style.display = 'none';
+                } else if (matchesSearch) {
+                    option.style.display = '';
+                    hasVisible = true;
+                } else {
+                    option.style.display = 'none';
+                }
+
+                // Update check icon
+                const check = option.querySelector('.prereq-check');
+                if (selectedPrereqs[mode].has(id)) {
+                    check.classList.remove('hidden');
+                    option.classList.add('bg-emerald-50/50', 'dark:bg-emerald-950/20');
+                } else {
+                    check.classList.add('hidden');
+                    option.classList.remove('bg-emerald-50/50', 'dark:bg-emerald-950/20');
+                }
+            });
+
+            dropdown.classList.remove('hidden');
+        }
+
+        function togglePrereq(mode, id, name, code) {
+            if (selectedPrereqs[mode].has(id)) {
+                selectedPrereqs[mode].delete(id);
+            } else {
+                selectedPrereqs[mode].set(id, { name, code });
+            }
+            renderPrereqTags(mode);
+            renderPrereqInputs(mode);
+            filterPrereqDropdown(mode);
+        }
+
+        function removePrereq(mode, id) {
+            selectedPrereqs[mode].delete(id);
+            renderPrereqTags(mode);
+            renderPrereqInputs(mode);
+            filterPrereqDropdown(mode);
+        }
+
+        function renderPrereqTags(mode) {
+            const container = document.getElementById(mode + 'PrereqTags');
+            container.innerHTML = '';
+
+            if (selectedPrereqs[mode].size === 0) {
+                container.innerHTML = '<span class="text-[10px] text-primary-300 italic py-1">{{ __('No prerequisites selected') }}</span>';
+                return;
+            }
+
+            selectedPrereqs[mode].forEach((data, id) => {
+                const tag = document.createElement('span');
+                tag.className = 'inline-flex items-center gap-1.5 pl-2.5 pr-1.5 py-1 text-[11px] font-bold bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300 rounded-lg border border-sky-200 dark:border-sky-800 transition-all hover:border-sky-300 dark:hover:border-sky-700 group/tag';
+                tag.innerHTML = `
+                    <span class="font-mono text-[9px] font-black text-sky-500 dark:text-sky-400">${data.code}</span>
+                    <span class="max-w-[120px] truncate">${data.name}</span>
+                    <button type="button" onclick="removePrereq('${mode}', ${id})" class="ml-0.5 p-0.5 rounded hover:bg-sky-200 dark:hover:bg-sky-800 transition-colors group-hover/tag:text-red-500">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                `;
+                container.appendChild(tag);
+            });
+        }
+
+        function renderPrereqInputs(mode) {
+            const container = document.getElementById(mode + 'PrereqInputs');
+            container.innerHTML = '';
+
+            selectedPrereqs[mode].forEach((data, id) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'prerequisites[]';
+                input.value = id;
+                container.appendChild(input);
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            ['create', 'edit'].forEach(mode => {
+                const container = document.getElementById(mode + 'PrereqContainer');
+                if (container && !container.contains(e.target)) {
+                    document.getElementById(mode + 'PrereqDropdown').classList.add('hidden');
+                }
+            });
+        });
+
+        // Initialize create modal tags
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPrereqTags('create');
+        });
+
         function editCourse(id, code, name, theoryCredits, semester, study_programId, facultyId, prerequisites, classificationId, description, hasPractical, practicalHours) {
+            editingCourseId = id;
             document.getElementById('editForm').action = `/admin/course/${id}`;
             document.getElementById('editCode').value = code;
             document.getElementById('editName').value = name;
@@ -596,7 +988,6 @@
             if (facultySelect) {
                 facultySelect.value = facultyId || '';
 
-                // Filter study program without resetting the value yet
                 const study_programSelect = document.getElementById('editStudyProgramSelect');
                 const options = study_programSelect.querySelectorAll('option');
                 options.forEach(option => {
@@ -607,12 +998,25 @@
             }
             document.getElementById('editStudyProgramSelect').value = study_programId || '';
 
-            // Set prerequisites
-            const prSelect = document.getElementById('editPrerequisites');
-            const options = prSelect.options;
-            for (let i = 0; i < options.length; i++) {
-                options[i].selected = prerequisites.includes(parseInt(options[i].value));
-            }
+            // Set prerequisites using the new picker
+            selectedPrereqs.edit.clear();
+            const dropdown = document.getElementById('editPrereqDropdown');
+            const allOptions = dropdown.querySelectorAll('.prereq-option');
+
+            prerequisites.forEach(prereqId => {
+                allOptions.forEach(option => {
+                    if (parseInt(option.dataset.id) === prereqId) {
+                        selectedPrereqs.edit.set(prereqId, {
+                            name: option.dataset.name,
+                            code: option.dataset.code
+                        });
+                    }
+                });
+            });
+
+            renderPrereqTags('edit');
+            renderPrereqInputs('edit');
+            document.getElementById('editPrereqSearch').value = '';
 
             document.getElementById('editModal').classList.remove('hidden');
         }

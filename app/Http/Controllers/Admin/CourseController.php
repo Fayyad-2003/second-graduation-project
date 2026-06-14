@@ -23,6 +23,10 @@ class CourseController extends Controller
     {
         $query = Course::with(['studyProgram.faculty', 'classification', 'prerequisites']);
 
+        if ($request->filled('study_program_id')) {
+            $query->where('study_program_id', $request->study_program_id);
+        }
+
         if ($request->filled('category')) {
             $query->where('course_code', 'like', $request->category . '%');
         }
@@ -69,7 +73,47 @@ class CourseController extends Controller
         $allCourses = Course::orderBy('course_name')->get();
         $classifications = SubjectClassification::all();
 
-        return view('admin.course.index', compact('courses', 'studyPrograms', 'faculties', 'isSuperAdmin', 'allCourses', 'classifications'));
+        $viewMode = $request->input('view', 'table');
+        $selectedStudyProgramId = $request->input('study_program_id');
+        $coursesBySemester = collect();
+        $courseConnections = [];
+
+        if ($viewMode === 'tree') {
+            if (!$selectedStudyProgramId && $studyPrograms->isNotEmpty()) {
+                $selectedStudyProgramId = $studyPrograms->first()->id;
+            }
+
+            if ($selectedStudyProgramId) {
+                $treeCourses = Course::with('prerequisites')
+                    ->where('study_program_id', $selectedStudyProgramId)
+                    ->orderBy('semester')
+                    ->get();
+
+                $coursesBySemester = $treeCourses->groupBy('semester');
+
+                foreach ($treeCourses as $course) {
+                    foreach ($course->prerequisites as $prereq) {
+                        $courseConnections[] = [
+                            'courseId' => $course->id,
+                            'prereqId' => $prereq->id,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return view('admin.course.index', compact(
+            'courses',
+            'studyPrograms',
+            'faculties',
+            'isSuperAdmin',
+            'allCourses',
+            'classifications',
+            'viewMode',
+            'selectedStudyProgramId',
+            'coursesBySemester',
+            'courseConnections'
+        ));
     }
 
     public function export(Request $request)

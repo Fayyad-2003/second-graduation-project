@@ -224,7 +224,7 @@
         const systemLight = '#E3E3E3';
 
         // GPA Chart
-        const gpaDataHistory = @json($gpaHistory - > filter(fn($s) => $s['gpa'] > 0) - > values());
+        const gpaDataHistory = @json($gpaHistory->filter(fn($s) => $s['gpa'] > 0)->values());
         const ipsCtx = document.getElementById('semesterGpaChart').getContext('2d');
         new Chart(ipsCtx, {
             type: 'line',
