@@ -29,19 +29,27 @@ class StudyPlanController extends Controller
         if (!$student) abort(403, __('Unauthorized'));
 
         $studyPlan = $this->studyPlanService->getActiveStudyPlanOrNew($student);
+        $studyPlan->load('details.academicClass.schedules');
 
-        // Load available classes (that are not yet taken), grouped by semester
-        // IMPORTANT: Only show classes from courses of student's study program
-        $availableClasses = AcademicClass::with(['course', 'lecturer.user', 'details'])
-            ->whereHas('course', fn($q) => $q->where('study_program_id', $student->study_program_id))
-            ->whereDoesntHave('details', function($q) use ($studyPlan) {
-                $q->where('study_plan_id', $studyPlan->id);
+        // Load available courses with their classes (that are not yet taken), grouped by semester
+        // IMPORTANT: Only show courses of student's study program
+        $availableCourses = \App\Models\Course::with(['classes' => function ($q) use ($studyPlan) {
+            $q->with(['lecturer.user', 'details', 'schedules'])
+                ->whereDoesntHave('details', function ($q2) use ($studyPlan) {
+                    $q2->where('study_plan_id', $studyPlan->id);
+                });
+        }])
+            ->where('study_program_id', $student->study_program_id)
+            ->whereHas('classes', function ($q) use ($studyPlan) {
+                $q->whereDoesntHave('details', function ($q2) use ($studyPlan) {
+                    $q2->where('study_plan_id', $studyPlan->id);
+                });
             })
             ->get()
-            ->groupBy(fn($class) => 'Semester ' . $class->course->semester);
+            ->groupBy(fn($course) => 'Semester ' . $course->semester);
 
         // Sort by semester number
-        $availableClasses = $availableClasses->sortKeys();
+        $availableCourses = $availableCourses->sortKeys();
 
         // Get classification progress
         $classificationProgress = $this->calculationService->getClassificationProgress($student);
@@ -60,7 +68,7 @@ class StudyPlanController extends Controller
 
         return view('student.study-plan.index', compact(
             'studyPlan',
-            'availableClasses',
+            'availableCourses',
             'classificationProgress',
             'waitlistedClassIds',
             'finishedSubjects'
@@ -69,13 +77,13 @@ class StudyPlanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['class_id' => 'required|exists:classes,id']);
+        $request->validate(['academic_class_id' => 'required|exists:classes,id']);
 
         $student = Auth::user()->student;
         $studyPlan = $this->studyPlanService->getActiveStudyPlanOrNew($student);
 
         try {
-            $this->studyPlanService->addClass($studyPlan, $request->class_id);
+            $this->studyPlanService->addClass($studyPlan, $request->academic_class_id);
             return redirect()->back()->with('success', __('Class successfully added'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());

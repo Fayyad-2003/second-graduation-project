@@ -73,6 +73,30 @@ return [
         ['min' => 0,  'max' => 54,  'letter' => 'E',  'weight' => 0.00],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Grade Components Breakdown
+    |--------------------------------------------------------------------------
+    |
+    | Defines how the total grade is calculated based on whether the course
+    | has a practical component or not.
+    |
+    */
+    'grade_components' => [
+        'with_practical' => [
+            'attendance' => 10,
+            'midterm' => 20,
+            'final_exam' => 50,
+            'practical_attendance' => 5,
+            'practical_exam' => 20,
+        ],
+        'without_practical' => [
+            'attendance' => 10,
+            'midterm' => 30,
+            'final_exam' => 60,
+        ],
+    ],
+
 
     /*
     |--------------------------------------------------------------------------

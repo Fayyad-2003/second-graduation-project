@@ -211,33 +211,51 @@
 
                 <div class="divide-y divide-primary-100 dark:divide-primary-700">
                     @forelse($studyPlan->details as $detail)
-                    <div class="p-6 flex items-center gap-6 hover:bg-primary-50/50 dark:hover:bg-primary-900/30 transition-all duration-200 group">
-                        <div class="w-12 h-12 rounded-2xl bg-primary-100 dark:bg-primary-800 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
-                            <span class="text-primary-700 dark:text-primary-300 font-bold text-sm">{{ substr($detail->academicClass->course->course_name, 0, 1) }}</span>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-bold text-primary-900 dark:text-white truncate group-hover:text-primary-600 transition-colors">{{ $detail->academicClass->course->course_name }}</p>
-                            <div class="flex items-center gap-3 mt-1">
-                                <p class="text-xs text-primary-600 dark:text-primary-400 font-medium">{{ $detail->academicClass->course->course_code }}</p>
-                                <span class="w-1 h-1 rounded-full bg-primary-300 dark:bg-primary-600"></span>
-                                <p class="text-xs text-primary-600 dark:text-primary-400 font-medium truncate">{{ $detail->academicClass->lecturer->user->name }}</p>
+                    <div class="p-6 hover:bg-primary-50/50 dark:hover:bg-primary-900/30 transition-all duration-200 group">
+                        <div class="flex items-center gap-6">
+                            <div class="w-12 h-12 rounded-2xl bg-primary-100 dark:bg-primary-800 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
+                                <span class="text-primary-700 dark:text-primary-300 font-bold text-sm">{{ substr($detail->academicClass->course->course_name, 0, 1) }}</span>
                             </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-bold text-primary-900 dark:text-white truncate group-hover:text-primary-600 transition-colors">{{ $detail->academicClass->course->course_name }}</p>
+                                <div class="flex items-center gap-3 mt-1 flex-wrap">
+                                    <p class="text-xs text-primary-600 dark:text-primary-400 font-medium">{{ $detail->academicClass->course->course_code }}</p>
+                                    <span class="w-1 h-1 rounded-full bg-primary-300 dark:bg-primary-600"></span>
+                                    <p class="text-xs text-primary-600 dark:text-primary-400 font-medium truncate">{{ $detail->academicClass->lecturer->user->name }}</p>
+                                </div>
+                                <!-- Show Schedule -->
+                                @if($detail->academicClass->schedules->isNotEmpty())
+                                <div class="mt-2 space-y-1">
+                                    @foreach($detail->academicClass->schedules as $schedule)
+                                    <div class="flex items-center gap-2 text-xs text-primary-500 dark:text-primary-500">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span>{{ $schedule->day }} • {{ $schedule->start_time->format('H:i') }} - {{ $schedule->end_time->format('H:i') }}</span>
+                                        @if($schedule->room_name)
+                                        <span>• {{ $schedule->room_name }}</span>
+                                        @endif
+                                    </div>
+                                    @endforeach
+                                </div>
+                                @endif
+                            </div>
+                            <div class="hidden sm:flex flex-col items-end">
+                                <span class="text-sm font-black text-primary-900 dark:text-white">{{ $detail->academicClass->course->credits }}</span>
+                                <span class="text-[10px] text-primary-500 font-bold uppercase tracking-tighter">{{ __('SKS') }}</span>
+                            </div>
+                            @if($studyPlan->status == 'draft')
+                            <form action="{{ route('students.study-plan.destroy', $detail->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-2.5 text-primary-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-200">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                            @endif
                         </div>
-                        <div class="hidden sm:flex flex-col items-end">
-                            <span class="text-sm font-black text-primary-900 dark:text-white">{{ $detail->academicClass->course->credits }}</span>
-                            <span class="text-[10px] text-primary-500 font-bold uppercase tracking-tighter">{{ __('SKS') }}</span>
-                        </div>
-                        @if($studyPlan->status == 'draft')
-                        <form action="{{ route('students.study-plan.destroy', $detail->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="p-2.5 text-primary-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-200">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                            </button>
-                        </form>
-                        @endif
                     </div>
                     @empty
                     <div class="py-16 text-center">
@@ -256,6 +274,10 @@
 
         <!-- Available Classes -->
         @if($studyPlan->status == 'draft')
+        @php
+        // Get all current schedules from study plan
+        $currentSchedules = $studyPlan->details->load('class.schedules')->pluck('class.schedules')->flatten();
+        @endphp
         <div class="lg:col-span-1">
             <div class="card-saas overflow-hidden sticky top-24">
                 <div class="px-8 py-6 bg-primary-primary dark:bg-primary-900 border-b border-primary-400/30 dark:border-primary-700">
@@ -264,93 +286,142 @@
                 </div>
 
                 <div class="max-h-[65vh] overflow-y-auto divide-y divide-primary-100 dark:divide-primary-700">
-                    @forelse($availableClasses as $semester => $classList)
-                    <div x-data="{ open: false }" class="bg-white dark:bg-gray-800">
-                        <button @click="open = !open" class="w-full px-6 py-4 flex items-center justify-between hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-all duration-200 cursor-pointer group">
-                            <div class="text-left">
-                                <h4 class="font-bold text-primary-900 dark:text-white text-sm group-hover:text-primary-700 transition-colors">{{ $semester }}</h4>
-                                <p class="text-[10px] text-primary-600 dark:text-primary-400 font-bold uppercase tracking-wider">{{ $classList->count() }} {{ __('Classes') }}</p>
-                            </div>
-                            <div class="p-1.5 rounded-lg bg-primary-100 dark:bg-primary-700 group-hover:bg-primary-200 dark:group-hover:bg-primary-600 transition-colors">
-                                <svg class="w-4 h-4 text-primary-700 dark:text-primary-300 transition-transform duration-300" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </button>
-                        <div x-show="open" x-collapse>
-                            <div class="px-2 pb-2 space-y-1">
-                                @foreach($classList as $k)
-                                @php
-                                $enrolled = $k->details->count();
-                                $capacity = $k->capacity;
-                                $pct = $capacity > 0 ? ($enrolled / $capacity) * 100 : 0;
-                                $isFull = $enrolled >= $capacity;
-                                $isWaiting = isset($waitlistedClassIds[$k->id]);
-
-                                if ($isFull) {
-                                $barColor = 'bg-red-600';
-                                $pillColor = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 border border-red-200 dark:border-red-700';
-                                $pillLabel = __('Full');
-                                } elseif ($pct >= 75) {
-                                $barColor = 'bg-amber-500';
-                                $pillColor = 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200 dark:border-amber-700';
-                                $pillLabel = $enrolled . '/' . $capacity;
-                                } else {
-                                $barColor = 'bg-primary-500';
-                                $pillColor = 'bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300 border border-primary-200 dark:border-primary-700';
-                                $pillLabel = $enrolled . '/' . $capacity;
-                                }
-                                @endphp
-                                <div class="p-4 rounded-xl hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-all duration-200 {{ $isFull ? 'opacity-75' : '' }} group/item">
-                                    <div class="flex items-start justify-between gap-3 mb-3">
-                                        <div class="min-w-0">
-                                            <p class="font-bold text-primary-900 dark:text-white text-sm truncate">{{ $k->course->course_name }}</p>
-                                            <p class="text-[11px] text-primary-600 dark:text-primary-400 font-medium mt-0.5 truncate">{{ $k->lecturer->user->name ?? '-' }}</p>
-                                        </div>
-                                        <span class="shrink-0 inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-black {{ $pillColor }}">
-                                            {{ $pillLabel }}
-                                        </span>
+                    @forelse($availableCourses as $semester => $courseList)
+                    <div class="bg-white dark:bg-gray-800">
+                        <div class="px-6 py-3 bg-primary-50 dark:bg-primary-900/20">
+                            <h4 class="font-bold text-primary-900 dark:text-white text-sm">{{ $semester }}</h4>
+                            <p class="text-[10px] text-primary-600 dark:text-primary-400 font-bold uppercase tracking-wider">{{ $courseList->count() }} {{ __('Courses') }}</p>
+                        </div>
+                        <div class="divide-y divide-primary-100 dark:divide-primary-700">
+                            @foreach($courseList as $course)
+                            <div x-data="{ open: false }" class="bg-white dark:bg-gray-800">
+                                <button @click="open = !open" class="w-full px-6 py-4 flex items-center justify-between hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-all duration-200 cursor-pointer group">
+                                    <div class="text-left">
+                                        <p class="font-bold text-primary-900 dark:text-white text-sm group-hover:text-primary-700 transition-colors">{{ $course->course_name }}</p>
+                                        <p class="text-[11px] text-primary-600 dark:text-primary-400 font-medium mt-0.5">{{ $course->course_code }} • {{ $course->credits }} SKS</p>
                                     </div>
-
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="flex-1 h-1.5 bg-primary-200 dark:bg-primary-700 rounded-full overflow-hidden">
-                                            <div class="h-full {{ $barColor }} rounded-full transition-all duration-500 shadow-sm" style="width: {{ min(100, $pct) }}%"></div>
-                                        </div>
-                                        <span class="text-[10px] font-black text-primary-800 dark:text-primary-200">{{ $k->course->credits }} SKS</span>
+                                    <div class="p-1.5 rounded-lg bg-primary-100 dark:bg-primary-700 group-hover:bg-primary-200 dark:group-hover:bg-primary-600 transition-colors">
+                                        <svg class="w-4 h-4 text-primary-700 dark:text-primary-300 transition-transform duration-300" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
                                     </div>
+                                </button>
+                                <div x-show="open" x-collapse>
+                                    <div class="px-2 pb-2 space-y-2">
+                                        @foreach($course->classes as $k)
+                                        @php
+                                        $enrolled = $k->details->count();
+                                        $capacity = $k->capacity;
+                                        $pct = $capacity > 0 ? ($enrolled / $capacity) * 100 : 0;
+                                        $isFull = $enrolled >= $capacity;
+                                        $isWaiting = isset($waitlistedClassIds[$k->id]);
 
-                                    @if($isFull)
-                                    <form action="{{ route('students.study-plan.waitlist', $k->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                            class="w-full py-2.5 px-4 flex items-center justify-center gap-2 rounded-xl font-bold text-xs transition-all duration-200 {{ $isWaiting ? 'bg-amber-50 text-amber-600 border border-amber-200 dark:bg-amber-900/20 dark:border-amber-800' : 'bg-primary-50 text-primary-600 border border-primary-100 dark:bg-primary-900/30 dark:border-primary-800' }} hover:shadow-sm">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                            </svg>
-                                            {{ $isWaiting ? __('Unsubscribe') : __('Notify Me') }}
-                                        </button>
-                                    </form>
-                                    @else
-                                    <form action="{{ route('students.study-plan.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="academic_class_id" value="{{ $k->id }}">
-                                        <button type="submit"
-                                            class="w-full py-2.5 px-4 bg-primary-600 text-white rounded-xl font-bold text-xs hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-600/20 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            {{ __('Add Course') }}
-                                        </button>
-                                    </form>
-                                    @endif
+                                        // Check for schedule conflicts
+                                        $hasConflict = false;
+                                        foreach ($k->schedules as $schedule) {
+                                        foreach ($currentSchedules as $current) {
+                                        if ($schedule->conflictsWith($current)) {
+                                        $hasConflict = true;
+                                        break 2;
+                                        }
+                                        }
+                                        }
+
+                                        if ($isFull) {
+                                        $barColor = 'bg-red-600';
+                                        $pillColor = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 border border-red-200 dark:border-red-700';
+                                        $pillLabel = __('Full');
+                                        } elseif ($hasConflict) {
+                                        $barColor = 'bg-amber-500';
+                                        $pillColor = 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200 dark:border-amber-700';
+                                        $pillLabel = __('Conflict');
+                                        } elseif ($pct >= 75) {
+                                        $barColor = 'bg-amber-500';
+                                        $pillColor = 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200 dark:border-amber-700';
+                                        $pillLabel = $enrolled . '/' . $capacity;
+                                        } else {
+                                        $barColor = 'bg-primary-500';
+                                        $pillColor = 'bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300 border border-primary-200 dark:border-primary-700';
+                                        $pillLabel = $enrolled . '/' . $capacity;
+                                        }
+                                        @endphp
+                                        <div class="p-4 rounded-xl border border-primary-100 dark:border-primary-700 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-all duration-200 {{ ($isFull || $hasConflict) ? 'opacity-75' : '' }} group/item">
+                                            <div class="flex items-start justify-between gap-3 mb-3">
+                                                <div class="min-w-0">
+                                                    <p class="font-bold text-primary-900 dark:text-white text-sm truncate">{{ $k->class_name }}</p>
+                                                    <p class="text-[11px] text-primary-600 dark:text-primary-400 font-medium mt-0.5 truncate">{{ $k->lecturer->user->name ?? '-' }}</p>
+                                                </div>
+                                                <span class="shrink-0 inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-black {{ $pillColor }}">
+                                                    {{ $pillLabel }}
+                                                </span>
+                                            </div>
+
+                                            <!-- Show Class Schedules -->
+                                            @if($k->schedules->isNotEmpty())
+                                            <div class="mb-3 space-y-1">
+                                                @foreach($k->schedules as $schedule)
+                                                <div class="flex items-center gap-2 text-xs text-primary-600 dark:text-primary-400">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    <span>{{ $schedule->day }} • {{ $schedule->start_time->format('H:i') }} - {{ $schedule->end_time->format('H:i') }}</span>
+                                                    @if($schedule->room_name)
+                                                    <span class="text-primary-500 dark:text-primary-500">• {{ $schedule->room_name }}</span>
+                                                    @endif
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                            @endif
+
+                                            <div class="flex items-center gap-3 mb-4">
+                                                <div class="flex-1 h-1.5 bg-primary-200 dark:bg-primary-700 rounded-full overflow-hidden">
+                                                    <div class="h-full {{ $barColor }} rounded-full transition-all duration-500 shadow-sm" style="width: {{ min(100, $pct) }}%"></div>
+                                                </div>
+                                            </div>
+
+                                            @if($isFull)
+                                            <form action="{{ route('students.study-plan.waitlist', $k->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="w-full py-2.5 px-4 flex items-center justify-center gap-2 rounded-xl font-bold text-xs transition-all duration-200 {{ $isWaiting ? 'bg-amber-50 text-amber-600 border border-amber-200 dark:bg-amber-900/20 dark:border-amber-800' : 'bg-primary-50 text-primary-600 border border-primary-100 dark:bg-primary-900/30 dark:border-primary-800' }} hover:shadow-sm">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                                    </svg>
+                                                    {{ $isWaiting ? __('Unsubscribe') : __('Notify Me') }}
+                                                </button>
+                                            </form>
+                                            @elseif($hasConflict)
+                                            <button disabled
+                                                class="w-full py-2.5 px-4 bg-gray-300 text-gray-600 rounded-xl font-bold text-xs cursor-not-allowed flex items-center justify-center gap-2">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                                {{ __('Schedule Conflict') }}
+                                            </button>
+                                            @else
+                                            <form action="{{ route('students.study-plan.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="academic_class_id" value="{{ $k->id }}">
+                                                <button type="submit"
+                                                    class="w-full py-2.5 px-4 bg-primary-600 text-white rounded-xl font-bold text-xs hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-600/20 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+                                                    </svg>
+                                                    {{ __('Add Class') }}
+                                                </button>
+                                            </form>
+                                            @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                                @endforeach
                             </div>
+                            @endforeach
                         </div>
                     </div>
                     @empty
                     <div class="py-12 px-6 text-center">
-                        <p class="text-primary-600 dark:text-primary-400 text-xs font-medium">{{ __('No classes available for your program.') }}</p>
+                        <p class="text-primary-600 dark:text-primary-400 text-xs font-medium">{{ __('No courses available for your program.') }}</p>
                     </div>
                     @endforelse
                 </div>

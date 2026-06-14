@@ -68,7 +68,11 @@ class GradingController extends Controller
     {
         $request->validate([
             'grades' => 'required|array',
-            'grades.*' => 'nullable|numeric|min:0|max:100',
+            'grades.*.attendance' => 'nullable|numeric|min:0|max:100',
+            'grades.*.midterm' => 'nullable|numeric|min:0|max:100',
+            'grades.*.final_exam' => 'nullable|numeric|min:0|max:100',
+            'grades.*.practical_attendance' => 'nullable|numeric|min:0|max:100',
+            'grades.*.practical_exam' => 'nullable|numeric|min:0|max:100',
         ]);
 
         try {

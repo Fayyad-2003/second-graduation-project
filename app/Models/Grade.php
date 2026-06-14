@@ -16,6 +16,11 @@ class Grade extends Model
         'class_id',
         'numeric_grade',
         'letter_grade',
+        'attendance',
+        'midterm',
+        'final_exam',
+        'practical_attendance',
+        'practical_exam',
     ];
 
     public function student()

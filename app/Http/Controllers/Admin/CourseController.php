@@ -186,6 +186,11 @@ class CourseController extends Controller
             'prerequisites.*' => 'exists:courses,id',
             'has_practical' => 'nullable|boolean',
             'practical_hours' => 'nullable|integer|min:0',
+            'attendance_weight' => 'required|integer|min:0|max:100',
+            'midterm_weight' => 'required|integer|min:0|max:100',
+            'final_exam_weight' => 'required|integer|min:0|max:100',
+            'practical_attendance_weight' => 'nullable|integer|min:0|max:100',
+            'practical_exam_weight' => 'nullable|integer|min:0|max:100',
         ]);
 
         $hasPractical = (bool) $request->input('has_practical', false);
@@ -231,6 +236,11 @@ class CourseController extends Controller
             'prerequisites.*' => 'exists:courses,id',
             'has_practical' => 'nullable|boolean',
             'practical_hours' => 'nullable|integer|min:0',
+            'attendance_weight' => 'required|integer|min:0|max:100',
+            'midterm_weight' => 'required|integer|min:0|max:100',
+            'final_exam_weight' => 'required|integer|min:0|max:100',
+            'practical_attendance_weight' => 'nullable|integer|min:0|max:100',
+            'practical_exam_weight' => 'nullable|integer|min:0|max:100',
         ]);
 
         $hasPractical = (bool) $request->input('has_practical', false);

@@ -57,4 +57,9 @@ class StudyPlanException extends SystemException
     {
         return new self("Invalid study plan status. Current: {$current}, Expected: {$expected}.");
     }
+
+    public static function scheduleConflict(string $newClassName, string $newCourseName, string $existingClassName, string $existingCourseName, string $day, string $startTime, string $endTime): self
+    {
+        return new self("Schedule conflict! Cannot add {$newClassName} ({$newCourseName}) - it conflicts with {$existingClassName} ({$existingCourseName}) on {$day} from {$startTime} to {$endTime}.");
+    }
 }

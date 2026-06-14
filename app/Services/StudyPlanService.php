@@ -131,7 +131,30 @@ class StudyPlanService
                 }
             }
 
-            // 5. Check prerequisites
+            // 5. Check for schedule conflicts
+            $currentPlanSchedules = $studyPlan->details()
+                ->with('class.schedules')
+                ->get()
+                ->pluck('class.schedules')
+                ->flatten();
+
+            foreach ($class->schedules as $newSchedule) {
+                foreach ($currentPlanSchedules as $existingSchedule) {
+                    if ($newSchedule->conflictsWith($existingSchedule)) {
+                        throw StudyPlanException::scheduleConflict(
+                            $class->class_name,
+                            $class->course->course_name,
+                            $existingSchedule->class->class_name,
+                            $existingSchedule->class->course->course_name,
+                            $newSchedule->day,
+                            $newSchedule->start_time->format('H:i'),
+                            $newSchedule->end_time->format('H:i')
+                        );
+                    }
+                }
+            }
+
+            // 6. Check prerequisites
             $prerequisites = $class->course->prerequisites;
             foreach ($prerequisites as $prerequisite) {
                 $isPassed = StudyPlanDetail::whereHas('studyPlan', function ($q) use ($student) {

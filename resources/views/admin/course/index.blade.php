@@ -95,202 +95,202 @@
     </div>
 
     @if($viewMode === 'tree')
-        @php
-        $totalCourses = $coursesBySemester->flatten()->count();
-        $totalCredits = $coursesBySemester->flatten()->sum('credits');
-        $totalTheoryCredits = $coursesBySemester->flatten()->sum('theory_credits');
-        $totalPracticalHours = $coursesBySemester->flatten()->sum('practical_hours');
-        @endphp
+    @php
+    $totalCourses = $coursesBySemester->flatten()->count();
+    $totalCredits = $coursesBySemester->flatten()->sum('credits');
+    $totalTheoryCredits = $coursesBySemester->flatten()->sum('theory_credits');
+    $totalPracticalHours = $coursesBySemester->flatten()->sum('practical_hours');
+    @endphp
 
-        <!-- Subject Tree View -->
-        <div class="card-saas overflow-hidden sm:rounded-xl mb-10">
-            <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                            {{ __('Curriculum Tree') }}
-                        </h2>
-                        <p class="text-gray-600 dark:text-gray-300 mt-1 text-sm">
-                            {{ __('Curriculum structure grouped by semester. Lines connect prerequisite subjects.') }}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Metrics Summary -->
-                <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="p-4 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl border border-blue-200 dark:border-blue-700">
-                        <div class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">{{ __('Total Subjects') }}</div>
-                        <div class="text-3xl font-black text-blue-800 dark:text-blue-100">{{ $totalCourses }}</div>
-                        <div class="text-xs text-blue-600/80 dark:text-blue-400/80 mt-1">{{ __('Courses registered') }}</div>
-                    </div>
-
-                    <div class="p-4 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl border border-green-200 dark:border-green-700">
-                        <div class="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase tracking-wider mb-1">{{ __('Total Credits') }}</div>
-                        <div class="text-3xl font-black text-green-800 dark:text-green-100">{{ $totalCredits }}</div>
-                        <div class="text-xs text-green-600/80 dark:text-green-400/80 mt-1">{{ __('SKS credits') }}</div>
-                    </div>
-
-                    <div class="p-4 bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/30 dark:to-purple-900/30 rounded-2xl border border-purple-200 dark:border-purple-700">
-                        <div class="text-[10px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-1">{{ __('Theory Credits') }}</div>
-                        <div class="text-3xl font-black text-purple-800 dark:text-purple-100">{{ $totalTheoryCredits }}</div>
-                        <div class="text-xs text-purple-600/80 dark:text-purple-400/80 mt-1">{{ __('Lecture SKS') }}</div>
-                    </div>
-
-                    <div class="p-4 bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 rounded-2xl border border-amber-200 dark:border-amber-700">
-                        <div class="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1">{{ __('Practical Hours') }}</div>
-                        <div class="text-3xl font-black text-amber-800 dark:text-amber-100">{{ $totalPracticalHours }}</div>
-                        <div class="text-xs text-amber-600/80 dark:text-amber-400/80 mt-1">{{ __('Total weekly hours') }}</div>
-                    </div>
+    <!-- Subject Tree View -->
+    <div class="card-saas overflow-hidden sm:rounded-xl mb-10">
+        <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                        {{ __('Curriculum Tree') }}
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-300 mt-1 text-sm">
+                        {{ __('Curriculum structure grouped by semester. Lines connect prerequisite subjects.') }}
+                    </p>
                 </div>
             </div>
 
-            <div class="p-6 space-y-8 overflow-x-auto relative">
-                <svg id="connector-svg" class="absolute top-0 left-0 w-full h-full pointer-events-none" style="z-index: 0;"></svg>
-
-                @forelse($coursesBySemester as $semester => $courses)
-                <div class="relative z-10">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 pb-1 border-b border-gray-200 dark:border-gray-700">
-                        {{ __('Semester') }} {{ $semester }}
-                    </h3>
-                    <div class="flex gap-4 flex-wrap">
-                        @foreach($courses as $course)
-                        <div id="course-{{ $course->id }}" class="relative min-w-[200px] p-4 rounded-xl border bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary-primary group">
-                            
-                            <div class="flex items-start justify-between mb-2">
-                                <div>
-                                    <div class="font-black text-sm text-primary-900 dark:text-white font-mono bg-primary-50 dark:bg-primary-900 px-2 py-1 rounded border border-primary-100 dark:border-primary-800">
-                                        {{ $course->course_code }}
-                                    </div>
-                                    <div class="text-xs font-bold text-primary-600 dark:text-primary-300 mt-2">
-                                        {{ $course->course_name }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-wrap gap-1.5 mb-2">
-                                <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-primary-50 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded border border-primary-100 dark:border-primary-850 uppercase">
-                                    {{ $course->credits }} SKS
-                                </span>
-                                @if($course->has_practical)
-                                <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 rounded border border-amber-100 dark:border-amber-900/50 uppercase">
-                                    {{ __('Practical') }}
-                                </span>
-                                @endif
-                                @if($course->classification)
-                                <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 rounded border border-purple-100 dark:border-purple-900/50 uppercase">
-                                    {{ __($course->classification->name) }}
-                                </span>
-                                @endif
-                            </div>
-
-                            @if(count($course->prerequisites) > 0)
-                            <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
-                                <div class="text-[9px] font-bold text-gray-500 uppercase tracking-wider mb-1">{{ __('Prerequisites') }}:</div>
-                                <div class="flex flex-wrap gap-1">
-                                    @foreach($course->prerequisites as $prereq)
-                                    <span class="text-[9px] px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300 font-bold border border-sky-100 dark:border-sky-900/50">
-                                        {{ $prereq->course_code }}
-                                    </span>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @endif
-
-                            <!-- Action Buttons inside Tree Nodes -->
-                            <div class="flex items-center gap-2 mt-3 pt-2 border-t border-gray-100 dark:border-gray-850/80">
-                                <button onclick="editCourse({{ $course->id }}, '{{ $course->course_code }}', '{{ addslashes($course->course_name) }}', {{ $course->theory_credits }}, {{ $course->semester }}, {{ $course->study_program_id ?? 'null' }}, {{ $course->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($course->prerequisites->pluck('id')) }}, {{ $course->subject_classification_id ?? 'null' }}, {{ json_encode($course->description) }}, {{ $course->has_practical ? 'true' : 'false' }}, {{ $course->practical_hours }})"
-                                    class="p-1.5 text-primary-secondary hover:text-primary-primary hover:bg-primary-primary/10 rounded-lg transition-colors cursor-pointer" title="{{ __('Edit') }}">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                    </svg>
-                                </button>
-                                <form action="{{ route('admin.course.destroy', $course) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this course?') }}')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="p-1.5 text-primary-secondary hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer" title="{{ __('Delete') }}">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
+            <!-- Metrics Summary -->
+            <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="p-4 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl border border-blue-200 dark:border-blue-700">
+                    <div class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">{{ __('Total Subjects') }}</div>
+                    <div class="text-3xl font-black text-blue-800 dark:text-blue-100">{{ $totalCourses }}</div>
+                    <div class="text-xs text-blue-600/80 dark:text-blue-400/80 mt-1">{{ __('Courses registered') }}</div>
                 </div>
-                @empty
-                <div class="p-12 text-center">
-                    <div class="w-16 h-16 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
-                    </div>
-                    <p class="text-primary-400 font-bold mb-2">{{ __('No subjects registered in this study program yet.') }}</p>
-                    <p class="text-xs text-primary-300">{{ __('Use the toolbar to select a different study program or create a new course.') }}</p>
+
+                <div class="p-4 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl border border-green-200 dark:border-green-700">
+                    <div class="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase tracking-wider mb-1">{{ __('Total Credits') }}</div>
+                    <div class="text-3xl font-black text-green-800 dark:text-green-100">{{ $totalCredits }}</div>
+                    <div class="text-xs text-green-600/80 dark:text-green-400/80 mt-1">{{ __('SKS credits') }}</div>
                 </div>
-                @endforelse
+
+                <div class="p-4 bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/30 dark:to-purple-900/30 rounded-2xl border border-purple-200 dark:border-purple-700">
+                    <div class="text-[10px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-1">{{ __('Theory Credits') }}</div>
+                    <div class="text-3xl font-black text-purple-800 dark:text-purple-100">{{ $totalTheoryCredits }}</div>
+                    <div class="text-xs text-purple-600/80 dark:text-purple-400/80 mt-1">{{ __('Lecture SKS') }}</div>
+                </div>
+
+                <div class="p-4 bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 rounded-2xl border border-amber-200 dark:border-amber-700">
+                    <div class="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1">{{ __('Practical Hours') }}</div>
+                    <div class="text-3xl font-black text-amber-800 dark:text-amber-100">{{ $totalPracticalHours }}</div>
+                    <div class="text-xs text-amber-600/80 dark:text-amber-400/80 mt-1">{{ __('Total weekly hours') }}</div>
+                </div>
             </div>
         </div>
 
-        <!-- Tree SVG Styles & Script -->
-        <style>
-            .connector-line {
-                stroke: #3b82f6;
-                stroke-width: 2;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                fill: none;
-                opacity: 0.65;
+        <div class="p-6 space-y-8 overflow-x-auto relative">
+            <svg id="connector-svg" class="absolute top-0 left-0 w-full h-full pointer-events-none" style="z-index: 0;"></svg>
+
+            @forelse($coursesBySemester as $semester => $courses)
+            <div class="relative z-10">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 pb-1 border-b border-gray-200 dark:border-gray-700">
+                    {{ __('Semester') }} {{ $semester }}
+                </h3>
+                <div class="flex gap-4 flex-wrap">
+                    @foreach($courses as $course)
+                    <div id="course-{{ $course->id }}" class="relative min-w-[200px] p-4 rounded-xl border bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary-primary group">
+
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <div class="font-black text-sm text-primary-900 dark:text-white font-mono bg-primary-50 dark:bg-primary-900 px-2 py-1 rounded border border-primary-100 dark:border-primary-800">
+                                    {{ $course->course_code }}
+                                </div>
+                                <div class="text-xs font-bold text-primary-600 dark:text-primary-300 mt-2">
+                                    {{ $course->course_name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-1.5 mb-2">
+                            <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-primary-50 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded border border-primary-100 dark:border-primary-850 uppercase">
+                                {{ $course->credits }} SKS
+                            </span>
+                            @if($course->has_practical)
+                            <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 rounded border border-amber-100 dark:border-amber-900/50 uppercase">
+                                {{ __('Practical') }}
+                            </span>
+                            @endif
+                            @if($course->classification)
+                            <span class="inline-flex px-2 py-0.5 text-[9px] font-black bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 rounded border border-purple-100 dark:border-purple-900/50 uppercase">
+                                {{ __($course->classification->name) }}
+                            </span>
+                            @endif
+                        </div>
+
+                        @if(count($course->prerequisites) > 0)
+                        <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                            <div class="text-[9px] font-bold text-gray-500 uppercase tracking-wider mb-1">{{ __('Prerequisites') }}:</div>
+                            <div class="flex flex-wrap gap-1">
+                                @foreach($course->prerequisites as $prereq)
+                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300 font-bold border border-sky-100 dark:border-sky-900/50">
+                                    {{ $prereq->course_code }}
+                                </span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        <!-- Action Buttons inside Tree Nodes -->
+                        <div class="flex items-center gap-2 mt-3 pt-2 border-t border-gray-100 dark:border-gray-850/80">
+                            <button onclick="editCourse({{ $course->id }}, '{{ $course->course_code }}', '{{ addslashes($course->course_name) }}', {{ $course->theory_credits }}, {{ $course->semester }}, {{ $course->study_program_id ?? 'null' }}, {{ $course->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($course->prerequisites->pluck('id')) }}, {{ $course->subject_classification_id ?? 'null' }}, {{ json_encode($course->description) }}, {{ $course->has_practical ? 'true' : 'false' }}, {{ $course->practical_hours }}, {{ $course->attendance_weight ?? 10 }}, {{ $course->midterm_weight ?? ($course->has_practical ? 20 : 30) }}, {{ $course->final_exam_weight ?? ($course->has_practical ? 50 : 60) }}, {{ $course->practical_attendance_weight ?? 5 }}, {{ $course->practical_exam_weight ?? 20 }})"
+                                class="p-1.5 text-primary-secondary hover:text-primary-primary hover:bg-primary-primary/10 rounded-lg transition-colors cursor-pointer" title="{{ __('Edit') }}">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <form action="{{ route('admin.course.destroy', $course) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this course?') }}')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="p-1.5 text-primary-secondary hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer" title="{{ __('Delete') }}">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @empty
+            <div class="p-12 text-center">
+                <div class="w-16 h-16 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <p class="text-primary-400 font-bold mb-2">{{ __('No subjects registered in this study program yet.') }}</p>
+                <p class="text-xs text-primary-300">{{ __('Use the toolbar to select a different study program or create a new course.') }}</p>
+            </div>
+            @endforelse
+        </div>
+    </div>
+
+    <!-- Tree SVG Styles & Script -->
+    <style>
+        .connector-line {
+            stroke: #3b82f6;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            opacity: 0.65;
+        }
+    </style>
+
+    <script>
+        const courseConnections = @json($courseConnections);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const svg = document.getElementById('connector-svg');
+            const container = document.querySelector('.overflow-x-auto');
+
+            function drawConnectors() {
+                if (!svg || !container) return;
+
+                svg.setAttribute('width', container.scrollWidth);
+                svg.setAttribute('height', container.scrollHeight);
+                svg.innerHTML = '';
+
+                courseConnections.forEach(function(conn) {
+                    const courseEl = document.getElementById('course-' + conn.courseId);
+                    const prereqEl = document.getElementById('course-' + conn.prereqId);
+
+                    if (!courseEl || !prereqEl) return;
+
+                    const courseRect = courseEl.getBoundingClientRect();
+                    const prereqRect = prereqEl.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+
+                    const x1 = prereqRect.left + prereqRect.width / 2 - containerRect.left + container.scrollLeft;
+                    const y1 = prereqRect.bottom - containerRect.top + container.scrollTop;
+                    const x2 = courseRect.left + courseRect.width / 2 - containerRect.left + container.scrollLeft;
+                    const y2 = courseRect.top - containerRect.top + container.scrollTop;
+
+                    const midY = (y1 + y2) / 2;
+
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    const d = `M ${x1} ${y1} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2}`;
+                    path.setAttribute('d', d);
+                    path.setAttribute('class', 'connector-line');
+                    svg.appendChild(path);
+                });
             }
-        </style>
 
-        <script>
-            const courseConnections = @json($courseConnections);
-
-            document.addEventListener('DOMContentLoaded', function() {
-                const svg = document.getElementById('connector-svg');
-                const container = document.querySelector('.overflow-x-auto');
-
-                function drawConnectors() {
-                    if (!svg || !container) return;
-
-                    svg.setAttribute('width', container.scrollWidth);
-                    svg.setAttribute('height', container.scrollHeight);
-                    svg.innerHTML = '';
-
-                    courseConnections.forEach(function(conn) {
-                        const courseEl = document.getElementById('course-' + conn.courseId);
-                        const prereqEl = document.getElementById('course-' + conn.prereqId);
-
-                        if (!courseEl || !prereqEl) return;
-
-                        const courseRect = courseEl.getBoundingClientRect();
-                        const prereqRect = prereqEl.getBoundingClientRect();
-                        const containerRect = container.getBoundingClientRect();
-
-                        const x1 = prereqRect.left + prereqRect.width / 2 - containerRect.left + container.scrollLeft;
-                        const y1 = prereqRect.bottom - containerRect.top + container.scrollTop;
-                        const x2 = courseRect.left + courseRect.width / 2 - containerRect.left + container.scrollLeft;
-                        const y2 = courseRect.top - containerRect.top + container.scrollTop;
-
-                        const midY = (y1 + y2) / 2;
-
-                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                        const d = `M ${x1} ${y1} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2}`;
-                        path.setAttribute('d', d);
-                        path.setAttribute('class', 'connector-line');
-                        svg.appendChild(path);
-                    });
-                }
-
-                window.addEventListener('load', drawConnectors);
-                window.addEventListener('resize', drawConnectors);
-                container.addEventListener('scroll', drawConnectors);
-                setTimeout(drawConnectors, 150);
-            });
-        </script>
+            window.addEventListener('load', drawConnectors);
+            window.addEventListener('resize', drawConnectors);
+            container.addEventListener('scroll', drawConnectors);
+            setTimeout(drawConnectors, 150);
+        });
+    </script>
     @else
-        <!-- Data Table -->
-        <div class="card-saas overflow-hidden">
+    <!-- Data Table -->
+    <div class="card-saas overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-start border-collapse">
                 <thead>
@@ -346,7 +346,7 @@
                             <span class="inline-flex px-2.5 py-1 text-[10px] font-black bg-primary-50 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-lg border border-primary-100 dark:border-primary-800 uppercase" title="{{ $mk->theory_credits }} {{ __('Theory') }} + {{ $mk->practical_hours }} {{ __('Practical Hours') }}">
                                 {{ $mk->credits }}
                                 @if($mk->has_practical)
-                                    <span class="text-primary-400 dark:text-primary-500 ml-1">({{ $mk->theory_credits }}+{{ $mk->practical_hours }})</span>
+                                <span class="text-primary-400 dark:text-primary-500 ml-1">({{ $mk->theory_credits }}+{{ $mk->practical_hours }})</span>
                                 @endif
                             </span>
                         </td>
@@ -377,7 +377,7 @@
                         </td>
                         <td class="py-5 px-8 text-end">
                             <div class="flex items-center justify-end gap-2">
-                                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->theory_credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }}, {{ json_encode($mk->description) }}, {{ $mk->has_practical ? 'true' : 'false' }}, {{ $mk->practical_hours }})"
+                                <button onclick="editCourse({{ $mk->id }}, '{{ $mk->course_code }}', '{{ addslashes($mk->course_name) }}', {{ $mk->theory_credits }}, {{ $mk->semester }}, {{ $mk->study_program_id ?? 'null' }}, {{ $mk->studyProgram?->faculty_id ?? 'null' }}, {{ json_encode($mk->prerequisites->pluck('id')) }}, {{ $mk->subject_classification_id ?? 'null' }}, {{ json_encode($mk->description) }}, {{ $mk->has_practical ? 'true' : 'false' }}, {{ $mk->practical_hours }}, {{ $mk->attendance_weight ?? 10 }}, {{ $mk->midterm_weight ?? ($mk->has_practical ? 20 : 30) }}, {{ $mk->final_exam_weight ?? ($mk->has_practical ? 50 : 60) }}, {{ $mk->practical_attendance_weight ?? 5 }}, {{ $mk->practical_exam_weight ?? 20 }})"
                                     class="p-2 text-primary-secondary hover:text-primary-primary hover:bg-primary-primary/10 rounded-lg transition-colors" title="{{ __('Edit') }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -439,7 +439,7 @@
                     <span class="font-black text-primary-900 dark:text-white">
                         {{ $mk->credits }}
                         @if($mk->has_practical)
-                            <span class="text-xs text-primary-500 font-normal">({{ $mk->theory_credits }} T + {{ $mk->practical_hours }} P)</span>
+                        <span class="text-xs text-primary-500 font-normal">({{ $mk->theory_credits }} T + {{ $mk->practical_hours }} P)</span>
                         @endif
                     </span>
                 </div>
@@ -619,7 +619,9 @@
                                     <!-- Search Input -->
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <svg class="w-3.5 h-3.5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                            <svg class="w-3.5 h-3.5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                            </svg>
                                         </div>
                                         <input type="text" id="createPrereqSearch" placeholder="{{ __('Search courses to add as prerequisite...') }}"
                                             class="input-saas w-full pl-9 pr-4 py-2.5 text-sm rounded-xl"
@@ -636,7 +638,9 @@
                                                 <span class="font-mono text-[10px] font-black text-primary-500 bg-primary-50 dark:bg-primary-800 px-1.5 py-0.5 rounded mr-2">{{ $course->course_code }}</span>
                                                 <span class="text-primary-700 dark:text-primary-300">{{ $course->course_name }}</span>
                                             </span>
-                                            <svg class="w-4 h-4 text-emerald-500 prereq-check hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                            <svg class="w-4 h-4 text-emerald-500 prereq-check hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                            </svg>
                                         </div>
                                         @endforeach
                                     </div>
@@ -644,6 +648,43 @@
                                     <div id="createPrereqInputs"></div>
                                 </div>
                                 <p class="text-[10px] text-primary-400 mt-2 ml-1 italic">{{ __('Search and click to add or remove prerequisites') }}</p>
+                            </div>
+
+                            <!-- Grade Components -->
+                            <div class="border-t border-primary-100 dark:border-primary-700 pt-5 mt-2">
+                                <h4 class="text-[11px] font-black text-primary-500 uppercase tracking-widest mb-4 ml-1">
+                                    {{ __('Grade Components (%)') }}
+                                </h4>
+
+                                <div class="grid grid-cols-3 gap-4 mb-3">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Attendance') }}</label>
+                                        <input type="number" name="attendance_weight" id="createAttendanceWeight" min="0" max="100" value="10" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required oninput="validateGradeComponentsCreate()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Midterm') }}</label>
+                                        <input type="number" name="midterm_weight" id="createMidtermWeight" min="0" max="100" value="30" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required oninput="validateGradeComponentsCreate()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Final Exam') }}</label>
+                                        <input type="number" name="final_exam_weight" id="createFinalExamWeight" min="0" max="100" value="60" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required oninput="validateGradeComponentsCreate()">
+                                    </div>
+                                </div>
+
+                                <div id="createPracticalGradeComponents" class="grid grid-cols-2 gap-4 mb-3 hidden">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Practical Attendance') }}</label>
+                                        <input type="number" name="practical_attendance_weight" id="createPracticalAttendanceWeight" min="0" max="100" value="5" class="input-saas w-full px-4 py-3 text-sm rounded-xl" oninput="validateGradeComponentsCreate()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Practical Exam') }}</label>
+                                        <input type="number" name="practical_exam_weight" id="createPracticalExamWeight" min="0" max="100" value="20" class="input-saas w-full px-4 py-3 text-sm rounded-xl" oninput="validateGradeComponentsCreate()">
+                                    </div>
+                                </div>
+
+                                <div id="createGradeComponentsValidation" class="bg-primary-50/50 dark:bg-primary-900/50 p-3 rounded-xl border border-primary-100/50 dark:border-primary-800/50 text-xs font-black text-primary-600 dark:text-primary-300">
+                                    {{ __('Total') }}: <span id="createTotalWeight" class="text-primary-primary">100%</span>
+                                </div>
                             </div>
 
                         </div>
@@ -774,7 +815,9 @@
                                     <!-- Search Input -->
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <svg class="w-3.5 h-3.5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                            <svg class="w-3.5 h-3.5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                            </svg>
                                         </div>
                                         <input type="text" id="editPrereqSearch" placeholder="{{ __('Search courses to add as prerequisite...') }}"
                                             class="input-saas w-full pl-9 pr-4 py-2.5 text-sm rounded-xl"
@@ -791,7 +834,9 @@
                                                 <span class="font-mono text-[10px] font-black text-primary-500 bg-primary-50 dark:bg-primary-800 px-1.5 py-0.5 rounded mr-2">{{ $course->course_code }}</span>
                                                 <span class="text-primary-700 dark:text-primary-300">{{ $course->course_name }}</span>
                                             </span>
-                                            <svg class="w-4 h-4 text-emerald-500 prereq-check hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                            <svg class="w-4 h-4 text-emerald-500 prereq-check hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                            </svg>
                                         </div>
                                         @endforeach
                                     </div>
@@ -799,6 +844,43 @@
                                     <div id="editPrereqInputs"></div>
                                 </div>
                                 <p class="text-[10px] text-primary-400 mt-2 ml-1 italic">{{ __('Search and click to add or remove prerequisites') }}</p>
+                            </div>
+
+                            <!-- Grade Components -->
+                            <div class="border-t border-primary-100 dark:border-primary-700 pt-5 mt-2">
+                                <h4 class="text-[11px] font-black text-primary-500 uppercase tracking-widest mb-4 ml-1">
+                                    {{ __('Grade Components (%)') }}
+                                </h4>
+
+                                <div class="grid grid-cols-3 gap-4 mb-3">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Attendance') }}</label>
+                                        <input type="number" name="attendance_weight" id="editAttendanceWeight" min="0" max="100" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required oninput="validateGradeComponentsEdit()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Midterm') }}</label>
+                                        <input type="number" name="midterm_weight" id="editMidtermWeight" min="0" max="100" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required oninput="validateGradeComponentsEdit()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Final Exam') }}</label>
+                                        <input type="number" name="final_exam_weight" id="editFinalExamWeight" min="0" max="100" class="input-saas w-full px-4 py-3 text-sm rounded-xl" required oninput="validateGradeComponentsEdit()">
+                                    </div>
+                                </div>
+
+                                <div id="editPracticalGradeComponents" class="grid grid-cols-2 gap-4 mb-3 hidden">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Practical Attendance') }}</label>
+                                        <input type="number" name="practical_attendance_weight" id="editPracticalAttendanceWeight" min="0" max="100" class="input-saas w-full px-4 py-3 text-sm rounded-xl" oninput="validateGradeComponentsEdit()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2 ml-1">{{ __('Practical Exam') }}</label>
+                                        <input type="number" name="practical_exam_weight" id="editPracticalExamWeight" min="0" max="100" class="input-saas w-full px-4 py-3 text-sm rounded-xl" oninput="validateGradeComponentsEdit()">
+                                    </div>
+                                </div>
+
+                                <div id="editGradeComponentsValidation" class="bg-primary-50/50 dark:bg-primary-900/50 p-3 rounded-xl border border-primary-100/50 dark:border-primary-800/50 text-xs font-black text-primary-600 dark:text-primary-300">
+                                    {{ __('Total') }}: <span id="editTotalWeight" class="text-primary-primary">100%</span>
+                                </div>
                             </div>
 
                         </div>
@@ -815,7 +897,10 @@
 
     <script>
         // ===== Prerequisite Picker State =====
-        const selectedPrereqs = { create: new Map(), edit: new Map() };
+        const selectedPrereqs = {
+            create: new Map(),
+            edit: new Map()
+        };
         let editingCourseId = null;
 
         // Filter study program based on faculty for Create modal
@@ -900,7 +985,10 @@
             if (selectedPrereqs[mode].has(id)) {
                 selectedPrereqs[mode].delete(id);
             } else {
-                selectedPrereqs[mode].set(id, { name, code });
+                selectedPrereqs[mode].set(id, {
+                    name,
+                    code
+                });
             }
             renderPrereqTags(mode);
             renderPrereqInputs(mode);
@@ -919,7 +1007,8 @@
             container.innerHTML = '';
 
             if (selectedPrereqs[mode].size === 0) {
-                container.innerHTML = '<span class="text-[10px] text-primary-300 italic py-1">{{ __('No prerequisites selected') }}</span>';
+                container.innerHTML = '<span class="text-[10px] text-primary-300 italic py-1">{{ __('
+                No prerequisites selected ') }}</span>';
                 return;
             }
 
@@ -965,7 +1054,7 @@
             renderPrereqTags('create');
         });
 
-        function editCourse(id, code, name, theoryCredits, semester, study_programId, facultyId, prerequisites, classificationId, description, hasPractical, practicalHours) {
+        function editCourse(id, code, name, theoryCredits, semester, study_programId, facultyId, prerequisites, classificationId, description, hasPractical, practicalHours, attendanceWeight, midtermWeight, finalExamWeight, practicalAttendanceWeight, practicalExamWeight) {
             editingCourseId = id;
             document.getElementById('editForm').action = `/admin/course/${id}`;
             document.getElementById('editCode').value = code;
@@ -975,6 +1064,13 @@
             document.getElementById('editClassification').value = classificationId || '';
             document.getElementById('editDescription').value = description || '';
 
+            // Set grade component fields
+            document.getElementById('editAttendanceWeight').value = attendanceWeight;
+            document.getElementById('editMidtermWeight').value = midtermWeight;
+            document.getElementById('editFinalExamWeight').value = finalExamWeight;
+            document.getElementById('editPracticalAttendanceWeight').value = practicalAttendanceWeight;
+            document.getElementById('editPracticalExamWeight').value = practicalExamWeight;
+
             // Set practical part fields
             const hasPrCheck = document.getElementById('editHasPractical');
             hasPrCheck.checked = !!hasPractical;
@@ -982,6 +1078,7 @@
 
             togglePracticalInputEdit();
             calculateTotalCreditsEdit();
+            validateGradeComponentsEdit();
 
             // Set faculty and study_program
             const facultySelect = document.getElementById('editFacultySelect');
@@ -1025,13 +1122,23 @@
         function togglePracticalInputCreate() {
             const hasPractical = document.getElementById('createHasPractical').checked;
             const group = document.getElementById('createPracticalHoursGroup');
+            const practicalGradeComponents = document.getElementById('createPracticalGradeComponents');
             if (hasPractical) {
                 group.classList.remove('hidden');
+                practicalGradeComponents.classList.remove('hidden');
+                // Set default values for practical courses
+                document.getElementById('createMidtermWeight').value = 20;
+                document.getElementById('createFinalExamWeight').value = 50;
             } else {
                 group.classList.add('hidden');
+                practicalGradeComponents.classList.add('hidden');
                 document.getElementById('createPracticalHours').value = 0;
+                // Set default values for non-practical courses
+                document.getElementById('createMidtermWeight').value = 30;
+                document.getElementById('createFinalExamWeight').value = 60;
             }
             calculateTotalCreditsCreate();
+            validateGradeComponentsCreate();
         }
 
         function calculateTotalCreditsCreate() {
@@ -1042,17 +1149,49 @@
             document.getElementById('createTotalCreditsValue').innerText = total;
         }
 
+        function validateGradeComponentsCreate() {
+            const hasPractical = document.getElementById('createHasPractical').checked;
+            const attendance = parseInt(document.getElementById('createAttendanceWeight').value) || 0;
+            const midterm = parseInt(document.getElementById('createMidtermWeight').value) || 0;
+            const finalExam = parseInt(document.getElementById('createFinalExamWeight').value) || 0;
+
+            let total = attendance + midterm + finalExam;
+
+            if (hasPractical) {
+                const practicalAttendance = parseInt(document.getElementById('createPracticalAttendanceWeight').value) || 0;
+                const practicalExam = parseInt(document.getElementById('createPracticalExamWeight').value) || 0;
+                total += practicalAttendance + practicalExam;
+            }
+
+            const totalWeightEl = document.getElementById('createTotalWeight');
+            const validationEl = document.getElementById('createGradeComponentsValidation');
+
+            totalWeightEl.innerText = total + '%';
+
+            if (total === 100) {
+                validationEl.className = 'bg-emerald-50/50 dark:bg-emerald-900/30 p-3 rounded-xl border border-emerald-100/50 dark:border-emerald-700/50 text-xs font-black text-emerald-600 dark:text-emerald-400';
+                totalWeightEl.className = 'text-emerald-600 dark:text-emerald-400';
+            } else {
+                validationEl.className = 'bg-red-50/50 dark:bg-red-900/30 p-3 rounded-xl border border-red-100/50 dark:border-red-700/50 text-xs font-black text-red-600 dark:text-red-400';
+                totalWeightEl.className = 'text-red-600 dark:text-red-400';
+            }
+        }
+
         // Live calculation and toggles for Edit Modal
         function togglePracticalInputEdit() {
             const hasPractical = document.getElementById('editHasPractical').checked;
             const group = document.getElementById('editPracticalHoursGroup');
+            const practicalGradeComponents = document.getElementById('editPracticalGradeComponents');
             if (hasPractical) {
                 group.classList.remove('hidden');
+                practicalGradeComponents.classList.remove('hidden');
             } else {
                 group.classList.add('hidden');
+                practicalGradeComponents.classList.add('hidden');
                 document.getElementById('editPracticalHours').value = 0;
             }
             calculateTotalCreditsEdit();
+            validateGradeComponentsEdit();
         }
 
         function calculateTotalCreditsEdit() {
@@ -1061,6 +1200,34 @@
             const practicalHours = parseInt(document.getElementById('editPracticalHours').value) || 0;
             const total = theoryCredits + (hasPractical ? Math.floor(practicalHours / 2) : 0);
             document.getElementById('editTotalCreditsValue').innerText = total;
+        }
+
+        function validateGradeComponentsEdit() {
+            const hasPractical = document.getElementById('editHasPractical').checked;
+            const attendance = parseInt(document.getElementById('editAttendanceWeight').value) || 0;
+            const midterm = parseInt(document.getElementById('editMidtermWeight').value) || 0;
+            const finalExam = parseInt(document.getElementById('editFinalExamWeight').value) || 0;
+
+            let total = attendance + midterm + finalExam;
+
+            if (hasPractical) {
+                const practicalAttendance = parseInt(document.getElementById('editPracticalAttendanceWeight').value) || 0;
+                const practicalExam = parseInt(document.getElementById('editPracticalExamWeight').value) || 0;
+                total += practicalAttendance + practicalExam;
+            }
+
+            const totalWeightEl = document.getElementById('editTotalWeight');
+            const validationEl = document.getElementById('editGradeComponentsValidation');
+
+            totalWeightEl.innerText = total + '%';
+
+            if (total === 100) {
+                validationEl.className = 'bg-emerald-50/50 dark:bg-emerald-900/30 p-3 rounded-xl border border-emerald-100/50 dark:border-emerald-700/50 text-xs font-black text-emerald-600 dark:text-emerald-400';
+                totalWeightEl.className = 'text-emerald-600 dark:text-emerald-400';
+            } else {
+                validationEl.className = 'bg-red-50/50 dark:bg-red-900/30 p-3 rounded-xl border border-red-100/50 dark:border-red-700/50 text-xs font-black text-red-600 dark:text-red-400';
+                totalWeightEl.className = 'text-red-600 dark:text-red-400';
+            }
         }
     </script>
 </x-app-layout>
