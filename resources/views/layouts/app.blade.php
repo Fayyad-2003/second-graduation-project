@@ -1147,6 +1147,14 @@
                 </div>
                 <div class="flex items-center gap-3 md:gap-5">
                     @if(in_array(auth()->user()->role, ['student', 'lecturer', 'admin', 'superadmin', 'admin_faculty']))
+                    <!-- Language Switch -->
+                    <a href="{{ route('lang.switch', app()->getLocale() === 'en' ? 'ar' : 'en') }}"
+                        class="p-2.5 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105"
+                        style="color: var(--text-secondary);" 
+                        title="{{ app()->getLocale() === 'en' ? 'العربية' : 'English' }}">
+                        <span class="font-bold text-sm">{{ app()->getLocale() === 'en' ? 'AR' : 'EN' }}</span>
+                    </a>
+                    
                     <!-- Dark Mode Toggle -->
                     <button id="darkModeToggle" onclick="toggleDarkMode()"
                         class="p-2.5 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105"

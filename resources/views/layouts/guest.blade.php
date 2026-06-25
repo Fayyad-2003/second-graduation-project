@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    dir="{{ str_starts_with(app()->getLocale(), 'ar') ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="utf-8">
@@ -10,10 +11,19 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700|vazirmatn:300,400,500,600,700&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        body {
+            font-family: 'Inter', 'Vazirmatn', system-ui, sans-serif;
+        }
+
+        [dir="rtl"] body {
+            font-family: 'Vazirmatn', 'Inter', system-ui, sans-serif;
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased text-surface-800 dark:text-surface-100 bg-surface-50 dark:bg-surface-900 selection:bg-primary-500/30 selection:text-primary-900 dark:selection:text-primary-100">
@@ -21,8 +31,8 @@
 
         <!-- Left Side - Form -->
         <div class="w-full lg:w-[480px] xl:w-[560px] flex flex-col justify-center px-8 lg:px-16 relative z-10 bg-white dark:bg-surface-900">
-            <!-- Mobile Logo -->
-            <div class="lg:hidden absolute top-8 left-8">
+            <!-- Mobile Logo & Language Switch -->
+            <div class="lg:hidden absolute top-8 left-8 right-8 flex items-center justify-between">
                 <a href="/" class="flex items-center gap-3">
                     <div class="w-11 h-11 rounded-2xl gradient-bg flex items-center justify-center text-white shadow-glow">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,6 +40,12 @@
                         </svg>
                     </div>
                     <span class="font-bold text-xl gradient-text">{{ config('app.name') }}</span>
+                </a>
+                <!-- Language Switch -->
+                <a href="{{ route('lang.switch', app()->getLocale() === 'en' ? 'ar' : 'en') }}"
+                    class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold text-sm hover:scale-105 transition-transform"
+                    title="{{ app()->getLocale() === 'en' ? 'العربية' : 'English' }}">
+                    {{ app()->getLocale() === 'en' ? 'AR' : 'EN' }}
                 </a>
             </div>
 
@@ -45,6 +61,14 @@
 
         <!-- Right Side - Visual -->
         <div class="hidden lg:flex flex-1 relative bg-surface-900 overflow-hidden items-center justify-center">
+            <!-- Language Switch for Desktop -->
+            <div class="absolute top-8 right-8 z-20">
+                <a href="{{ route('lang.switch', app()->getLocale() === 'en' ? 'ar' : 'en') }}"
+                    class="p-3 rounded-xl bg-white/10 text-white/80 backdrop-blur-sm font-bold text-sm hover:bg-white/20 hover:scale-105 transition-all"
+                    title="{{ app()->getLocale() === 'en' ? 'العربية' : 'English' }}">
+                    {{ app()->getLocale() === 'en' ? 'AR' : 'EN' }}
+                </a>
+            </div>
             <!-- Background Gradients -->
             <div class="absolute inset-0 bg-gradient-to-br from-surface-900 via-surface-800 to-surface-950"></div>
             <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-500/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 animate-float"></div>

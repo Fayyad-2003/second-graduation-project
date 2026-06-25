@@ -34,7 +34,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Global middleware - applies to all requests
         $middleware->append(\App\Http\Middleware\SecurityHeadersMiddleware::class);
-        $middleware->append(\App\Http\Middleware\SetLocale::class);
+        
+        // Add SetLocale to web middleware group (AFTER StartSession
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
         
         // Middleware aliases
         $middleware->alias([

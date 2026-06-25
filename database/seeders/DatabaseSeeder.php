@@ -241,7 +241,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('جاري إنشاء تقويم الفصول الدراسية...');
         $this->seedSemesterCalendars($academicYears);
 
-        $this->command->info('✅ تم إنشاء قاعدة البيانات الشاملة باللغة العربية بنجاح!');
+        $this->command->info('✅ تم إنشاء اعداد البيانات الشاملة باللغة العربية بنجاح!');
     }
 
     private function getArabicCurriculum($spId, $classifications): array

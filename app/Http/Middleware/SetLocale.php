@@ -10,12 +10,18 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = session('locale', config('app.locale'));
-        
+        $locale = session('locale', $request->cookie('locale', config('app.locale')));
+
         if (in_array($locale, ['en', 'ar'])) {
             app()->setLocale($locale);
         }
-        
-        return $next($request);
+
+        $response = $next($request);
+
+        if (in_array($locale, ['en', 'ar'])) {
+            $response->cookie('locale', $locale, 60 * 24 * 365); // 1 year
+        }
+
+        return $response;
     }
 }

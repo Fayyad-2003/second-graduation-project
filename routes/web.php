@@ -21,6 +21,27 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+// Language Switch Route
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'ar'])) {
+        session()->put('locale', $locale);
+        cookie()->queue('locale', $locale, 60 * 24 * 365); // 1 year
+        session()->flash('success', __('Language changed successfully!'));
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
+// Test route for locale
+Route::get('/test-locale', function () {
+    return response()->json([
+        'app_locale' => app()->getLocale(),
+        'session_locale' => session('locale'),
+        'cookie_locale' => request()->cookie('locale'),
+        'config_locale' => config('app.locale'),
+        'dir' => str_starts_with(app()->getLocale(), 'ar') ? 'rtl' : 'ltr',
+    ]);
+});
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/health.php';
 require __DIR__ . '/notification.php';
