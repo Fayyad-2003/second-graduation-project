@@ -94,7 +94,7 @@
                                 <div class="flex flex-wrap items-center gap-3 mb-3">
                                     <h4 class="text-base font-black text-primary-900 dark:text-white leading-tight">{{ $notif->title }}</h4>
                                     <span class="px-3 py-1 bg-primary-50 text-primary-primary dark:bg-primary-900/50 dark:text-primary-400 text-[9px] font-black rounded-full uppercase tracking-widest border border-primary-100 dark:border-primary-800">
-                                        {{ str_replace('_', ' ', $notif->target_type) }}
+                                        {{ __(ucwords(str_replace('_', ' ', $notif->target_type))) }}
                                     </span>
                                 </div>
                                 <p class="text-sm font-bold text-primary-600 dark:text-primary-400 leading-relaxed mb-6">{{ $notif->message }}</p>
