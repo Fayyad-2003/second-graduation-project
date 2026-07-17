@@ -159,7 +159,8 @@ class DatabaseSeeder extends Seeder
                 $isCurrentSemester = ($sem == $currentSemester);
                 $ay = $this->getAcademicYearForSemester($student->batch, $sem, $academicYears);
 
-                if (!$ay) continue;
+                if (!$ay)
+                    continue;
 
                 $studyPlan = StudyPlan::create([
                     'student_id' => $student->id,
@@ -238,7 +239,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // 10. Seed Semester Calendars
-        $this->command->info('جاري إنشاء تقويم الفصول الدراسية...');
+        $this->command->info('جاري إنشاء تقويم الشعب الدراسية...');
         $this->seedSemesterCalendars($academicYears);
 
         $this->command->info('✅ تم إنشاء اعداد البيانات الشاملة باللغة العربية بنجاح!');
@@ -289,7 +290,7 @@ class DatabaseSeeder extends Seeder
             ['code' => 'CE804', 'name' => 'الريادة والابتكار', 'credits' => 2, 'sem' => 8, 'class' => 'university-requirements'],
             ['code' => 'CE805', 'name' => 'اختياري تخصص 2', 'credits' => 3, 'sem' => 8, 'class' => 'specialization-optional', 'is_elective' => true],
             ['code' => 'CE901', 'name' => 'مشروع التخرج 1', 'credits' => 2, 'sem' => 9, 'class' => 'specialization-requirements'],
-            ['code' => 'CE902', 'name' => 'التدريب الميداني', 'credits' => 3, 'sem' => 9, 'class' => 'specialization-requirements'],
+            ['code' => 'CE902', 'name' => 'التدريب العملي', 'credits' => 3, 'sem' => 9, 'class' => 'specialization-requirements'],
             ['code' => 'CE903', 'name' => 'النظم الموزعة', 'credits' => 3, 'sem' => 9, 'class' => 'specialization-requirements'],
             ['code' => 'CE904', 'name' => 'معالجة اللغات الطبيعية', 'credits' => 3, 'sem' => 9, 'class' => 'specialization-optional', 'is_elective' => true],
             ['code' => 'CE1001', 'name' => 'مشروع التخرج 2', 'credits' => 4, 'sem' => 10, 'class' => 'specialization-requirements'],

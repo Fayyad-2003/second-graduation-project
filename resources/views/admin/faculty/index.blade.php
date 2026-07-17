@@ -145,7 +145,7 @@
     <!-- Create Modal -->
     <div id="createModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
-            <div class="fixed inset-0 bg-primary-900/60 backdrop-blur-sm transition-opacity" onclick="document.getElementById('createModal').classList.add('hidden')"></div>
+            <div class="fixed inset-0 modal-overlay" onclick="document.getElementById('createModal').classList.add('hidden')"></div>
             <div class="relative bg-white dark:bg-primary-900 rounded-[2rem] shadow-2xl w-full max-w-lg p-8 overflow-hidden animate-fade-in flex flex-col max-h-[90vh]">
                 <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-primary-primary/5 rounded-full"></div>
 
@@ -211,7 +211,7 @@
     <!-- Edit Modal -->
     <div id="editModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
-            <div class="fixed inset-0 bg-primary-900/60 backdrop-blur-sm transition-opacity" onclick="document.getElementById('editModal').classList.add('hidden')"></div>
+            <div class="fixed inset-0 modal-overlay" onclick="document.getElementById('editModal').classList.add('hidden')"></div>
             <div class="relative bg-white dark:bg-primary-900 rounded-[2rem] shadow-2xl w-full max-w-lg p-8 overflow-hidden animate-fade-in flex flex-col">
                 <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-primary-primary/5 rounded-full"></div>
 

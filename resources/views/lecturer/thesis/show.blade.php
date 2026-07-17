@@ -57,7 +57,7 @@
                 <div class="px-6 py-4 border-b border-primary-light">
                     <h3 class="font-semibold text-primary-dark">{{ __('Supervision History') }}</h3>
                 </div>
-                @forelse($thesis->supervision as $supervision)
+                @forelse($thesis->supervisions as $supervision)
                 <div class="p-5 border-b border-primary-light/50">
                     <div class="flex items-start gap-4">
                         <div class="w-10 h-10 rounded-lg bg-{{ $supervision->status_color }}-100 flex items-center justify-center text-{{ $supervision->status_color }}-600">

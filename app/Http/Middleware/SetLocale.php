@@ -18,7 +18,7 @@ class SetLocale
 
         $response = $next($request);
 
-        if (in_array($locale, ['en', 'ar'])) {
+        if (in_array($locale, ['en', 'ar']) && $response instanceof \Illuminate\Http\Response) {
             $response->cookie('locale', $locale, 60 * 24 * 365); // 1 year
         }
 

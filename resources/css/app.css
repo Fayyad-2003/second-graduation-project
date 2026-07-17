@@ -119,6 +119,10 @@
         @apply h-px bg-surface-200 dark:bg-surface-700;
     }
 
+    .modal-overlay {
+        @apply bg-primary-900/60 dark:bg-gray-900/80 backdrop-blur-sm transition-opacity;
+    }
+
     .skeleton {
         @apply animate-shimmer bg-gradient-to-r from-surface-200 via-surface-100 to-surface-200 dark:from-surface-700 dark:via-surface-600 dark:to-surface-700 bg-[length:200%_100%];
     }

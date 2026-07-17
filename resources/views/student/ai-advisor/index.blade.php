@@ -18,7 +18,7 @@
                         </div>
                         <div class="flex-1 pt-1">
                             <p class="text-primary-dark dark:text-slate-200 leading-relaxed">
-                                Hello, <span class="font-semibold">{{ explode(' ', $student->user->name)[0] }}</span>. I am your Smart Academic Advisor. I can help you with academic questions such as grade analysis, Study Plan suggestions, class schedules, and more.
+                                Hello, <span class="font-semibold">{{ explode(' ', $student->user->name)[0] }}</span>. {{ __('I am your Smart Academic Advisor. I can help you with academic questions such as grade analysis, Study Plan suggestions, class schedules, and more.') }}
                             </p>
                         </div>
                     </div>

@@ -122,7 +122,7 @@
     <!-- Create Modal -->
     <div id="createModal" class="hidden fixed inset-0 z-50 overflow-y-auto" x-cloak>
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="fixed inset-0 bg-primary-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal('createModal')"></div>
+            <div class="fixed inset-0 modal-overlay" onclick="closeModal('createModal')"></div>
 
             <div class="relative bg-white dark:bg-primary-900 rounded-[2rem] shadow-2xl w-full max-w-lg p-8 overflow-hidden transform transition-all animate-fade-in">
                 <!-- Decorative background -->

@@ -10,7 +10,7 @@ return [
     'User Management' => 'إدارة المستخدمين',
     'Study Programs' => 'البرامج الدراسية',
     'Courses' => 'المقررات',
-    'Classes' => 'الفصول',
+    'Classes' => 'الشعب',
     'Administration' => 'الإدارة',
     'Students' => 'الطلاب',
     'Lecturers' => 'أعضاء هيئة التدريس',

@@ -175,13 +175,13 @@ class AdvisorContextBuilder
         $activeStudyPlan = StudyPlan::where('student_id', $student->id)
             ->where('status', 'approved')
             ->whereHas('academicYear', fn($q) => $q->where('is_active', true))
-            ->with('studyPlanDetails.academicClass.courseSchedules')
+            ->with('details.academicClass.courseSchedules')
             ->first();
 
         if (!$activeStudyPlan) return [];
 
         $schedule = [];
-        foreach ($activeStudyPlan->studyPlanDetails as $detail) {
+        foreach ($activeStudyPlan->details as $detail) {
             $class = $detail->academicClass;
             foreach ($class->courseSchedules as $sched) {
                 $schedule[] = [
@@ -204,13 +204,13 @@ class AdvisorContextBuilder
         $activeStudyPlan = StudyPlan::where('student_id', $student->id)
             ->where('status', 'approved')
             ->whereHas('academicYear', fn($q) => $q->where('is_active', true))
-            ->with('studyPlanDetails.academicClass')
+            ->with('details.academicClass')
             ->first();
 
         if (!$activeStudyPlan) return [];
 
         $data = [];
-        foreach ($activeStudyPlan->studyPlanDetails as $detail) {
+        foreach ($activeStudyPlan->details as $detail) {
             $summary = $this->attendanceService->getAttendanceSummary($student->id, $detail->class_id);
             $data[$detail->academicClass->course->course_name] = $summary;
         }

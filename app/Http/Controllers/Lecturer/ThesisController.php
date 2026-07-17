@@ -44,7 +44,7 @@ class ThesisController extends Controller
             abort(403, __('You are not a supervisor for this thesis'));
         }
 
-        $thesis->load(['student.user', 'supervisor1.user', 'supervisor2.user', 'supervision.lecturer.user']);
+        $thesis->load(['student.user', 'supervisor1.user', 'supervisor2.user', 'supervisions.lecturer.user']);
 
         return view('lecturer.thesis.show', compact('lecturer', 'thesis'));
     }

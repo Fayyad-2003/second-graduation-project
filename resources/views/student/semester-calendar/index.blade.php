@@ -27,8 +27,8 @@
                 <div class="flex gap-4">
                     <div class="flex-shrink-0 w-24">
                         @if($event->date)
-                        <div class="text-xs font-bold text-primary-dark dark:text-white uppercase">{{ $event->date->format('D') }}</div>
-                        <div class="text-lg font-bold text-primary-primary">{{ $event->date->format('d M') }}</div>
+                        <div class="text-xs font-bold text-primary-dark dark:text-white uppercase">{{ __($event->date->format('D')) }}</div>
+                        <div class="text-lg font-bold text-primary-primary">{{ $event->date->format('d') }} {{ __($event->date->format('M')) }}</div>
                         @else
                         <div class="text-xs font-medium text-primary-secondary italic">{{ __('TBA') }}</div>
                         @endif

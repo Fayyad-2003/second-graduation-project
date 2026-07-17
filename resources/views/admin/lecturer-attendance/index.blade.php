@@ -26,8 +26,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="{{ $s['icon'] }}"></path>
                     </svg>
                 </div>
-                <p class="text-2xl font-black text-primary-900 dark:text-white leading-tight">{{ $s['1'] }}</p>
-                <p class="text-[9px] text-primary-400 font-black uppercase tracking-widest mt-1">{{ $s['0'] }}</p>
+                <p class="text-2xl font-black text-primary-900 dark:text-white leading-tight">{{ $s['count'] }}</p>
+                <p class="text-[9px] text-primary-400 font-black uppercase tracking-widest mt-1">{{ $s['label'] }}</p>
             </div>
         </div>
         @endforeach

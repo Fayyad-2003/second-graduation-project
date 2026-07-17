@@ -18,6 +18,7 @@ class AiAdvisorService
     protected string $provider;
 
     protected const MAX_RETRIES = 1;
+    protected const API_MAX_RETRIES = 3;
 
     public function __construct(
         AdvisorContextBuilder $contextBuilder,
@@ -130,8 +131,12 @@ class AiAdvisorService
     {
         $studentName = $context['student']['name'] ?? 'Student';
         $studyProgram = $context['student']['study_program'] ?? 'Unknown';
-        $gpa = $context['student']['gpa'] ?? '0.0';
-        $credits = $context['student']['total_credits'] ?? '0';
+        $gpa = $context['academic_summary']['gpa'] ?? '0.0';
+        $credits = $context['academic_summary']['total_credits'] ?? '0';
+
+        $historyText = $this->formatCourseStatuses($context['course_statuses'] ?? []);
+        $curriculumText = $this->formatCurriculum($context['curriculum'] ?? []);
+        $rulesText = $this->formatRules($context['study_program_rules'] ?? []);
 
         return <<<PROMPT
 You are a professional Academic Advisor for student $studentName in the $studyProgram study program.
@@ -145,16 +150,13 @@ Your role is to help students with:
 4. Answering questions about course materials and content.
 
 Student Academic History:
-{$context['history_text']}
-
-Current Study Plan:
-{$context['current_plan_text']}
+{$historyText}
 
 Available Courses in Study Program:
-{$context['available_courses_text']}
+{$curriculumText}
 
 Academic Rules:
-{$context['rules_text']}
+{$rulesText}
 
 Instructions:
 1. Be helpful, professional, and accurate.
@@ -166,6 +168,37 @@ Instructions:
 PROMPT;
     }
 
+    protected function formatCourseStatuses(array $statuses): string
+    {
+        if (empty($statuses)) return 'No academic history available.';
+        $lines = [];
+        foreach ($statuses as $code => $info) {
+            $grade = isset($info['grade']) ? " - Grade: {$info['grade']}" : '';
+            $lines[] = "- [{$info['status']}] {$code}: {$info['name']}{$grade}";
+        }
+        return implode("\n", $lines);
+    }
+
+    protected function formatCurriculum(array $curriculum): string
+    {
+        if (empty($curriculum)) return 'No curriculum data available.';
+        $lines = [];
+        foreach ($curriculum as $course) {
+            $lines[] = "- Sem {$course['semester']}: {$course['code']} {$course['name']} ({$course['credits']} credits)";
+        }
+        return implode("\n", $lines);
+    }
+
+    protected function formatRules(array $rules): string
+    {
+        if (empty($rules)) return 'No rules available.';
+        return implode("\n", array_map(
+            fn($k, $v) => "- {$k}: {$v}",
+            array_keys($rules),
+            $rules
+        ));
+    }
+
     protected function callLlm(string $systemPrompt, string $userMessage, array $history = []): array
     {
         $messages = [
@@ -173,8 +206,11 @@ PROMPT;
         ];
 
         foreach ($history as $chat) {
-            $messages[] = ['role' => 'user', 'content' => $chat['user']];
-            $messages[] = ['role' => 'assistant', 'content' => $chat['assistant']];
+            $role = $chat['role'] ?? 'user';
+            $content = $chat['content'] ?? '';
+            if ($role === 'user' || $role === 'assistant') {
+                $messages[] = ['role' => $role, 'content' => $content];
+            }
         }
 
         $messages[] = ['role' => 'user', 'content' => $userMessage];
@@ -189,8 +225,7 @@ PROMPT;
     {
         $system = array_shift($messages)['content'];
         $user = array_pop($messages)['content'];
-        
-        // Build contents for Gemini
+
         $contents = [];
         foreach ($messages as $msg) {
             $contents[] = [
@@ -198,52 +233,79 @@ PROMPT;
                 'parts' => [['text' => $msg['content']]]
             ];
         }
-        
+
         $fullUserPrompt = "SYSTEM INSTRUCTION:\n" . $system . "\n\nUSER MESSAGE:\n" . $user;
-        $contents[] = [
-            'role' => 'user',
-            'parts' => [['text' => $fullUserPrompt]]
-        ];
+        $contents[] = ['role' => 'user', 'parts' => [['text' => $fullUserPrompt]]];
 
-        $response = Http::withHeaders(['Content-Type' => 'application/json'])
-            ->post("https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}", [
-                'contents' => $contents
-            ]);
+        $lastError = null;
+        for ($attempt = 1; $attempt <= self::API_MAX_RETRIES; $attempt++) {
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])
+                ->post("https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}", [
+                    'contents' => $contents
+                ]);
 
-        if ($response->failed()) {
-            throw new \Exception('Gemini API call failed: ' . $response->body());
+            if ($response->successful()) {
+                $text = $response->json('candidates.0.content.parts.0.text', '');
+                return ['success' => true, 'message' => $text];
+            }
+
+            $status = $response->json('error.code');
+            $lastError = $response->json('error.message', $response->body());
+
+            if ($status === 503 && $attempt < self::API_MAX_RETRIES) {
+                sleep($attempt * 2);
+                continue;
+            }
+
+            break;
         }
 
-        $data = $response->json();
-        $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
-        
-        return [
-            'success' => true,
-            'message' => $text,
-        ];
+        if (str_contains((string) $lastError, 'high demand') || str_contains((string) $lastError, 'UNAVAILABLE')) {
+            return [
+                'success' => false,
+                'message' => 'The AI service is currently busy. Please try again in a few moments.',
+            ];
+        }
+
+        throw new \Exception('Gemini API call failed: ' . $lastError);
     }
 
     protected function callQwen(array $messages): array
     {
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Authorization' => "Bearer {$this->apiKey}"
-        ])->post("https://api.together.xyz/v1/chat/completions", [
-            'model' => $this->model,
-            'messages' => $messages,
-        ]);
+        $lastError = null;
+        for ($attempt = 1; $attempt <= self::API_MAX_RETRIES; $attempt++) {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => "Bearer {$this->apiKey}"
+            ])->post("https://api.together.xyz/v1/chat/completions", [
+                'model' => $this->model,
+                'messages' => $messages,
+            ]);
 
-        if ($response->failed()) {
-            throw new \Exception('Qwen API call failed: ' . $response->body());
+            if ($response->successful()) {
+                $text = $response->json('choices.0.message.content', '');
+                return ['success' => true, 'message' => $text];
+            }
+
+            $status = $response->status();
+            $lastError = $response->body();
+
+            if ($status === 503 && $attempt < self::API_MAX_RETRIES) {
+                sleep($attempt * 2);
+                continue;
+            }
+
+            break;
         }
 
-        $data = $response->json();
-        $text = $data['choices'][0]['message']['content'] ?? '';
-        
-        return [
-            'success' => true,
-            'message' => $text,
-        ];
+        if ($response->status() === 503) {
+            return [
+                'success' => false,
+                'message' => 'The AI service is currently busy. Please try again in a few moments.',
+            ];
+        }
+
+        throw new \Exception('Qwen API call failed: ' . $lastError);
     }
 
     protected function retryWithGuardPrompt(string $system, string $user, string $oldOutput, string $retryPrompt, array $history): array
@@ -253,8 +315,11 @@ PROMPT;
         ];
 
         foreach ($history as $chat) {
-            $messages[] = ['role' => 'user', 'content' => $chat['user']];
-            $messages[] = ['role' => 'assistant', 'content' => $chat['assistant']];
+            $role = $chat['role'] ?? 'user';
+            $content = $chat['content'] ?? '';
+            if ($role === 'user' || $role === 'assistant') {
+                $messages[] = ['role' => $role, 'content' => $content];
+            }
         }
 
         $messages[] = ['role' => 'user', 'content' => $user];
@@ -269,12 +334,15 @@ PROMPT;
 
     protected function logConversation(int $studentId, string $userMsg, string $aiMsg, float $duration): void
     {
+        $student = \App\Models\Student::find($studentId);
         AiConversationLog::create([
+            'user_id' => $student?->user_id,
             'student_id' => $studentId,
-            'user_message' => $userMsg,
-            'ai_response' => $aiMsg,
-            'duration_ms' => round($duration * 1000),
-            'tokens' => 0, // Not available from basic API responses
+            'question' => $userMsg,
+            'answer' => $aiMsg,
+            'response_time_ms' => round($duration * 1000),
+            'model_used' => $this->model,
+            'provider' => $this->provider,
         ]);
     }
 }
