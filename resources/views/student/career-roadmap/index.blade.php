@@ -19,18 +19,28 @@
                             <div>
                                 <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">{{ __('Define Your Path') }}</h3>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('Select your preferred specialization to get a plan') }}</p>
+                                @if($faculty || $studyProgram)
+                                <p class="text-xs text-teal-600 dark:text-teal-400 mt-0.5 font-medium">{{ $studyProgram }}@if($faculty && $studyProgram) &mdash; @endif{{ $faculty }}</p>
+                                @endif
                             </div>
                         </div>
 
                         <div class="space-y-5">
-                            <!-- 1. Field -->
+                            <!-- 1. Main Field -->
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">{{ __('Main Field') }}</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <template x-for="(options, fieldName) in dataStructure" :key="fieldName">
-                                        <button @click="selectField(fieldName)"
-                                            :class="selectedField === fieldName ? 'bg-teal-600 text-white border-teal-600' : 'bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-100 dark:border-gray-700'"
-                                            class="px-3 py-2 rounded-xl border text-sm font-medium transition-all text-center" x-text="fieldName"></button>
+                                <div x-show="loadingMainFields" class="flex items-center gap-2 text-xs text-teal-500 py-2">
+                                    <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    <span>{{ __('Loading suggestions...') }}</span>
+                                </div>
+                                <div x-show="!loadingMainFields" class="grid grid-cols-2 gap-2">
+                                    <template x-for="field in mainFields" :key="field">
+                                        <button @click="selectField(field)"
+                                            :class="selectedField === field ? 'bg-teal-600 text-white border-teal-600' : 'bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-100 dark:border-gray-700'"
+                                            class="px-3 py-2 rounded-xl border text-sm font-medium transition-all text-center" x-text="field"></button>
                                     </template>
                                 </div>
                             </div>
@@ -38,10 +48,17 @@
                             <!-- 2. Sub-Field -->
                             <div x-show="selectedField" class="animate-fade-in">
                                 <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">{{ __('Sub-Field') }}</label>
-                                <select x-model="selectedSubField" @change="resetSpecific" class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-sm focus:ring-teal-500 focus:border-teal-500">
+                                <div x-show="loadingSubFields" class="flex items-center gap-2 text-xs text-teal-500 py-2">
+                                    <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    <span>{{ __('Loading...') }}</span>
+                                </div>
+                                <select x-show="!loadingSubFields" x-model="selectedSubField" @change="fetchSpecificFields" class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-sm focus:ring-teal-500 focus:border-teal-500">
                                     <option value="">{{ __('Select sub-field...') }}</option>
-                                    <template x-for="(options, subFieldName) in dataStructure[selectedField]" :key="subFieldName">
-                                        <option :value="subFieldName" x-text="subFieldName"></option>
+                                    <template x-for="opt in subFields" :key="opt">
+                                        <option :value="opt" x-text="opt"></option>
                                     </template>
                                 </select>
                             </div>
@@ -49,10 +66,17 @@
                             <!-- 3. Specific Field -->
                             <div x-show="selectedSubField" class="animate-fade-in">
                                 <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">{{ __('Specific Field') }}</label>
-                                <select x-model="selectedSpecificField" @change="resetTechnology" class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-sm focus:ring-teal-500 focus:border-teal-500">
+                                <div x-show="loadingSpecificFields" class="flex items-center gap-2 text-xs text-teal-500 py-2">
+                                    <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    <span>{{ __('Loading...') }}</span>
+                                </div>
+                                <select x-show="!loadingSpecificFields" x-model="selectedSpecificField" @change="fetchTechnologies" class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-sm focus:ring-teal-500 focus:border-teal-500">
                                     <option value="">{{ __('Select specialization...') }}</option>
-                                    <template x-for="(options, specName) in dataStructure[selectedField][selectedSubField]" :key="specName">
-                                        <option :value="specName" x-text="specName"></option>
+                                    <template x-for="opt in specificFields" :key="opt">
+                                        <option :value="opt" x-text="opt"></option>
                                     </template>
                                 </select>
                             </div>
@@ -60,10 +84,17 @@
                             <!-- 4. Technology -->
                             <div x-show="selectedSpecificField" class="animate-fade-in">
                                 <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">{{ __('Required Technology') }}</label>
-                                <select x-model="selectedTechnology" class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-sm focus:ring-teal-500 focus:border-teal-500">
+                                <div x-show="loadingTechnologies" class="flex items-center gap-2 text-xs text-teal-500 py-2">
+                                    <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    <span>{{ __('Loading...') }}</span>
+                                </div>
+                                <select x-show="!loadingTechnologies" x-model="selectedTechnology" class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-sm focus:ring-teal-500 focus:border-teal-500">
                                     <option value="">{{ __('Select technology...') }}</option>
-                                    <template x-for="tech in dataStructure[selectedField][selectedSubField][selectedSpecificField]" :key="tech">
-                                        <option :value="tech" x-text="tech"></option>
+                                    <template x-for="opt in technologies" :key="opt">
+                                        <option :value="opt" x-text="opt"></option>
                                     </template>
                                 </select>
                             </div>
@@ -201,57 +232,106 @@
     <script>
         function careerRoadmap() {
             return {
-                dataStructure: {
-                    "IT & Software": {
-                        "Programming": {
-                            "Web Development": ["React", "Vue", "Laravel", "Node.js", "Django", "Next.js"],
-                            "Mobile Development": ["Flutter", "React Native", "Swift", "Kotlin", "Ionic"],
-                            "Game Development": ["Unity (C#)", "Unreal Engine (C++)", "Godot"],
-                        },
-                        "Infrastructure": {
-                            "Networks": ["CCNA", "CompTIA Network+", "MikroTik", "Cisco"],
-                            "Cloud Computing": ["AWS", "Azure", "Google Cloud", "DevOps"],
-                            "Cyber Security": ["Ethical Hacking", "SOC Analyst", "Pentesting"],
-                        },
-                        "Data Science": {
-                            "AI & ML": ["Python (PyTorch)", "TensorFlow", "NLP", "Computer Vision"],
-                            "Data Analysis": ["SQL", "Power BI", "Tableau", "Pandas"],
-                        }
-                    },
-                    "Design & Creative": {
-                        "UI/UX Design": {
-                            "Product Design": ["Figma", "Adobe XD", "Sketch"],
-                            "User Research": ["UX Research Methods", "Prototyping"],
-                        },
-                        "Graphic Design": {
-                            "Branding": ["Illustrator", "Photoshop", "InDesign"],
-                            "Motion Graphics": ["After Effects", "Premiere Pro", "Cinema 4D"],
-                        }
-                    }
-                },
-
+                mainFields: [],
+                loadingMainFields: false,
                 selectedField: '',
                 selectedSubField: '',
                 selectedSpecificField: '',
                 selectedTechnology: '',
+
+                subFields: [],
+                specificFields: [],
+                technologies: [],
+
+                loadingSubFields: false,
+                loadingSpecificFields: false,
+                loadingTechnologies: false,
+
                 isLoading: false,
                 roadmap: null,
                 loadingStatus: '{{ __("Planning...") }}',
 
-                selectField(field) {
+                async init() {
+                    this.loadingMainFields = true;
+                    try {
+                        const response = await fetch('{{ route("students.career-roadmap.main-fields") }}', {
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                        });
+                        const data = await response.json();
+                        this.mainFields = data.success ? data.fields : ['IT & Software', 'Engineering', 'Business', 'Healthcare', 'Education'];
+                    } catch {
+                        this.mainFields = ['IT & Software', 'Engineering', 'Business', 'Healthcare', 'Education'];
+                    } finally {
+                        this.loadingMainFields = false;
+                    }
+                },
+
+                async selectField(field) {
                     this.selectedField = field;
                     this.selectedSubField = '';
                     this.selectedSpecificField = '';
                     this.selectedTechnology = '';
+                    this.subFields = [];
+                    this.specificFields = [];
+                    this.technologies = [];
+
+                    this.loadingSubFields = true;
+                    const data = await this.fetchOptions('subFields', {
+                        field
+                    });
+                    this.subFields = data;
+                    this.loadingSubFields = false;
                 },
 
-                resetSpecific() {
+                async fetchSpecificFields() {
                     this.selectedSpecificField = '';
                     this.selectedTechnology = '';
+                    this.specificFields = [];
+                    this.technologies = [];
+                    if (!this.selectedSubField) return;
+
+                    this.loadingSpecificFields = true;
+                    const data = await this.fetchOptions('specificFields', {
+                        field: this.selectedField,
+                        subField: this.selectedSubField
+                    });
+                    this.specificFields = data;
+                    this.loadingSpecificFields = false;
                 },
 
-                resetTechnology() {
+                async fetchTechnologies() {
                     this.selectedTechnology = '';
+                    this.technologies = [];
+                    if (!this.selectedSpecificField) return;
+
+                    this.loadingTechnologies = true;
+                    const data = await this.fetchOptions('technologies', {
+                        field: this.selectedField,
+                        subField: this.selectedSubField,
+                        specificField: this.selectedSpecificField
+                    });
+                    this.technologies = data;
+                    this.loadingTechnologies = false;
+                },
+
+                async fetchOptions(level, params) {
+                    try {
+                        const response = await fetch('{{ route("students.career-roadmap.options") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                level,
+                                ...params
+                            }),
+                        });
+                        const data = await response.json();
+                        return data.success ? data.options : [];
+                    } catch {
+                        return [];
+                    }
                 },
 
                 async generateRoadmap() {
@@ -266,7 +346,7 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             },
                             body: JSON.stringify({
                                 field: this.selectedField,
@@ -277,13 +357,12 @@
                         });
 
                         const data = await response.json();
-
                         if (data.success) {
-                            this.roadmap = data.message;
+                            this.roadmap = data.roadmap;
                         } else {
                             alert('Error: ' + data.message);
                         }
-                    } catch (error) {
+                    } catch {
                         alert('Connection Error');
                     } finally {
                         this.isLoading = false;
@@ -339,7 +418,6 @@
                         .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 dark:text-white">$1</strong>')
                         .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700 dark:text-gray-300">$1</em>');
 
-                    // Wrap "Phase" or "المرحلة" into cards
                     const sections = html.split(/## (المرحلة|Phase) (\d+)/i);
 
                     if (sections.length > 1) {
@@ -348,15 +426,11 @@
                             const phaseLabel = sections[i];
                             const phaseNum = sections[i + 1];
                             const content = sections[i + 2];
-
                             formattedHtml += `
                                 <div class="phase-card">
                                     <span class="phase-badge">${phaseLabel} ${phaseNum}</span>
-                                    <div class="phase-content">
-                                        ${this.parseMarkdownBody(content)}
-                                    </div>
-                                </div>
-                            `;
+                                    <div class="phase-content">${this.parseMarkdownBody(content)}</div>
+                                </div>`;
                         }
                         html = formattedHtml;
                     } else {

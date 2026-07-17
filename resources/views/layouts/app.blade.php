@@ -898,7 +898,7 @@
                         </a>
                     </x-sidebar-dropdown>
 
-                    <x-sidebar-dropdown :title="__('AI Learning tools')" :active="request()->is('students/study-plan-ai*') || request()->is('students/quiz-ai*') || request()->is('students/career-roadmap*') || request()->is('students/subject-search*') || request()->is('students/skill-tree*') || request()->is('students/source-finder*') || request()->routeIs('students.recommendations.*')">
+                    <x-sidebar-dropdown :title="__('AI Learning tools')" :active="request()->is('students/study-plan-ai*') || request()->is('students/quiz-ai*') || request()->is('students/career-roadmap*') || request()->is('students/subject-search*') || request()->is('students/skill-tree*') || request()->is('students/source-finder*') || request()->routeIs('students.recommendations.*') || request()->routeIs('students.graduation-predictor.*')">
                         <x-slot name="icon">
                             <svg class="w-[18px] h-[18px] flex-shrink-0 text-indigo-500" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -926,6 +926,10 @@
                         <a href="{{ url('students/source-finder') }}"
                             class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->is('students/source-finder*') ? 'active' : '' }}">
                             <span class="sidebar-text">{{ __('Source Finder') }}</span>
+                        </a>
+                        <a href="{{ route('students.graduation-predictor.index') }}"
+                            class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-primary-secondary text-sm font-medium {{ request()->routeIs('students.graduation-predictor.*') ? 'active' : '' }}">
+                            <span class="sidebar-text">{{ __('Graduation Predictor') }}</span>
                         </a>
                     </x-sidebar-dropdown>
                     <div class="pt-5 pb-2">

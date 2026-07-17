@@ -22,6 +22,12 @@
                 <a href="{{ route('lecturers.exam.index', $class->id) }}" class="btn-ghost-saas px-4 py-2.5 rounded-xl text-sm font-black">
                     {{ __('Back to Exams') }}
                 </a>
+                <button onclick="document.getElementById('aiModal').classList.remove('hidden')" class="px-4 py-2.5 rounded-xl text-sm font-black flex items-center gap-2 bg-gradient-to-r from-violet-500 to-indigo-600 text-white hover:from-violet-600 hover:to-indigo-700 shadow-lg shadow-violet-500/20 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    {{ __('AI Generate') }}
+                </button>
                 <a href="{{ route('lecturers.exam-questions.create', $class->id) }}" class="btn-primary-saas px-4 py-2.5 rounded-xl text-sm font-black flex items-center gap-2 shadow-lg shadow-primary-600/20">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
@@ -118,4 +124,111 @@
         </div>
         @endforelse
     </div>
+
+    @if(session('success'))
+    <div id="flashSuccess" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-4 bg-emerald-500 text-white rounded-2xl shadow-xl shadow-emerald-500/30 animate-fade-in">
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span class="text-sm font-bold">{{ session('success') }}</span>
+        <button onclick="document.getElementById('flashSuccess').remove()" class="ml-2 opacity-70 hover:opacity-100">&times;</button>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div id="flashError" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-4 bg-red-500 text-white rounded-2xl shadow-xl shadow-red-500/30 animate-fade-in">
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="text-sm font-bold">{{ session('error') }}</span>
+        <button onclick="document.getElementById('flashError').remove()" class="ml-2 opacity-70 hover:opacity-100">&times;</button>
+    </div>
+    @endif
+
+    <!-- AI Generate Modal -->
+    <div id="aiModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="document.getElementById('aiModal').classList.add('hidden')"></div>
+            <div class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md p-8 overflow-hidden">
+
+                <!-- Decorative gradient top bar -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-t-2xl"></div>
+
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-black text-primary-900 dark:text-white flex items-center gap-2">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        {{ __('AI Question Generator') }}
+                    </h3>
+                    <button onclick="document.getElementById('aiModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <p class="text-sm text-primary-500 dark:text-gray-400 mb-6">
+                    {{ __('AI will generate questions based on the course materials uploaded for this class.') }}
+                </p>
+
+                <form action="{{ route('lecturers.exam-questions.ai-generate', $class->id) }}" method="POST" id="aiForm">
+                    @csrf
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-black text-primary-400 uppercase tracking-widest mb-2">{{ __('Question Type') }}</label>
+                            <select name="type" class="input-saas w-full px-4 py-3 text-sm rounded-xl">
+                                <option value="multiple_choice">{{ __('Multiple Choice') }}</option>
+                                <option value="true_false">{{ __('True / False') }}</option>
+                                <option value="short_answer">{{ __('Short Answer') }}</option>
+                                <option value="essay">{{ __('Essay') }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-primary-400 uppercase tracking-widest mb-2">{{ __('Difficulty') }}</label>
+                            <select name="difficulty" class="input-saas w-full px-4 py-3 text-sm rounded-xl">
+                                <option value="easy">{{ __('Easy') }}</option>
+                                <option value="medium" selected>{{ __('Medium') }}</option>
+                                <option value="hard">{{ __('Hard') }}</option>
+                                <option value="very_hard">{{ __('Very Hard') }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-primary-400 uppercase tracking-widest mb-2">{{ __('Number of Questions') }}</label>
+                            <input type="number" name="count" value="5" min="1" max="20" class="input-saas w-full px-4 py-3 text-sm rounded-xl">
+                            <p class="text-xs text-primary-400 mt-1">{{ __('Max 20 questions per generation.') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-end gap-3">
+                        <button type="button" onclick="document.getElementById('aiModal').classList.add('hidden')" class="btn-ghost-saas px-5 py-2.5 rounded-xl text-sm font-black">
+                            {{ __('Cancel') }}
+                        </button>
+                        <button type="submit" id="aiSubmitBtn" class="px-6 py-2.5 rounded-xl text-sm font-black bg-gradient-to-r from-violet-500 to-indigo-600 text-white hover:from-violet-600 hover:to-indigo-700 shadow-lg shadow-violet-500/20 transition-all flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            <span id="aiSubmitLabel">{{ __('Generate') }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('aiForm').addEventListener('submit', function() {
+            const btn = document.getElementById('aiSubmitBtn');
+            const label = document.getElementById('aiSubmitLabel');
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            label.textContent = '{{ __('Generating...') }}';
+        });
+
+        // Auto-dismiss flash after 4s
+        setTimeout(() => document.getElementById('flashSuccess')?.remove(), 4000);
+        setTimeout(() => document.getElementById('flashError')?.remove(), 6000);
+    </script>
 </x-app-layout>

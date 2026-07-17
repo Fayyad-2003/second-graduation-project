@@ -48,7 +48,12 @@ class SubjectSearchAiService
             // 3. Call LLM
             $response = $this->callLlm($prompt);
 
-            return $response;
+            return [
+                'success' => true,
+                'answer'   => $response['answer'] ?? null,
+                'sources'  => $response['sources'] ?? [],
+                'related_questions' => $response['related_questions'] ?? [],
+            ];
         } catch (\Exception $e) {
             return [
                 'success' => false,
@@ -95,14 +100,17 @@ class SubjectSearchAiService
             if (!file_exists($fullPath)) {
                 $fullPath = storage_path('app/' . $filePath);
             }
-            
+
             if (!file_exists($fullPath)) return "";
-            
+
             $parser = new Parser();
             $pdf = $parser->parseFile($fullPath);
             $text = $pdf->getText();
-            
-            // Return only first 1500 characters to save tokens
+
+            // Sanitize to valid UTF-8 to prevent json_encode failures
+            $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+            $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $text);
+
             return mb_substr($text, 0, 1500) . "...";
         } catch (\Exception $e) {
             return "";

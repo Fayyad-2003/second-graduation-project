@@ -17,6 +17,8 @@ Route::middleware(['auth', 'role:student'])->prefix('students')->name('students.
 
     // AI Career Roadmap
     Route::get('/career-roadmap', [\App\Http\Controllers\Student\CareerRoadmapAiController::class, 'index'])->name('career-roadmap.index');
+    Route::get('/career-roadmap/main-fields', [\App\Http\Controllers\Student\CareerRoadmapAiController::class, 'getMainFields'])->name('career-roadmap.main-fields');
+    Route::post('/career-roadmap/options', [\App\Http\Controllers\Student\CareerRoadmapAiController::class, 'getOptions'])->name('career-roadmap.options');
     Route::post('/career-roadmap/generate', [\App\Http\Controllers\Student\CareerRoadmapAiController::class, 'generate'])->name('career-roadmap.generate');
 
     // AI Subject Search / FAQ
@@ -30,6 +32,10 @@ Route::middleware(['auth', 'role:student'])->prefix('students')->name('students.
     // AI Academic Source Finder
     Route::get('/source-finder', [\App\Http\Controllers\Student\SourceFinderAiController::class, 'index'])->name('source-finder.index');
     Route::post('/source-finder/search', [\App\Http\Controllers\Student\SourceFinderAiController::class, 'search'])->name('source-finder.search');
+
+    // AI Graduation Predictor
+    Route::get('/graduation-predictor', [\App\Http\Controllers\Student\GraduationPredictorAiController::class, 'index'])->name('graduation-predictor.index');
+    Route::post('/graduation-predictor/predict', [\App\Http\Controllers\Student\GraduationPredictorAiController::class, 'predict'])->middleware('throttle:ai-chat')->name('graduation-predictor.predict');
 });
 
 

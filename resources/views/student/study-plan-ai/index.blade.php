@@ -250,10 +250,10 @@
 
                         const data = await response.json();
 
-                        if (data.success) {
-                            this.plan = data.message;
-                        } else {
+                        if (data.success === false) {
                             alert('{{ __("An error occurred:") }} ' + data.message);
+                        } else {
+                            this.plan = data;
                         }
                     } catch (error) {
                         alert('{{ __("An error occurred while connecting to the server.") }}');
@@ -311,50 +311,46 @@
                     }
                 },
 
-                formatPlan(text) {
-                    if (!text) return '';
+                formatPlan(plan) {
+                    if (!plan) return '';
 
-                    let html = text
-                        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 dark:text-white">$1</strong>')
-                        .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700 dark:text-gray-300">$1</em>');
+                    let html = '';
 
-                    // Process Week headers into cards
-                    // Pattern for Week/الأسبوع followed by number
-                    const sections = html.split(/### (الأسبوع|Week) (\d+)/i);
+                    // Summary
+                    if (plan.summary) {
+                        html += `<div class="mb-8 p-5 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl border border-indigo-100 dark:border-indigo-800">
+                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${plan.summary}</p>
+                        </div>`;
+                    }
 
-                    if (sections.length > 1) {
-                        let formattedHtml = sections[0]; // Introduction
-                        for (let i = 1; i < sections.length; i += 3) {
-                            const weekLabel = sections[i];
-                            const weekNum = sections[i + 1];
-                            const content = sections[i + 2];
-
-                            formattedHtml += `
-                                <div class="week-card">
-                                    <span class="week-badge">${weekLabel} ${weekNum}</span>
-                                    <div class="week-content">
-                                        ${this.parseMarkdownBody(content)}
-                                    </div>
+                    // Weekly schedule
+                    if (plan.weeks && plan.weeks.length) {
+                        html += `<h2 class="text-lg font-black text-indigo-700 dark:text-indigo-400 mb-4 mt-2 uppercase tracking-wider">{{ __('Weekly Schedule') }}</h2>`;
+                        plan.weeks.forEach(week => {
+                            const objectives = (week.objectives || []).map(o => `<li class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"><span class="text-indigo-400 font-bold mt-0.5">•</span>${o}</li>`).join('');
+                            html += `<div class="week-card">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="week-badge">{{ __('Week') }} ${week.week_number}</span>
+                                    <span class="text-xs font-semibold text-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1 rounded-full">${week.hours} {{ __('hours') }}</span>
                                 </div>
-                            `;
-                        }
-                        html = formattedHtml;
-                    } else {
-                        html = this.parseMarkdownBody(html);
+                                <h3 class="font-bold text-gray-800 dark:text-gray-100 mb-2">${week.topic}</h3>
+                                ${objectives ? `<ul class="space-y-1 mb-3">${objectives}</ul>` : ''}
+                                ${week.activities ? `<p class="text-sm text-gray-500 dark:text-gray-400 mt-2 border-t border-gray-100 dark:border-gray-700 pt-2">${week.activities}</p>` : ''}
+                            </div>`;
+                        });
+                    }
+
+                    // General tips
+                    if (plan.tips && plan.tips.length) {
+                        const tips = plan.tips.map(t => `<li class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"><span class="text-indigo-400 font-bold mt-0.5">•</span>${t}</li>`).join('');
+                        html += `<div class="mt-8 p-5 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+                            <h4 class="font-black text-gray-800 dark:text-gray-100 mb-3 uppercase tracking-wider text-sm">{{ __('Study Tips') }}</h4>
+                            <ul class="space-y-2">${tips}</ul>
+                        </div>`;
                     }
 
                     return `<div class="plan-content">${html}</div>`;
                 },
-
-                parseMarkdownBody(text) {
-                    return text
-                        .replace(/## (.*)/g, '<h2>$1</h2>')
-                        .replace(/### (.*)/g, '<h3>$1</h3>')
-                        .replace(/\n\n/g, '</p><p class="mb-4 text-gray-600 dark:text-gray-400">')
-                        .replace(/\n/g, '<br>')
-                        .replace(/^- (.*)/gm, '<li>$1</li>')
-                        .replace(/^(\d+)\. (.*)/gm, '<li class="list-decimal ml-4">$2</li>');
-                }
             }
         }
     </script>

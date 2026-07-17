@@ -209,6 +209,10 @@ PROMPT;
             $pdf = $parser->parseFile($fullPath);
             $text = $pdf->getText();
 
+            // Sanitize to valid UTF-8 to prevent json_encode failures
+            $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+            $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $text);
+
             // Return only first 1500 characters to save tokens
             return mb_substr($text, 0, 1500) . "...";
         } catch (\Exception $e) {

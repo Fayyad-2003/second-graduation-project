@@ -72,10 +72,10 @@ class MaterialController extends Controller
             abort(403);
         }
 
-        if (!$material->file_path || !Storage::disk('public')->exists($material->file_path)) {
+        if (!$material->file_path || !Storage::disk('local')->exists($material->file_path)) {
             abort(404, __('File not found'));
         }
 
-        return Storage::download($material->file_path, $material->file_name);
+        return Storage::disk('local')->download($material->file_path, $material->file_name);
     }
 }

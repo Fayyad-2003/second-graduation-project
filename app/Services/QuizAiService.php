@@ -60,6 +60,62 @@ class QuizAiService
     }
 
     /**
+     * Generate exam questions for the question bank based on course materials
+     */
+    public function generateExamQuestions(AcademicClass $class, int $count, string $difficulty, string $type): array
+    {
+        if (empty($this->apiKey)) {
+            throw new \Exception('API key has not been configured.');
+        }
+
+        $content = $this->collectMaterialsContent($class);
+        $courseName = $class->course->course_name;
+
+        $typeLabel = match($type) {
+            'multiple_choice' => 'multiple-choice (with 4 options A, B, C, D)',
+            'true_false'      => 'true/false',
+            'short_answer'    => 'short answer',
+            'essay'           => 'essay',
+            default           => 'multiple-choice (with 4 options A, B, C, D)',
+        };
+
+        $optionsInstruction = in_array($type, ['multiple_choice', 'true_false'])
+            ? 'Include an "options" object (e.g. {"A":"...","B":"...","C":"...","D":"..."} for multiple_choice or {"A":"True","B":"False"} for true_false) and a "correct_answer" field (e.g. "A").'
+            : 'Set "options" to null and "correct_answer" to a brief model answer string.';
+
+        $prompt = <<<PROMPT
+You are an expert academic examiner for the course "$courseName".
+Generate exactly $count $typeLabel questions at "$difficulty" difficulty level based on the course materials below.
+
+Course Materials:
+$content
+
+Instructions:
+- Question type must be: "$type"
+- Difficulty must be: "$difficulty"
+- $optionsInstruction
+- Assign a "points" value appropriate for the difficulty (easy=5, medium=10, hard=15, very_hard=20).
+- Questions must be academic, clear, and directly based on the materials.
+
+Return ONLY a valid JSON object:
+{
+  "questions": [
+    {
+      "question_text": "...",
+      "question_type": "$type",
+      "difficulty": "$difficulty",
+      "options": {"A": "...", "B": "...", "C": "...", "D": "..."},
+      "correct_answer": "A",
+      "points": 10
+    }
+  ]
+}
+PROMPT;
+
+        return $this->callLlm($prompt);
+    }
+
+    /**
      * Generate a summary and quiz for a specific meeting based on a material
      */
     public function generateMeetingAnalysis(Meeting $meeting, Material $material): array
@@ -168,6 +224,10 @@ PROMPT;
             $parser = new Parser();
             $pdf = $parser->parseFile($fullPath);
             $text = $pdf->getText();
+
+            // Sanitize to valid UTF-8 to prevent json_encode failures
+            $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+            $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $text);
 
             // Return only first 1500 characters to save tokens
             return mb_substr($text, 0, 1500) . "...";

@@ -24,6 +24,105 @@ class CareerRoadmapAiService
         }
     }
 
+    public function getMainFields(Student $student): array
+    {
+        if (empty($this->apiKey)) {
+            return ['success' => false, 'message' => 'API key not configured.'];
+        }
+
+        try {
+            $studyProgram = $student->studyProgram?->name ?? 'General';
+            $faculty = $student->studyProgram?->faculty?->name ?? 'General';
+
+            $prompt = "A university student is enrolled in the '{$studyProgram}' program under the '{$faculty}' faculty. List 5-7 relevant career fields they could pursue. Return ONLY a JSON array of short strings. Example: [\"Software Engineering\", \"Data Science\"]";
+
+            $messages = [
+                ['role' => 'system', 'content' => 'You are a career advisor. Always respond with ONLY a valid JSON array of strings, no markdown, no explanation.'],
+                ['role' => 'user', 'content' => $prompt],
+            ];
+
+            $raw = $this->provider === 'qwen'
+                ? $this->callQwenApiRaw($messages)
+                : $this->callGeminiApiRaw($messages);
+
+            $raw = preg_replace('/```json\s*|```\s*/i', '', trim($raw));
+            $fields = json_decode($raw, true);
+
+            if (!is_array($fields)) {
+                return ['success' => false, 'message' => 'Invalid AI response.'];
+            }
+
+            return ['success' => true, 'fields' => array_values($fields)];
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    public function getOptions(array $data): array
+    {
+        if (empty($this->apiKey)) {
+            return ['success' => false, 'message' => 'API key not configured.'];
+        }
+
+        try {
+            $level = $data['level'];
+            $field = $data['field'];
+            $subField = $data['subField'] ?? '';
+            $specificField = $data['specificField'] ?? '';
+
+            if ($level === 'subFields') {
+                $prompt = "List 4-6 sub-fields within the career field: '{$field}'. Return ONLY a JSON array of short strings, no explanation. Example: [\"Web Development\", \"Mobile Development\"]";
+            } elseif ($level === 'specificFields') {
+                $prompt = "List 3-5 specific specializations within '{$subField}' (under '{$field}'). Return ONLY a JSON array of short strings. Example: [\"Frontend\", \"Backend\"]";
+            } else {
+                $prompt = "List 4-7 key technologies or tools for '{$specificField}' (under '{$field} > {$subField}'). Return ONLY a JSON array of short strings. Example: [\"React\", \"Vue\", \"Laravel\"]";
+            }
+
+            $messages = [
+                ['role' => 'system', 'content' => 'You are a career advisor. Always respond with ONLY a valid JSON array of strings, no markdown, no explanation.'],
+                ['role' => 'user', 'content' => $prompt],
+            ];
+
+            $raw = $this->provider === 'qwen'
+                ? $this->callQwenApiRaw($messages)
+                : $this->callGeminiApiRaw($messages);
+
+            // Strip markdown code fences if present
+            $raw = preg_replace('/```json\s*|```\s*/i', '', trim($raw));
+            $options = json_decode($raw, true);
+
+            if (!is_array($options)) {
+                return ['success' => false, 'message' => 'Invalid AI response.'];
+            }
+
+            return ['success' => true, 'options' => array_values($options)];
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    protected function callGeminiApiRaw(array $messages): string
+    {
+        $response = Http::timeout(30)
+            ->withHeaders(['Content-Type' => 'application/json'])
+            ->post("https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}", [
+                'contents' => [['role' => 'user', 'parts' => [['text' => $messages[0]['content'] . "\n\n" . $messages[1]['content']]]]]
+            ]);
+
+        if ($response->failed()) throw new \Exception('Gemini API failed: ' . $response->body());
+        return $response->json()['candidates'][0]['content']['parts'][0]['text'] ?? '';
+    }
+
+    protected function callQwenApiRaw(array $messages): string
+    {
+        $response = Http::timeout(30)
+            ->withHeaders(['Authorization' => 'Bearer ' . $this->apiKey, 'Content-Type' => 'application/json'])
+            ->post('https://api.together.xyz/v1/chat/completions', ['model' => $this->model, 'messages' => $messages]);
+
+        if ($response->failed()) throw new \Exception('Qwen API failed: ' . $response->body());
+        return $response->json()['choices'][0]['message']['content'] ?? '';
+    }
+
     /**
      * Generate a career roadmap based on selected path
      */
@@ -96,9 +195,8 @@ class CareerRoadmapAiService
     {
         $response = Http::timeout(90)
             ->withHeaders([
-                'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
-            ])->post("https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent", [
+            ])->post("https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}", [
                 'contents' => [
                     [
                         'role' => 'user',

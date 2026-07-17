@@ -212,11 +212,22 @@
                 showExplanation: false,
                 score: 0,
                 isFinished: false,
-                loadingStatus: '{{ __('
-                Generating questions...') }}',
+                loadingStatus: '{{ __("Generating questions...") }}',
 
                 get currentQuestion() {
-                    return this.quiz ? this.quiz.questions[this.currentQuestionIndex] : null;
+                    if (!this.quiz) return null;
+                    const q = this.quiz.questions[this.currentQuestionIndex];
+                    if (!q) return null;
+                    // Normalize options to array if it's an object {A:..., B:..., C:..., D:...}
+                    if (q.options && !Array.isArray(q.options)) {
+                        q._optionKeys = Object.keys(q.options);
+                        q.options = Object.values(q.options);
+                        // Convert letter correct_answer to numeric index
+                        if (typeof q.correct_answer === 'string' && q.correct_answer.length === 1) {
+                            q.correct_answer = q._optionKeys.indexOf(q.correct_answer.toUpperCase());
+                        }
+                    }
+                    return q;
                 },
 
                 get percentageComplete() {
@@ -260,14 +271,16 @@
 
                         const data = await response.json();
 
-                        if (data.success) {
-                            this.quiz = data.quiz;
-                        } else {
+                        if (data.success === false) {
                             alert('{{ __("An error occurred:") }} ' + data.message);
+                        } else {
+                            // AI returns { title, questions } directly at top level
+                            this.quiz = data.quiz ?? data;
                         }
                     } catch (error) {
                         alert('{{ __("An error occurred while connecting to the server.") }}');
                     } finally {
+                        this.stopLoadingAnimation();
                         this.isLoading = false;
                     }
                 },
